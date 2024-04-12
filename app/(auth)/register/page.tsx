@@ -3,7 +3,11 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/config/supabase";
 import { redirect } from "next/navigation";
 
-export default function Register() {
+export default async function Register() {
+    const user = await supabase.auth.getUser()
+    if (user.data) {
+        redirect("/dashboard")
+    }
     //TODO: username mit einfügen
     async function register(e: FormData) {
         "use server"
@@ -12,9 +16,6 @@ export default function Register() {
         const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
-            options: {
-                emailRedirectTo: 'https://example.com/welcome',
-            },
         })
         if (error) {
             throw new Error(error.message)
