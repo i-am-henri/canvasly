@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/config/supabase";
+import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function Register() {
+    const supabase = createClient()
     const user = await supabase.auth.getUser()
     if (user.data) {
         redirect("/dashboard")
