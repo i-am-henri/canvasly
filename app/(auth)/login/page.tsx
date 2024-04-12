@@ -5,11 +5,16 @@ import { redirect } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/submit-button";
 
-export default function Login({
+export default async function  Login({
     searchParams,
 }: {
     searchParams: { message: string };
 }) {
+    const supabase = createClient()
+    const user = await supabase.auth.getUser()
+    if (user.data) {
+        redirect("/dashboard")
+    }
     const signIn = async (formData: FormData) => {
         "use server";
 
