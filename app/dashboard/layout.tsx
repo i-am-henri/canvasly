@@ -14,16 +14,16 @@ export default async function Layout({
   const user = await supabase.auth.getUser();
   console.log(user || "no user")
   return (
-    <div>
-      <div className="flex flex-col items-center">
-        <div>
+    <div className="flex w-full h-screen">
+        {/* Sidebar */}
+        <div className="w-[12%]">
           <h2>
             {user?.data.user?.email}
           </h2>
         </div>
-
-      </div>
-      {children}
+        <div className="rounded-2xl border-[#808080] overflow-y-auto dark:border-[#ffffffc0] h-[calc(100vh - 16px)] m-2  w-full ">
+          {children}
+        </div>
     </div>
   );
 }
