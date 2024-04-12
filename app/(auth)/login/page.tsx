@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function Login() {
     const user = await supabase.auth.getUser()
-    if (user.data) {
+    if (user.data.user) {
         redirect("/dashboard")
     }
     async function login(e: FormData) {
