@@ -1,6 +1,12 @@
-export default function Dashboard() {
+import { createClient } from "@/utils/supabase/server"
+
+export default async function Dashboard() {
+    const supabase = createClient()
+    const user = await supabase.auth.getUser()
+
     return (
-        <div className="flex flex-col h-screen " style={{height: "300vh"}}>
+        <div className="flex flex-col h-screen m-2" style={{height: "300vh"}}>
+            <h2 className="text-2xl">{user.data.user?.email}</h2>
         </div>
     )
 }
