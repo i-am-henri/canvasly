@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Toggle } from "@/components/ui/toggle";
-import { Home, Italic, Settings } from "lucide-react";
+import { Home, Italic, Plus, Settings } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-import { DndContext } from '@dnd-kit/core';
 import DndProvider from "@/components/DndProvider";
 import PresentationSidebar from "@/components/PresentationSidebar";
+import SidebarLink from "@/components/SidebarLink";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -21,7 +20,7 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex w-full h-screen bg-[#e0e0e0] dark:bg-[#101010]">
+    <div className="flex w-full h-screen bg-[#e0e0e0] dark:bg-[#111214]">
       {/* Sidebar */}
       <div className="w-[12%]">
         <div className="flex m-2 justify-between">
@@ -33,20 +32,30 @@ export default async function Layout({
           <div className="flex items-center">
             <Link href={"/dashboard/"}>
               <Home className="h-5 w-5 mr-1" />
-              </Link>
+            </Link>
             <ThemeSwitch />
             <Link href={"/dashboard/settings"}>
               <Settings className="h-5 w-5 ml-1" />
             </Link>
           </div>
         </div>
-
         <div className="flex flex-col mx-2">
-          <p className="text-thin text-[#808080]">presentations</p>
-          <PresentationSidebar />
+          <SidebarLink icon={<Home className="h-4 w-4" />} title="Home" link="/dashboard/" />
+          <details>
+            <summary className="flex  justify-between items-center">
+              <p className="text-thin cursor-pointer text-[#808080]">projects</p>
+
+              <div className="flex">
+                <Plus className="h-4 w-4" />
+                <Settings className="h-4 w-4" />
+              </div>
+            </summary>
+            <p>hekko</p>
+            <PresentationSidebar />
+          </details>
         </div>
       </div>
-      <ScrollArea className="rounded-2xl border-[#808080]  bg-[#272727] dark:border-[#ffffffc0] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">
+      <ScrollArea className="rounded-2xl border dark:border-[#ffffff0c] dark:hover:border-[#ffffff1f] transition duration-300  bg-[#141517] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">
         <DndProvider>
           {children}
         </DndProvider>
