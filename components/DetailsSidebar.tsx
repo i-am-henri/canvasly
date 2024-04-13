@@ -29,20 +29,19 @@ interface Props extends React.HtmlHTMLAttributes<HTMLDivElement> {
 export default function DetailsSidebar({ icon, title, items, action, ...props }: Props) {
     const [open, setOpen] = useState<boolean>(false)
     const theme = useTheme()
-    
+
     return (
         <details className="flex items-center justify-between px-[10px] py-[6px]">
-            <summary onClick={() => setOpen(!open)} className="flex items-center justify-between">
+            <summary onClick={() => setOpen(!open)} className="flex items-center mb-1 justify-between">
                 <div className="flex cursor-pointer">
                     <motion.div style={{ rotate: open ? 90 : 0 }} color={theme.theme === "dark" ? "#e1e1e1" : "#272727"} className="transition duration-300 mr-1">
                         <ChevronRight className="h-5 w-5" />
                     </motion.div>
-                    <span className="text-sm dark:text-[#e1e1e1] dark:hover:text-white transititon duration-300">{title}</span>
+                    <span className="text-sm dark:text-[#e1e1e1] dark:hover:text-white transititon duration-300 select-none">{title}</span>
                 </div>
                 <div className="flex">
                     {
                         action.map((action) => (
-                            
                             <Tooltip key={action.link}>
                                 <TooltipTrigger><Link href={action.link} color={theme.theme === "dark" ? "#e1e1e1" : "#272727"}>{action.icon}</Link></TooltipTrigger>
                                 <TooltipContent>
@@ -56,9 +55,9 @@ export default function DetailsSidebar({ icon, title, items, action, ...props }:
             <div className="flex flex-col">
                 {
                     items.map((item) => (
-                        <Link className="flex  text-sm font-medium text-[#e1e1e1] border-0 border-[#ffffff0c] m-[2px] hover:m-0  hover:border-2 rounded-xl  hover:bg-gray-100 dark:hover:bg-[#191a1c]  transition duration-300" href={item.link} key={item.name}>
+                        <Link className="flex px-2 py-1 text-sm items-center font-medium text-[#e1e1e1] border-0 border-[#ffffff0c] m-[2px] hover:m-0  hover:border-2 rounded-xl  hover:bg-gray-100 dark:hover:bg-[#191a1c]  transition duration-300" href={item.link} key={item.name}>
                             {item.icon}
-                            {item.name}
+                            <span className="ml-1">{item.name}</span>
                         </Link>
                     ))
                 }

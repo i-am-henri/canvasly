@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { FlaskConical, Group, GroupIcon, HandCoins, Home, Plus, Presentation, Rss, Settings, Speech, Users2 } from "lucide-react";
+import { FlaskConical, Group, GroupIcon, HandCoins, Home, Monitor, Plus, Presentation, Rss, Settings, Speech, Users2 } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -57,7 +57,19 @@ export default async function Layout({
               {
                 link: "/dashboard/groups/new",
                 name: "Chemie",
-                icon: <FlaskConical className="h-4 w-4" />
+                icon: <Monitor className="h-4 w-4" />
+              }
+            ]} />
+            <hr className="my-1" />
+            <DetailsSidebar
+            action={[
+              { icon: (<Plus className="h-5 w-5" />), link: "/dashboard/new", tooltip: "new presentation" }
+            ]}
+            icon={<Presentation className="h-4 w-4" />} title="Presentations" items={[
+              {
+                link: "/dashboard/groups/new",
+                name: "Chemie",
+                icon: <Monitor className="h-4 w-4" />
               }
             ]} />
         </div>
