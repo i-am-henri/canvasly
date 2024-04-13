@@ -38,10 +38,10 @@ export default async function Layout({
               <Settings className="h-5 w-5 ml-1" />
             </Link>
           </div>
-          <div className="flex flex-col">
-            <p>workspaces</p>
+        </div>
 
-          </div>
+        <div className="flex flex-col mx-2">
+          <p className="text-thin text-[#808080]">presentations</p>
         </div>
       </div>
       <ScrollArea className="rounded-2xl border-[#808080]  bg-[#272727] dark:border-[#ffffffc0] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">

@@ -6,7 +6,7 @@ export default async function Dashboard() {
 
     return (
         <div className="flex flex-col h-screen m-2" style={{height: "300vh"}}>
-            <h2 className="text-2xl">{user.data.user?.email}</h2>
+            <h2 className="text-2xl">Welcome back 👋</h2>
         </div>
     )
 }
