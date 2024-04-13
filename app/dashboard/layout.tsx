@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Group, GroupIcon, HandCoins, Home, Italic, PercentSquareIcon, Plus, Rss, Settings, Users, Users2 } from "lucide-react";
+import { FlaskConical, Group, GroupIcon, HandCoins, Home,  Plus, Rss, Settings, Users2 } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import DndProvider from "@/components/DndProvider";
 import PresentationSidebar from "@/components/PresentationSidebar";
 import SidebarLink from "@/components/SidebarLink";
+import DetailsSidebar from "@/components/DetailsSidebar";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -45,18 +46,14 @@ export default async function Layout({
           <SidebarLink icon={<Users2 className="h-4 w-4" />} title="Team" link="/dashboard/team/" />
           <SidebarLink icon={<Rss className="h-4 w-4" />} title="Updates" link="/dashboard/updates/" />
           <SidebarLink icon={<HandCoins className="h-4 w-4" />} title="Plan" link="/dashboard/plan/" />
-          <details>
-            <summary className="flex  justify-between items-center">
-              <p className="text-thin cursor-pointer text-[#808080]">projects</p>
-
-              <div className="flex">
-                <Plus className="h-4 w-4" />
-                <Settings className="h-4 w-4" />
-              </div>
-            </summary>
-            <p>hekko</p>
-            <PresentationSidebar />
-          </details>
+          <hr className="my-1" />
+          <DetailsSidebar icon={<Group className="h-4 w-4" />} title="Groups" items={[
+            {
+              link: "/dashboard/groups/new",
+              name: "Chemie",
+              icon: <FlaskConical className="h-4 w-4" />
+            }
+          ]} />
         </div>
       </div>
       <ScrollArea className="rounded-2xl border dark:border-[#ffffff0c] dark:hover:border-[#ffffff1f] transition duration-300  bg-[#141517] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">
