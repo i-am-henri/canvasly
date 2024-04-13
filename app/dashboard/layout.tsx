@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { FlaskConical, Group, GroupIcon, HandCoins, Home, Monitor, Plus, Presentation, Rss, Settings, Speech, Users2 } from "lucide-react";
+import { Flame, FlaskConical, Group, GroupIcon, HandCoins, Home, LayoutTemplate, Monitor, Plus, Presentation, Rss, Settings, ShieldAlert, Speech, Users2 } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import DndProvider from "@/components/DndProvider";
 import PresentationSidebar from "@/components/PresentationSidebar";
 import SidebarLink from "@/components/SidebarLink";
-import DetailsSidebar from "@/components/DetailsSidebar";
+import DetailsSidebar, { Item } from "@/components/DetailsSidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,6 +48,27 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let Items: Item[] = [{
+    icon: <ShieldAlert />,
+    link: "/dashboard/no-presentations",
+    name: "no presentations"
+  }] as Item[]
+  const supabase = createClient()
+  const user = await supabase.auth.getUser()
+  const id = user.data.user?.id
+  if (!id) throw new Error("Internal error, please try to sign in.")
+  // fetch all Presentations
+  const presentations = await supabase.from("presentation").select("*").eq("owner", id)
+  if (presentations.data != null || undefined || "[]" || []) {
+    Items.slice(0, 1)
+  } 
+  presentations.data?.forEach((presentation) => {
+    Items.push({
+      name: presentation.title,
+      icon: <Monitor />,
+      link: `/dashboard/presentation/${presentation.id}`
+    })
+  })
   return (
     <div className="flex w-full h-screen bg-[#e0e0e0] dark:bg-[#111214]">
       {/* Sidebar */}
@@ -95,31 +116,14 @@ export default async function Layout({
           <SidebarLink icon={<Users2 className="h-4 w-4" />} title="Contacts" link="/dashboard/contacts/" />
           <SidebarLink icon={<Rss className="h-4 w-4" />} title="Updates" link="/dashboard/updates/" />
           <SidebarLink icon={<HandCoins className="h-4 w-4" />} title="Plan" link="/dashboard/plan/" />
+          <SidebarLink icon={<LayoutTemplate className="h-4 w-4" />} title="Templates" link="/dashboard/templates/" />
           <SidebarLink icon={<Speech className="h-4 w-4" />} title="Feedback" link="/dashboard/feedback/" />
           <hr className="my-1" />
           <DetailsSidebar
             action={[
               { icon: (<Plus className="h-5 w-5" />), link: "/dashboard/new", tooltip: "new presentation" }
             ]}
-            icon={<Presentation className="h-4 w-4" />} title="Presentations" items={[
-              {
-                link: "/dashboard/groups/new",
-                name: "Chemie",
-                icon: <Monitor className="h-4 w-4" />
-              }
-            ]} />
-          <hr className="my-1" />
-          <DetailsSidebar
-            action={[
-              { icon: (<Plus className="h-5 w-5" />), link: "/dashboard/new", tooltip: "new presentation" }
-            ]}
-            icon={<Presentation className="h-4 w-4" />} title="Presentations" items={[
-              {
-                link: "/dashboard/groups/new",
-                name: "Chemie",
-                icon: <Monitor className="h-4 w-4" />
-              }
-            ]} />
+            icon={<Presentation className="h-4 w-4" />} title="Presentations" items={Items} />
         </div>
       </div>
       <ScrollArea className="rounded-2xl border dark:border-[#ffffff0c] dark:hover:border-[#ffffff1f] transition duration-300  bg-[#141517] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">

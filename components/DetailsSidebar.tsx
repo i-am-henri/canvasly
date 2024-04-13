@@ -10,7 +10,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useTheme } from "next-themes";
-type Item = {
+export type Item = {
     link: string,
     name: string,
     icon: React.ReactNode
