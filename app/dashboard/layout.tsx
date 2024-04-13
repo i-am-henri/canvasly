@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Home, Italic, Plus, Settings } from "lucide-react";
+import { Group, GroupIcon, HandCoins, Home, Italic, PercentSquareIcon, Plus, Rss, Settings, Users, Users2 } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -41,6 +41,10 @@ export default async function Layout({
         </div>
         <div className="flex flex-col mx-2">
           <SidebarLink icon={<Home className="h-4 w-4" />} title="Home" link="/dashboard/" />
+          <SidebarLink icon={<Settings className="h-4 w-4" />} title="Settings" link="/dashboard/settings/" />
+          <SidebarLink icon={<Users2 className="h-4 w-4" />} title="Team" link="/dashboard/team/" />
+          <SidebarLink icon={<Rss className="h-4 w-4" />} title="Updates" link="/dashboard/updates/" />
+          <SidebarLink icon={<HandCoins className="h-4 w-4" />} title="Plan" link="/dashboard/plan/" />
           <details>
             <summary className="flex  justify-between items-center">
               <p className="text-thin cursor-pointer text-[#808080]">projects</p>
