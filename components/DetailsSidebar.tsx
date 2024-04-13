@@ -43,7 +43,7 @@ export default function DetailsSidebar({ icon, title, items, action, ...props }:
                     {
                         action.map((action) => (
                             
-                            <Tooltip>
+                            <Tooltip key={action.link}>
                                 <TooltipTrigger><Link href={action.link} color={theme.theme === "dark" ? "#e1e1e1" : "#272727"}>{action.icon}</Link></TooltipTrigger>
                                 <TooltipContent>
                                     {action.tooltip}

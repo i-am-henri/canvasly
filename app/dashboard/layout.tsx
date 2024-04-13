@@ -31,15 +31,13 @@ export default async function Layout({
     <div className="flex w-full h-screen bg-[#e0e0e0] dark:bg-[#111214]">
       {/* Sidebar */}
       <div className="w-[12%]">
-        <DropdownMenu>
-          <DropdownMenuTrigger><h3 className="my-2 mx-2 px-[10px]">canvasly</h3></DropdownMenuTrigger>
+        <DropdownMenu >
+          <DropdownMenuTrigger className="my-2"><h3 className="mx-2 px-[10px]">canvasly</h3></DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Canvasly</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <Link href={"/"}><DropdownMenuItem className="cursor-pointer">Homepage</DropdownMenuItem></Link>
+            <DropdownMenuItem>Sign out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         
