@@ -12,7 +12,7 @@ export default async function  Login({
 }) {
     const supabase = createClient()
     const user = await supabase.auth.getUser()
-    if (user.data) {
+    if (user.data.user) {
         redirect("/dashboard")
     }
     const signIn = async (formData: FormData) => {
