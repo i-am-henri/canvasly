@@ -8,8 +8,9 @@ export default async function PresentationSidebar() {
 
     const { data, error } = await supabase
         .from('presentation')
-        .select('*')
-        .eq('owner', "henri");
+        // select 3 presentations of this owner
+        .select('*').eq("owner", id).range(0, 2)
+        console.log(data)
     console.log(data)
     console.log(error)
     return (
@@ -17,7 +18,7 @@ export default async function PresentationSidebar() {
             {
                 data?.map((presentation) => {
                     return (
-                        <div>
+                        <div key={presentation.id}>
                             <h1>{presentation.title}</h1>
                         </div>
                     )

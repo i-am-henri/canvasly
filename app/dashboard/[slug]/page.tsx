@@ -1,12 +1,17 @@
 import { createClient } from "@/utils/supabase/server"
 
-export default async function PresentationEditor({params}: {params: {slug: string}}) {
+export default async function PresentationEditor({ params }: { params: { slug: string } }) {
     const supabase = createClient()
-    const { data, error } = await supabase.from('presentation').select("*").eq('id', "0bace0b2-710b-48e9-b704-22e84d39fafe").single()
+
+    const { data, error } = await supabase
+        .from('presentation')
+        .select("*")
+        .eq("id", params.slug)
+
+    console.log(data, error)
     return (
         <div>
-            {params.slug}
-            {data?.title}
+            {JSON.stringify(data || error)}
         </div>
     )
 }
