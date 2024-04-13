@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Toggle } from "@/components/ui/toggle";
-import { Italic, Settings } from "lucide-react";
+import { Home, Italic, Settings } from "lucide-react";
 import ThemeSwitch from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { DndContext } from '@dnd-kit/core';
 import DndProvider from "@/components/DndProvider";
+import PresentationSidebar from "@/components/PresentationSidebar";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -19,9 +20,6 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
-  const user = await supabase.auth.getUser();
-  console.log(user || "no user")
   return (
     <div className="flex w-full h-screen bg-[#e0e0e0] dark:bg-[#101010]">
       {/* Sidebar */}
@@ -33,6 +31,9 @@ export default async function Layout({
             </AvatarFallback>
           </Avatar>
           <div className="flex items-center">
+            <Link href={"/dashboard/"}>
+              <Home className="h-5 w-5 mr-1" />
+              </Link>
             <ThemeSwitch />
             <Link href={"/dashboard/settings"}>
               <Settings className="h-5 w-5 ml-1" />
@@ -42,6 +43,7 @@ export default async function Layout({
 
         <div className="flex flex-col mx-2">
           <p className="text-thin text-[#808080]">presentations</p>
+          <PresentationSidebar />
         </div>
       </div>
       <ScrollArea className="rounded-2xl border-[#808080]  bg-[#272727] dark:border-[#ffffffc0] h-[calc(100vh - 16px)] m-2  w-full " id="scrollContainer">
