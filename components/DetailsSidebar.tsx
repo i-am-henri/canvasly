@@ -3,29 +3,54 @@ import { ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { useTheme } from "next-themes";
 type Item = {
     link: string,
     name: string,
     icon: React.ReactNode
 }
+type Action = {
+    icon: React.ReactNode;
+    tooltip: string,
+    link: string
+}
 interface Props extends React.HtmlHTMLAttributes<HTMLDivElement> {
     icon: React.ReactNode;
     title: string;
     items: Array<Item>;
+    action: Array<Action>
 }
-export default function DetailsSidebar({ icon, title, items, ...props }: Props) {
+export default function DetailsSidebar({ icon, title, items, action, ...props }: Props) {
     const [open, setOpen] = useState<boolean>(false)
+    const theme = useTheme()
+    
     return (
         <details className="flex items-center justify-between px-[10px] py-[6px]">
             <summary onClick={() => setOpen(!open)} className="flex items-center justify-between">
                 <div className="flex cursor-pointer">
-                    <motion.div style={{ rotate: open ? 90 : 0 }} className="transition duration-300 mr-1">
+                    <motion.div style={{ rotate: open ? 90 : 0 }} color={theme.theme === "dark" ? "#e1e1e1" : "#272727"} className="transition duration-300 mr-1">
                         <ChevronRight className="h-5 w-5" />
                     </motion.div>
-                    <span >{title}</span>
+                    <span className="text-sm dark:text-[#e1e1e1] dark:hover:text-white transititon duration-300">{title}</span>
                 </div>
                 <div className="flex">
-                    <Plus className="h-5 w-5" />
+                    {
+                        action.map((action) => (
+                            
+                            <Tooltip>
+                                <TooltipTrigger><Link href={action.link} color={theme.theme === "dark" ? "#e1e1e1" : "#272727"}>{action.icon}</Link></TooltipTrigger>
+                                <TooltipContent>
+                                    {action.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))
+                    }
                 </div>
             </summary>
             <div className="flex flex-col">
