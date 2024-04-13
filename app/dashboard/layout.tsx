@@ -44,7 +44,7 @@ export default async function Layout({
         <div className="flex flex-col mx-2">
           <SidebarLink icon={<Home className="h-4 w-4" />} title="Home" link="/dashboard/" />
           <SidebarLink icon={<Settings className="h-4 w-4" />} title="Settings" link="/dashboard/settings/" />
-          <SidebarLink icon={<Users2 className="h-4 w-4" />} title="Team" link="/dashboard/team/" />
+          <SidebarLink icon={<Users2 className="h-4 w-4" />} title="Contacts" link="/dashboard/contacts/" />
           <SidebarLink icon={<Rss className="h-4 w-4" />} title="Updates" link="/dashboard/updates/" />
           <SidebarLink icon={<HandCoins className="h-4 w-4" />} title="Plan" link="/dashboard/plan/" />
           <SidebarLink icon={<Speech className="h-4 w-4" />} title="Feedback" link="/dashboard/feedback/" />

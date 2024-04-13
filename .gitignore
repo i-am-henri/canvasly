@@ -40,3 +40,9 @@ bun.lockb
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+.env.vault
+.env.me
