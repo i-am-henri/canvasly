@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server"
+import { ErrorHandlerSource } from "next/dist/server/app-render/create-error-handler";
 
 export default async function PresentationSidebar() {
     const supabase = createClient()
@@ -8,7 +9,7 @@ export default async function PresentationSidebar() {
     const { data, error } = await supabase
         .from('presentation')
         .select('*')
-        .eq('owner_id', "henri");
+        .eq('owner', "henri");
     console.log(data)
     console.log(error)
     return (
