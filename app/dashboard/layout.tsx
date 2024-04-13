@@ -60,7 +60,9 @@ export default async function Layout({
   // fetch all Presentations
   const presentations = await supabase.from("presentation").select("*").eq("owner", id)
   if (presentations.data != null || undefined || "[]" || []) {
-    Items.slice(0, 1)
+    console.log("existing")
+    Items.splice(0, 1)
+    console.log(Items.splice(0,1))
   } 
   presentations.data?.forEach((presentation) => {
     Items.push({
