@@ -11,9 +11,9 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Pen, Text, Trash } from "lucide-react"
+import { Pen, Settings, Text, Trash } from "lucide-react"
 import Link from "next/link"
-import App from "@/components/Editor"
+import Editor from "@/components/Editor"
 
 export default async function PresentationEditor({ params }: { params: { slug: string } }) {
     const supabase = createClient()
@@ -35,7 +35,7 @@ export default async function PresentationEditor({ params }: { params: { slug: s
                     <p>{data?.description}</p>
                 </div>
                 <div className="flex">
-                    <Link href={`/dashboard/projects/${data?.id}/settings`} className="mr-5 flex"><Pen className="mr-2" />edit metadata</Link>
+                    <Link href={`/dashboard/projects/${data?.id}/settings`} className="mr-5 flex"><Settings className="mr-2" />settings</Link>
                     <Link href={`/dashboard/projects/${data?.id}/documents`} className="mr-5 flex"><Text className="mr-2" />documents</Link>
                     <AlertDialog>
                         <AlertDialogTrigger className="flex mr-5"><Trash color="#eb4034" className="mr-2"/>delete</AlertDialogTrigger>
@@ -58,7 +58,7 @@ export default async function PresentationEditor({ params }: { params: { slug: s
             <hr />
             {/* The editor */}
             <div className="w-full h-full">
-                <App />
+                <Editor />
             </div>
         </div>
     )
