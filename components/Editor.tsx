@@ -1,67 +1,29 @@
 "use client"
-import React, { useState } from 'react';
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import { useEffect, useRef } from 'react';
+import { fabric } from 'fabric';
 
-function Draggable(props: any) {
+export default function Editor() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    let canvas: fabric.Canvas;
 
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id: props.id,
+  if (canvasRef.current) {
+    canvas = new fabric.Canvas(canvasRef.current, {
+      height: 500,
+      width: 800
     });
-    const style = transform ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    } : undefined;
 
-
-    return (
-        <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
-            {props.children}
-        </button>
-    );
-
-}
-function Droppable(props: any) {
-
-    const { isOver, setNodeRef } = useDroppable({
-        id: props.id,
+    // Beispiel: Einen Text zur Canvas hinzufügen
+    const text = new fabric.Text('Hello Fabric', {
+      left: 100,
+      top: 100,
+      fontSize: 30,
+      fill: 'red'
     });
-    const style = {
-        color: isOver ? 'green' : undefined,
-    };
-
-
-    return (
-        <div ref={setNodeRef} style={style}>
-            {props.children}
-        </div>
-    );
-
+    canvas.add(text);
+  }
+  })
+  return (
+    <canvas ref={canvasRef} />
+  )
 }
-export default function App() {
-    const containers = ['A', 'B', 'C'];
-    const [parent, setParent] = useState(null);
-    const draggableMarkup = (
-        <Draggable id="draggable">Drag me</Draggable>
-    );
-
-    return (
-        <DndContext onDragEnd={handleDragEnd}>
-            {parent === null ? draggableMarkup : null}
-
-            {containers.map((id) => (
-                // We updated the Droppable component so it would accept an `id`
-                // prop and pass it to `useDroppable`
-                <Droppable key={id} id={id}>
-                    {parent === id ? draggableMarkup : 'Drop here'}
-                </Droppable>
-            ))}
-        </DndContext>
-    );
-
-    function handleDragEnd(event: any) {
-        const { over } = event;
-
-        // If the item is dropped over a container, set it as the parent
-        // otherwise reset the parent to `null`
-        setParent(over ? over.id : null);
-    }
-};
