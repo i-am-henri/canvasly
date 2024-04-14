@@ -60,15 +60,13 @@ export default async function Layout({
   // fetch all Presentations
   const presentations = await supabase.from("presentation").select("*").eq("owner", id)
   if (presentations.data != null || undefined || "[]" || []) {
-    console.log("existing")
     Items.splice(0, 1)
-    console.log(Items.splice(0,1))
   } 
   presentations.data?.forEach((presentation) => {
     Items.push({
       name: presentation.title,
       icon: <Monitor />,
-      link: `/dashboard/presentation/${presentation.id}`
+      link: `/dashboard/projects/${presentation.id}`
     })
   })
   return (
@@ -104,6 +102,8 @@ export default async function Layout({
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
+
+
           <Sheet>
             <SheetTrigger className="hidden md:block">
               <SidebarLink icon={<Settings className="h-4 w-4" />} title="Settings"  />
