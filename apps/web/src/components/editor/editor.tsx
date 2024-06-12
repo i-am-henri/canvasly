@@ -30,11 +30,7 @@ export default function App() {
     editor?.addLine();
   };
   const onAddRectangle = () => {
-    //editor?.addRectangle();
-    const cColor = '#ffff' + color;
     color += 100;
-    //console.log(canvas);
-
     const rect = new fabric.Rect({
       top: 100,
       left: 20,
