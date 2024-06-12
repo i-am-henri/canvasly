@@ -2,8 +2,8 @@
 import { FabricJSCanvas } from "fabricjs-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Button from "~/components/ui/button";
-const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
+import Button from "components/ui/button";
+const App = dynamic(() => import("components/editor/editor"), { ssr: false })
 
 export default function HomePage() {
   return (

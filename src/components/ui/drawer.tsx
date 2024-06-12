@@ -1,128 +1,118 @@
-import { Drawer as Primitive } from "vaul"
-import React from "react";
-import {drawer , type DrawerProps } from "@tailus/themer"
+"use client"
 
-import {
-  title,
-  text,
-  type TitleSizeProp,
-  type TextProps,
-  type TextSizeProp,
-  type TextAlignProp,
-  type TextWeightProp
-} from "@tailus/themer"
+import * as React from "react"
+import { Drawer as DrawerPrimitive } from "vaul"
 
+import { cn } from "~/lib/utils"
 
-const Trigger = Primitive.Trigger;
-const Portal = Primitive.Portal;
-const Close = Primitive.Close;
-const NestedRoot = Primitive.NestedRoot;
-
-const DirectionContext = React.createContext<Omit<DrawerProps, "fancy" | "mixed">>({ direction: "bottom", withControler:true });
-
-type RootProps = React.ComponentProps<typeof Primitive.Root> & DrawerProps & {
-    ref?: React.Ref<React.ElementRef<typeof Primitive.Root>>;
-};
-
-const Root: React.FC<RootProps> = ({ direction, withControler, ...props }, forwardedRef) => {
-    return (
-        <DirectionContext.Provider value={{ direction, withControler }}>
-            <Primitive.Root ref={forwardedRef} direction={direction} {...props} />
-        </DirectionContext.Provider>
-    );
-};
-
-const Content = React.forwardRef <
-    React.ElementRef < typeof Primitive.Content > ,
-    React.ComponentProps < typeof Primitive.Content > & Omit<DrawerProps, "direction"> 
-    >(({
-        className,
-        fancy,
-        mixed,
-        ...props
-    }, forwardedRef) => {
-
-        const { content } = drawer()
-        const {direction, withControler} = React.useContext(DirectionContext);
-
-        if (fancy && mixed) {
-            throw new Error('The fancy and mixed props cannot be used together.');
-        } 
-
-        return (
-            <Primitive.Content {...props} ref={forwardedRef}
-                className = {content({fancy,mixed,direction,withControler,className})}
-            />
-        )
-    }
-);
-
-const Overlay = React.forwardRef<
-  React.ElementRef<typeof Primitive.Overlay>,
-  React.ComponentProps<typeof Primitive.Overlay>
-  >(({ className, ...props }, forwardedRef) => {
-    
-    const { overlay } = drawer()
-
-    return (
-      <Primitive.Overlay
-          {...props}
-          ref={forwardedRef}
-          className={overlay({ className })}
-      />
-    )
-  });
-
-const Title = React.forwardRef<
-  React.ElementRef<typeof Primitive.Title>,
-  React.ComponentProps<typeof Primitive.Title> & {
-    size?: TitleSizeProp,
-    align?: TextAlignProp,
-    weight?: TextWeightProp
-  }
->(({className, size="base", align, weight="medium", ...props}, forwardedRef) => (
-  <Primitive.Title
+const Drawer = ({
+  shouldScaleBackground = true,
+  ...props
+}: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
+  <DrawerPrimitive.Root
+    shouldScaleBackground={shouldScaleBackground}
     {...props}
-    ref={forwardedRef}
-    className={title({ size, align, weight, className })}
   />
-));
+)
+Drawer.displayName = "Drawer"
 
-const Description = React.forwardRef<
-  React.ElementRef<typeof Primitive.Description>,
-  React.ComponentProps<typeof Primitive.Description> & TextProps & {
-    size?: TextSizeProp,
-    align?: TextAlignProp,
-    weight?: TextWeightProp
-  }
->(({className, size, weight, align, neutral, ...props}, forwardedRef) => (
-  <Primitive.Description
+const DrawerTrigger = DrawerPrimitive.Trigger
+
+const DrawerPortal = DrawerPrimitive.Portal
+
+const DrawerClose = DrawerPrimitive.Close
+
+const DrawerOverlay = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Overlay
+    ref={ref}
+    className={cn("fixed inset-0 z-50 bg-black/80", className)}
     {...props}
-    ref={forwardedRef}
-    className={text({ size, weight, align, neutral, className })}
   />
-));
+))
+DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
-export default {
-    Root,
-    NestedRoot,
-    Trigger,
-    Portal,
-    Close,
-    Content,
-    Overlay,
-    Title,
-    Description,
-};
+const DrawerContent = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DrawerPortal>
+    <DrawerOverlay />
+    <DrawerPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
+        className
+      )}
+      {...props}
+    >
+      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+      {children}
+    </DrawerPrimitive.Content>
+  </DrawerPortal>
+))
+DrawerContent.displayName = "DrawerContent"
+
+const DrawerHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    {...props}
+  />
+)
+DrawerHeader.displayName = "DrawerHeader"
+
+const DrawerFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    {...props}
+  />
+)
+DrawerFooter.displayName = "DrawerFooter"
+
+const DrawerTitle = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+DrawerTitle.displayName = DrawerPrimitive.Title.displayName
+
+const DrawerDescription = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+DrawerDescription.displayName = DrawerPrimitive.Description.displayName
 
 export {
-    Root,
-    Trigger,
-    NestedRoot,
-    Portal,
-    Close,
-    Content,
-    Overlay,
-    Title,
-    Description,
-};
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+}

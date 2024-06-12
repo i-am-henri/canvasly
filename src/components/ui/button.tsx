@@ -1,78 +1,56 @@
-// Button.tsx
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-import React from "react";
-import { cloneElement } from "~/lib/utils";
-import { button, buttonIcon as icon, type ButtonProps as ButtonVariantsProps, type ButtonIconProps } from "@tailus/themer"
+import { cn } from "~/lib/utils"
 
-export type Root = typeof Root;
-export type Icon = typeof Icon;
-export type Label = typeof Label;
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HTMLAnchorElement>, ButtonVariantsProps {
-  disabled?: boolean;
-  href?: string;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-export interface IconProps extends React.HTMLAttributes<HTMLElement>, ButtonIconProps{}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
 
-export const Icon: React.FC<IconProps> = (({
-  className,
-  children,
-  size = "md",
-  type = "leading"
-}) => {
-  return (
-    <>
-      {
-        cloneElement(children as React.ReactElement, icon({size, type, className}))
-      }
-    </>
-  )
-})
-
-export const Label = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({
-  className,
-  children,
-  ...props
-}, forwardedRef) => {
-  return (
-    <span className={className} {...props} ref={forwardedRef}>{children}</span>
-  )
-})
-
-export const Root = React.forwardRef<
-  HTMLButtonElement & HTMLAnchorElement, ButtonProps
-  >((
-    {
-      className,
-      intent = "primary",
-      variant = "solid",
-      size = "md",
-      disabled,
-      href,
-      children,
-      ...props
-    }, forwardedRef) => {
-
-      const Component = href ? 'a' : 'button';
-      const iconOnly = React.Children.toArray(children).some(child => 
-          React.isValidElement(child) && child.type === Icon && child.props.type === 'only'
-      );
-      const buttonSize = iconOnly ? 'iconOnlyButtonSize' : 'size';
-
-      return (
-        <Component ref={forwardedRef} href={href} className={button[variant as keyof typeof button]({intent, [buttonSize]:size, className})} {...props} disabled={disabled}>
-          {children}
-        </Component>
-      )
-    });
-
-Root.displayName = 'Root';
-Icon.displayName = "Icon";
-Label.displayName = "Label";
-
-export default {
-  Root: Root,
-  Icon: Icon,
-  Label: Label
-}
+export { Button, buttonVariants }
