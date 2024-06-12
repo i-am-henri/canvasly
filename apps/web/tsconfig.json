@@ -29,6 +29,10 @@
       "~/*": ["./src/*"]
     }
   },
+  "paths": {
+      "@tailus-ui/*": ["/components/tailus-ui/*"],
+      "@lib/*": ["/lib/*"],
+  },
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
