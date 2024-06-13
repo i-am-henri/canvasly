@@ -1,3 +1,4 @@
+"use client"
 import * as RadixContextMenu from '@radix-ui/react-context-menu';
 import { cn } from '~/lib/utils';
 
@@ -10,23 +11,54 @@ interface ContextMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 const ContextMenuContent = ({ children, ...props }: ContextMenuProps) => {
   return (
     <RadixContextMenu.Portal>
-      <RadixContextMenu.Content className={cn(props.className, "rounded-md border p-2")} {...props} >
+      <RadixContextMenu.Content {...props} className={cn("border border-[#DBDBDB] bg-[#ffffff] text-neutral-700 min-w-[175px] rounded-md p-1", props.className)}  >
         {children}
       </RadixContextMenu.Content>
     </RadixContextMenu.Portal>
   )
 }
 
-const ContextMenuSeperator = RadixContextMenu.Separator
+const ContextMenuDivider = (props: React.HTMLAttributes<HTMLHRElement>) => {
+  return (
+    <RadixContextMenu.Separator {...props} className={cn("bg-[#DBDBDB] h-[2px] w-full rounded-full my-1", props.className)}/>
+  )
+}
 
 // Radio Group
 const ContextMenuRadioGrop = RadixContextMenu.RadioGroup
 const ContextMenuRadioGroupItem = RadixContextMenu.Item
 const ContextMenuRadioGroupItemIndicator = RadixContextMenu.ItemIndicator
 
-// Group
 const ContextMenuGroup = RadixContextMenu.Group
-const ContextMenuItem = RadixContextMenu.Item
+
+interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode,
+  shortcut?: {
+    windows: string[],
+    apple: string[]
+  }
+}
+
+const ContextMenuItem = ({children, shortcut, ...props}: ContextMenuItemProps) => {
+  const isWin = navigator.userAgent.includes("Win")
+  console.log(isWin)
+  
+  return (
+    <RadixContextMenu.Item  {...props as unknown as any} className={cn("hover:bg-[#f5f5f5] rounded-sm outline-none px-2 py-1", props.className)}>
+      {children}
+      {isWin && shortcut && (
+        <span>
+          {shortcut.windows}
+        </span>
+      ) || shortcut && (
+        <span>
+          {shortcut.apple}
+        </span>
+      )}
+      
+    </RadixContextMenu.Item>
+  )
+}
 
 const ContextMenuLabel = RadixContextMenu.Label
 
@@ -51,7 +83,7 @@ export {
 
   ContextMenuLabel,
 
-  ContextMenuSeperator,
+  ContextMenuDivider,
 
   // Group
   ContextMenuGroup,

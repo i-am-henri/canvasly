@@ -8,10 +8,11 @@ import { HoverCard, HoverCardTrigger } from "~/components/ui/hover-card";
 const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
 import { motion } from "framer-motion"
 import { MenuBar, MenuBarContent, MenuBarTrigger } from "~/components/ui/menubar";
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "~/components/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger } from "~/components/ui/context-menu";
+import { ContextMenuSubContent } from "@radix-ui/react-context-menu";
 export default function HomePage() {
   return (
-    <main className="flex flex-col  w-full items-center">
+    <main className="flex flex-col bg-white  w-full items-center">
       {/* Header */}
       <ContextMenu>
         <ContextMenuTrigger className="rounded-full mt-4 p-2 w-[700px] border border-neutral-300 flex justify-between">
@@ -22,8 +23,22 @@ export default function HomePage() {
             <Link className="text-neutral-800" href={"/login"}>login</Link>
           </nav>
         </ContextMenuTrigger>
-        <ContextMenuContent className="bg-white text-black">
-          <h2>context menu</h2>
+        <ContextMenuContent>
+          <ContextMenuItem shortcut={{
+            windows: ["Strg", "P"],
+            apple: ["Com", "P"]
+          }}>
+            hey
+          </ContextMenuItem>
+          <ContextMenuDivider />
+          <ContextMenuSubMenu>
+            <ContextMenuSubMenuTrigger>
+              new menu
+            </ContextMenuSubMenuTrigger>
+            <ContextMenuSubContent>
+              welcome
+            </ContextMenuSubContent>
+          </ContextMenuSubMenu>
         </ContextMenuContent>
       </ContextMenu>
       {/* Hero section */}
@@ -37,7 +52,7 @@ export default function HomePage() {
           <HoverCardTrigger>
             hey
           </HoverCardTrigger>
-          <HoverCardContent className="text-blue-800">
+          <HoverCardContent className="">
             sd
           </HoverCardContent>
         </HoverCard>
