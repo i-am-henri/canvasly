@@ -9,6 +9,7 @@ const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
 import { motion } from "framer-motion"
 import { MenuBar, MenuBarContent, MenuBarTrigger } from "~/components/ui/menubar";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger, ContextMenuSubMenuContent } from "~/components/ui/context-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 export default function HomePage() {
   return (
     <main className="flex flex-col bg-white  w-full items-center">
@@ -44,19 +45,18 @@ export default function HomePage() {
       </ContextMenu>
       {/* Hero section */}
       <section className="md:w-[600px] lg:w-[700px] h-[calc(100vh-40vh)] items-start flex flex-col justify-center">
-        <h2 className="text-4xl font-bold text-black">Your presentations, reimagend</h2>
+        <Tooltip>
+          <TooltipTrigger>
+            <h2 className="text-4xl font-bold text-black">Your presentations, reimagend</h2>
+          </TooltipTrigger>
+          <TooltipContent>
+            this is the h2
+          </TooltipContent>
+        </Tooltip>
         <p>We provide an online web app, to create automated slides</p>
         <Button>
           hey
         </Button>
-        <HoverCard>
-          <HoverCardTrigger>
-            hey
-          </HoverCardTrigger>
-          <HoverCardContent className="">
-            sd
-          </HoverCardContent>
-        </HoverCard>
         <MenuBar>
           <MenuBarTrigger>
             <a>hey</a>
