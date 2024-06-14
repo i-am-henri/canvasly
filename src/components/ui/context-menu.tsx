@@ -82,7 +82,7 @@ const ContextMenuSubMenuTrigger = ({children, asItem = false,...props}: ContextM
 const ContextMenuSubMenuContent = ({ children, ...props }: ContextMenuProps) => {
   return (
     <RadixContextMenu.Portal>
-      <RadixContextMenu.SubContent {...props} className={cn("rounded-md border border-[#DBDBDB] bg-white p-2", props.className)} >
+      <RadixContextMenu.SubContent {...props} className={cn("rounded-md border border-[#DBDBDB] min-w-[150px] bg-white p-2", props.className)} >
         {children}
       </RadixContextMenu.SubContent>
     </RadixContextMenu.Portal>

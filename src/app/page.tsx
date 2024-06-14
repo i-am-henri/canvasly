@@ -9,7 +9,6 @@ const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
 import { motion } from "framer-motion"
 import { MenuBar, MenuBarContent, MenuBarTrigger } from "~/components/ui/menubar";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger, ContextMenuSubMenuContent } from "~/components/ui/context-menu";
-import { ContextMenuSubContent } from "@radix-ui/react-context-menu";
 export default function HomePage() {
   return (
     <main className="flex flex-col bg-white  w-full items-center">
