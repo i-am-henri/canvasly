@@ -1,5 +1,6 @@
 "use client"
 import * as RadixContextMenu from '@radix-ui/react-context-menu';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '~/lib/utils';
 
 
@@ -36,24 +37,25 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
   shortcut?: {
     windows: string[],
     apple: string[]
-  }
+  },
 }
 
+
+/***An item in the context menu. */
 const ContextMenuItem = ({children, shortcut, ...props}: ContextMenuItemProps) => {
   const isWin = navigator.userAgent.includes("Win")
-  console.log(isWin)
   
   return (
-    <RadixContextMenu.Item  {...props as unknown as any} className={cn("hover:bg-[#f5f5f5] rounded-sm outline-none px-2 py-1", props.className)}>
+    <RadixContextMenu.Item  {...props as unknown as any} className={cn("hover:bg-[#f5f5f5] flex justify-between cursor-pointer rounded-sm outline-none px-2 py-1", props.className)}>
       {children}
       {isWin && shortcut && (
-        <span>
+        <code className='font-normal flex items-center justify-center text-[10px] '>
           {shortcut.windows}
-        </span>
+        </code>
       ) || shortcut && (
-        <span>
+        <code className='font-normal flex items-center justify-center text-[10px] '>
           {shortcut.apple}
-        </span>
+        </code>
       )}
       
     </RadixContextMenu.Item>
@@ -64,11 +66,23 @@ const ContextMenuLabel = RadixContextMenu.Label
 
 // Submenu
 const ContextMenuSubMenu = RadixContextMenu.Sub
-const ContextMenuSubMenuTrigger = RadixContextMenu.SubTrigger
+interface ContextMenuSubMenuProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode,
+  asItem?: boolean
+}
+const ContextMenuSubMenuTrigger = ({children, asItem = false,...props}: ContextMenuSubMenuProps) => {
+  return (
+    <RadixContextMenu.SubTrigger {...props} className={asItem? "hover:bg-[#f5f5f5] flex justify-between items-center cursor-pointer rounded-sm outline-none px-2 py-1": ""}>
+      {children}
+      <ChevronRight size={15} />
+    </RadixContextMenu.SubTrigger>
+  )
+}
+
 const ContextMenuSubMenuContent = ({ children, ...props }: ContextMenuProps) => {
   return (
     <RadixContextMenu.Portal>
-      <RadixContextMenu.SubContent className={cn(props.className, "rounded-md border p-2")} {...props}>
+      <RadixContextMenu.SubContent {...props} className={cn("rounded-md border border-[#DBDBDB] bg-white p-2", props.className)} >
         {children}
       </RadixContextMenu.SubContent>
     </RadixContextMenu.Portal>

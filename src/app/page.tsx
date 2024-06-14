@@ -8,7 +8,7 @@ import { HoverCard, HoverCardTrigger } from "~/components/ui/hover-card";
 const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
 import { motion } from "framer-motion"
 import { MenuBar, MenuBarContent, MenuBarTrigger } from "~/components/ui/menubar";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger } from "~/components/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger, ContextMenuSubMenuContent } from "~/components/ui/context-menu";
 import { ContextMenuSubContent } from "@radix-ui/react-context-menu";
 export default function HomePage() {
   return (
@@ -32,12 +32,14 @@ export default function HomePage() {
           </ContextMenuItem>
           <ContextMenuDivider />
           <ContextMenuSubMenu>
-            <ContextMenuSubMenuTrigger>
-              new menu
+            <ContextMenuSubMenuTrigger asItem>
+              submenu
             </ContextMenuSubMenuTrigger>
-            <ContextMenuSubContent>
-              welcome
-            </ContextMenuSubContent>
+            <ContextMenuSubMenuContent>
+              <ContextMenuItem>
+                heyyy
+              </ContextMenuItem>
+            </ContextMenuSubMenuContent>
           </ContextMenuSubMenu>
         </ContextMenuContent>
       </ContextMenu>
