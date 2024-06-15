@@ -19,7 +19,7 @@ export default function Header() {
             </nav>
             <Link href="/register">
                 <Button variant="primary">
-                    Register
+                    Get started
                 </Button>
             </Link>
         </div>
