@@ -29,7 +29,7 @@ export default function Sidebar() {
         )
     }
     return (
-        <div className="lg:w-[200px] border h-full">
+        <div className="lg:w-[200px] border-r h-full">
             {/* The org switch */}
             <div className="flex items-center justify-between mx-5">
                 <Avatar>

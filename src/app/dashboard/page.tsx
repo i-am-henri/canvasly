@@ -5,7 +5,6 @@ import Sidebar from "~/components/elements/sidebar";
 export default function Dashboard() {
     return (
         <div>
-            <Sidebar />
             <Editor />
         </div>
     )
