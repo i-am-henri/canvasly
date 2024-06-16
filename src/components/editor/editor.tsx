@@ -1,9 +1,15 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { fabric } from "fabric"
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react'
-
+import Link from 'next/link'
+import { ChevronLeft } from 'lucide-react'
+import Button from '../ui/button'
+import { ScrollArea } from '../ui/scroll-area'
+import * as Menubar from '@radix-ui/react-menubar';
 export default function Editor() {
+    const [activeSlide, setActiveSlide] = useState()
+
     const { editor, onReady, selectedObjects } = useFabricJSEditor()
 
 
@@ -18,9 +24,8 @@ export default function Editor() {
         editor?.canvas.add(text)
     }
     const addImage = () => {
-        fabric.Image.fromURL('my_image.jpg', function (oImg) {
-            editor?.canvas.add(oImg);
-        });
+        const img = new fabric.Image("./my_image.jpg")
+        editor?.canvas.add(img)
     }
     const onAddCircle = () => {
         editor?.addCircle()
@@ -30,12 +35,43 @@ export default function Editor() {
     }
 
     return (
-        <div>
-            <button onClick={onAddCircle}>Add circle</button>
-            <button onClick={onAddRectangle}>Add Rectangle</button>
-            <button onClick={() => addText({ color: "#1f9f" })}>Add Text</button>
-            <button onClick={addImage}>Add Image</button>
-            <FabricJSCanvas className="border" onReady={onReady} />
+        <div className='w-full flex flex-col'>
+            {/* The top bar */}
+            <div className="w-full flex justify-between">
+                <Link href="/dashboard">
+                    <ChevronLeft />
+                </Link>
+                {/* Div for adding new elements */}
+                <div className="flex space-x-3 mx-2">
+
+                    <Button variant='secondary' onClick={onAddCircle}>Add circle</Button>
+                    <Button variant='secondary' onClick={onAddRectangle}>Add Rectangle</Button>
+                    <Button variant='secondary' onClick={() => addText({ color: "#1f9f" })}>Add Text</Button>
+                    <Button variant='secondary' onClick={addImage}>Add Image</Button>
+                </div>
+                <div className='flex'>
+                    <Button variant='primary'> 
+                        share
+                    </Button>
+                </div>
+            </div>
+            <div className="flex">
+                {/* The small slide view */}
+                <ScrollArea className="flex flex-col">
+                    <div className="border">
+                        first slide
+                    </div>
+                    <div className="border">
+                        first slide
+                    </div>
+                </ScrollArea>
+                {/* The editor canvas */}
+                <FabricJSCanvas className="border" onReady={onReady} />
+                {/* When clicking on a element, you can configure it with this element */}
+                <div className='min-h-screen flex flex-col items-start border '>
+                    The height: 1000px
+                </div>
+            </div>
         </div>
     )
 }

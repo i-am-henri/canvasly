@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { BookTemplate, ChevronsUpDown, Contact, FileText, Files, Home, School } from "lucide-react"
 import Link from "next/link"
 import { cn } from "~/lib/utils"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 export default function Sidebar() {
     // The sidebar:
     // The sidebar has 2 styles: closed (small) and opened (big). The default style if for large devices big, and for small devices small.
@@ -12,13 +13,21 @@ export default function Sidebar() {
 
     interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
         children: React.ReactNode,
-        href: string
+        popoverName: string
+        href: string,
     }
-    const SidebarLink = ({ children, href, ...props }: LinkProps) => {
+    const SidebarLink = ({ children, href, popoverName, ...props }: LinkProps) => {
         return (
-            <Link href={href} {...props} className={cn("flex items-center font-medium hover:bg-neutral-100 px-2 py-1 rounded-sm transition", props.className)}>
-                {children}
-            </Link>
+            <Tooltip>
+                <TooltipTrigger>
+                    <Link href={href} {...props} className={cn("flex items-center font-medium hover:bg-neutral-100 px-2 py-1 rounded-sm transition", props.className)}>
+                        {children}
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    {popoverName}
+                </TooltipContent>
+            </Tooltip>
         )
     }
     const SidebarIcon = ({ children }: { children: React.ReactNode }) => {
@@ -29,12 +38,12 @@ export default function Sidebar() {
         )
     }
     return (
-        <div className="lg:w-[200px] border-r h-full">
+        <div className="lg:w-[200px] border-r h-full fixed bg-white">
             {/* The org switch */}
-            <div className="flex items-center justify-between mx-5">
-                <Avatar>
+            <div className="flex items-center justify-between mx-5 py-2">
+                <Avatar className="w-8 h-8">
                     <AvatarImage src="" />
-                    <AvatarFallback>
+                    <AvatarFallback className="text-sm">
                         HN
                     </AvatarFallback>
                 </Avatar>
@@ -46,23 +55,23 @@ export default function Sidebar() {
                 <p className="text-neutral-500 mx-2 text-sm">
                     Platform
                 </p>
-                <SidebarLink href={"/dashboard"}>
+                <SidebarLink popoverName="Home" href={"/dashboard"}>
                     <SidebarIcon><Home size={17} /></SidebarIcon>
                     Home
                 </SidebarLink>
-                <SidebarLink href={"/dashboard/template"}>
+                <SidebarLink popoverName="Templates" href={"/dashboard/template"}>
                     <SidebarIcon><BookTemplate size={17} /></SidebarIcon>
                     Templates
                 </SidebarLink>
-                <SidebarLink href={"/dashboard/members"}>
+                <SidebarLink popoverName="Teammembers" href={"/dashboard/members"}>
                     <SidebarIcon><Contact size={17} /></SidebarIcon>
                     Members
                 </SidebarLink>
-                <SidebarLink href={"/dashboard/docs"}>
+                <SidebarLink popoverName="Documents" href={"/dashboard/docs"}>
                     <SidebarIcon><FileText size={17} /></SidebarIcon>
                     Documents
                 </SidebarLink>
-                <SidebarLink href={"/dashboard/assets"}>
+                <SidebarLink popoverName="Assets" href={"/dashboard/assets"}>
                     <SidebarIcon><Files size={17} /></SidebarIcon>
                     Assets
                 </SidebarLink>
@@ -73,7 +82,7 @@ export default function Sidebar() {
                 <p className="text-neutral-500 mx-2 text-sm">
                     Projects
                 </p>
-                <SidebarLink href={"/dashboard"}>
+                <SidebarLink popoverName="The School" href={"/dashboard"}>
                     <SidebarIcon><School size={17} /></SidebarIcon>
                     The School
                 </SidebarLink>

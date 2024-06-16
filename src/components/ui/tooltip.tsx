@@ -15,7 +15,7 @@ interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const TooltipContent = ({children, ...props}: TooltipProps) => {
   return (
-    <TooltipPrimitive.Content {...props} className={cn("rounded-sm bg-[#121212c0] text-white p-2 border-b-2 box-border border-b-[#121212]", props.className)}>
+    <TooltipPrimitive.Content {...props} className={cn("rounded-sm bg-[#121212f3] text-white p-2 border-b-2 box-border border-b-[#121212]", props.className)}>
       {children}
     </TooltipPrimitive.Content>
   )
