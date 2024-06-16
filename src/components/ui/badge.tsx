@@ -26,7 +26,7 @@ const BadgeStyles = cva("badge", {
         size: {
             small: ["text-sm", "py-1", "px-2"],
             medium: ["text-base", "py-1", "px-4"],
-        },
+        }
     },
     defaultVariants: {
         variant: "primary",

@@ -15,6 +15,7 @@ import Balancer from "react-wrap-balancer";
 import Image from "next/image";
 import DashboardImage from "~/../public/dashboard.webp"
 import Badge from "~/components/ui/badge";
+import Annonce from "~/components/ui/annonce";
 export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center">
@@ -23,6 +24,9 @@ export default function HomePage() {
       {/* Hero section */}
       <section className="lg:w-[900px] xl:w-[1000px] space-y-4 2xl:w-[1100px]">
         <div className="mt-32">
+          <Annonce>
+            added a bunch of comps
+          </Annonce>
           <Balancer className="text-5xl font-medium text-black">
             The better Option to Make Slides.
           </Balancer>
