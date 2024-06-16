@@ -1,14 +1,49 @@
+import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "~/lib/utils"
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+
+const ButtonStyles = cva("badge", {
+  variants: {
+      variant: {
+          primary: [
+              "bg-gradient-to-t",
+              "text-white",
+              "from-[#3776f5]",
+              "to-[#2d73ff]",
+              "rounded-[8px]",
+              "border-[2px]",
+              "border-[#2b65d8]",
+              "px-2"
+          ],
+          secondary: [
+              "bg-gradient-to-t",
+              "text-white",
+              "from-[#4a4a4a]",
+              "to-[#363535]",
+              "rounded-[8px]",
+              "border-[2px]",
+              "border-[#616161]",
+              "px-2"
+          ],
+      },
+      size: {
+          small: ["text-sm", "py-0", "px-1"],
+          medium: ["text-base", "py-0", "px-2"],
+      }
+  },
+  defaultVariants: {
+      variant: "primary",
+      size: "medium",
+  },
+});
+
+interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement>, VariantProps<typeof ButtonStyles> {
   children: React.ReactNode,
-  /**Primary is the standart blue button, secondary the grey, danger is red and success is green */
-  variant: "primary" | "secondary" | "danger" | "success"
 }
 
-export default function Button({variant, children, ...props}: ButtonProps) {
+export default function Button({variant, children, size, ...props}: ButtonProps) {
   return (
-    <button {...props} className={cn("bg-gradient-to-t hover:bg-gradient-to-t hover:from-[#2d78df] hover:to-[#2d76ff] to-[#2d73ff] from-[#3776f5] rounded-[8px]  border-[2px] border-[#2b65d8] text-white px-2", props.className)}>
+    <button {...props} className={cn(ButtonStyles({variant, size }), props.className)}>
       {children}
     </button>
   )
