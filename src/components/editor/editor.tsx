@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
-import {fabric} from "fabric"
+import { fabric } from "fabric"
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react'
 
 export default function Editor() {
@@ -8,7 +8,7 @@ export default function Editor() {
 
 
     /**Method to add a text to the canvas. You can specify the text with the props. */
-    const addText = ({color}: {color: string}) => {
+    const addText = ({ color }: { color: string }) => {
         const text = new fabric.Text("hey", {
             fontFamily: "Calibri",
             borderColor: "#272727",
@@ -16,6 +16,11 @@ export default function Editor() {
             backgroundColor: color
         })
         editor?.canvas.add(text)
+    }
+    const addImage = () => {
+        fabric.Image.fromURL('my_image.jpg', function (oImg) {
+            editor?.canvas.add(oImg);
+        });
     }
     const onAddCircle = () => {
         editor?.addCircle()
@@ -28,7 +33,8 @@ export default function Editor() {
         <div>
             <button onClick={onAddCircle}>Add circle</button>
             <button onClick={onAddRectangle}>Add Rectangle</button>
-            <button onClick={() => addText({color: "#1f9f"})}>Add Text</button>
+            <button onClick={() => addText({ color: "#1f9f" })}>Add Text</button>
+            <button onClick={addImage}>Add Image</button>
             <FabricJSCanvas className="border" onReady={onReady} />
         </div>
     )
