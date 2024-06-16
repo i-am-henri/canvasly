@@ -29,6 +29,7 @@ export default function Editor() {
             setElement(activeElement)
         })
     })
+
     /**Method to add a text to the canvas. You can specify the text with the props. */
     const addText = ({ color }: { color: string }) => {
         const text = new fabric.Text("hey", {
@@ -87,9 +88,15 @@ export default function Editor() {
                 {/* The editor canvas */}
                 <FabricJSCanvas className="border" onReady={onReady} />
                 {/* When clicking on a element, you can configure it with this element */}
-                <div className='min-h-screen flex flex-col items-start border '>
+                <div className='min-h-screen min-w-[200px] flex flex-col items-start border '>
+                    {/* Place the information for an element */}
                     {element && (
                         <p>{element.backgroundColor}</p>
+                    )}
+                    {/* Place the slide informations */}
+                    {!element && (
+                        <>
+                        </>
                     )}
                 </div>
             </div>
