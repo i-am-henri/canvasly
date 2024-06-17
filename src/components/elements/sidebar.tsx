@@ -38,7 +38,7 @@ export default function Sidebar() {
         )
     }
     return (
-        <div className="lg:w-[200px] border-r h-full fixed bg-white">
+        <div id="sidebar" className="lg:w-[200px] border-r h-full fixed bg-white">
             {/* The org switch */}
             <div className="flex items-center justify-between mx-5 py-2">
                 <Avatar className="w-8 h-8">

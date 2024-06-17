@@ -6,7 +6,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             <div className="min-h-screen overflow-auto">
                 <Sidebar />
             </div>
-            <div className="lg:ml-[200px]">
+            <div className="ml-[200px]">
                 {children}
             </div>
         </div>

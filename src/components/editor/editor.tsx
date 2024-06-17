@@ -7,14 +7,17 @@ import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
 import { addRectangle } from "./logic/events"
-import * as Menubar from '@radix-ui/react-menubar';
-import {useStore} from "./logic/element-store"
+import { useStore } from "./logic/element-store"
+import { cn } from '~/lib/utils'
+
 export default function Editor() {
+    // The active slide
     const [activeSlide, setActiveSlide] = useState()
 
+    // the fabricjs editor
     const { editor, onReady, selectedObjects } = useFabricJSEditor()
     const { element, setElement } = useStore()
-
+    console.log(selectedObjects)
     // listen to the selection events and handling the store
     useEffect(() => {
         editor?.canvas.on("selection:created", (e) => {
@@ -48,56 +51,26 @@ export default function Editor() {
         editor?.addCircle()
         console.log(editor?.canvas.item(0))
     }
+    if (editor) {
+        editor.canvas.selection = false
+    }
     return (
-        <div className='w-full flex flex-col'>
-            {/* The top bar */}
-            <div className="w-full flex justify-between">
-                <Link href="/dashboard">
-                    <ChevronLeft />
-                </Link>
-                {/* Div for adding new elements */}
-                <div className="flex space-x-3 mx-2">
-
-                    <Button variant='secondary' onClick={onAddCircle}>Add circle</Button>
-                    <Button variant='secondary' onClick={() => addRectangle(editor, {
-                        // The background color
-                        backgroundColor: "#282828",
-                        // The default size
-                        scaleX: 100,
-                        scaleY: 100,
-                    })}>Add Rectangle</Button>
-                    <Button variant='secondary' onClick={() => addText({ color: "#1f9f" })}>Add Text</Button>
-                    <Button variant='secondary' onClick={addImage}>Add Image</Button>
-                </div>
-                <div className='flex'>
-                    <Button variant='primary'> 
-                        share
-                    </Button>
-                </div>
+        <div className="flex flex-col">
+            {/* The topbar */}
+            <div className='w-[calc(100vw-200px)] h-[50px]'>
+                hey
             </div>
-            <div className="flex">
-                {/* The small slide view */}
-                <ScrollArea className="flex flex-col">
-                    <div className="border">
-                        first slide
-                    </div>
-                    <div className="border">
-                        first slide
-                    </div>
-                </ScrollArea>
-                {/* The editor canvas */}
-                <FabricJSCanvas className="border" onReady={onReady} />
-                {/* When clicking on a element, you can configure it with this element */}
-                <div className='min-h-screen min-w-[200px] flex flex-col items-start border '>
-                    {/* Place the information for an element */}
-                    {element && (
-                        <p>{element.backgroundColor}</p>
-                    )}
-                    {/* Place the slide informations */}
-                    {!element && (
-                        <>
-                        </>
-                    )}
+            <div className='w-[calc(100vw-200px)] h-screen grid grid-cols-6'>
+                <div className="col-span-1 bg-red-500">
+                    <button onClick={() => addRectangle(editor, {
+                        backgroundColor: "#282828",
+                        scaleX: 100,
+                        scaleY: 100
+                    })}>add reactangle</button>
+                </div>
+                <FabricJSCanvas onReady={onReady} className='col-span-4 w-full h-[calc((100vh-50px)/16*9)]' />
+                <div className="bg-green-500 col-span-1">
+                    the settings
                 </div>
             </div>
         </div>
