@@ -6,11 +6,12 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
-import { addCircle, addRectangle } from "./logic/events"
+// The events
+import { addCircle, addRectangle, addText, addTextarea } from "./logic/events"
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
 import Badge from '../ui/badge'
-
+import {useKeyPress} from "~/hooks/useKey"
 export default function Editor() {
     // The active slide
     const [activeSlide, setActiveSlide] = useState()
@@ -36,6 +37,21 @@ export default function Editor() {
         })
     })
 
+    useKeyPress({
+        keyPressItems: [
+            {
+                keys: [
+                    "Backspace",
+                ],
+                event: () => {
+                    if (element) {
+                        editor?.canvas.remove(element)
+                    }
+                }
+            }
+        ]
+    })
+
     // setting settings for the canvas
     if (editor) {
         editor.canvas.selection = false
@@ -54,6 +70,9 @@ export default function Editor() {
                 <Button variant={"secondary"} onClick={() => addCircle(editor, {
                     backgroundColor: "#282828"
                 })}>add circle</Button>
+                <Button variant={"secondary"} onClick={() => addText("new text", editor, {
+                    backgroundColor: "#1f1"
+                })}>add text</Button>
             </div>
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
@@ -72,7 +91,7 @@ export default function Editor() {
                         {element && (
                             <p>
                                 <p className='text-neutral-500'>Background-Color</p>
-                                {element.backgroundColor}
+                                <p style={{backgroundColor: element.backgroundColor}}>{element.backgroundColor}</p>
                             </p>
                         )}
                         {!element && (
