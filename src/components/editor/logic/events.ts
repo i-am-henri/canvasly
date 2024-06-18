@@ -47,8 +47,22 @@ export const addTextarea = (standart: string, editor: FabricJSEditor | undefined
  */
 export const addText = (standart: string, editor: FabricJSEditor | undefined, options?: fabric.ITextOptions) => {
     const text = new fabric.Text(standart, options)
-        // add the object to the canvas
-        editor?.canvas.add(text)
-        // Focus the object in the canvas
-        editor?.canvas.setActiveObject(text)
+    // add the object to the canvas
+    editor?.canvas.add(text)
+    // Focus the object in the canvas
+    editor?.canvas.setActiveObject(text)
+}
+
+/**Add an image to the canvas.
+ * @param {string} url - the image url
+ * @param editor - the react editor
+ * @param options - options for the image editor
+ */
+export const addImage = (url: string, editor: FabricJSEditor | undefined, options?: fabric.IImageOptions) => {
+    const img = fabric.Image.fromURL(url, function(myImg) {
+        //i create an extra var for to change some image properties
+        var img1 = myImg.set({ left: 0, top: 0 , width:1920,height:1080});
+        editor?.canvas.add(img1); 
+       })
+
 }

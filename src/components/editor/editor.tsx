@@ -6,8 +6,10 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
+
 // The events
-import { addCircle, addRectangle, addText, addTextarea } from "./logic/events"
+import { addCircle, addImage, addRectangle, addText, addTextarea } from "./logic/events"
+
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
 import Badge from '../ui/badge'
@@ -37,6 +39,7 @@ export default function Editor() {
         })
     })
 
+    // checks if you press backspace and an element is selected
     useKeyPress({
         keyPressItems: [
             {
@@ -68,11 +71,16 @@ export default function Editor() {
                 })}>add rectangle</Button>
                 
                 <Button variant={"secondary"} onClick={() => addCircle(editor, {
-                    backgroundColor: "#282828"
+                    backgroundColor: "#282828",
                 })}>add circle</Button>
-                <Button variant={"secondary"} onClick={() => addText("new text", editor, {
-                    backgroundColor: "#1f1"
+                <Button variant={"secondary"} onClick={() => addTextarea("new text", editor, {
+                    backgroundColor: "#1f1",
+                    editable: true,
                 })}>add text</Button>
+                
+                <Button variant={"secondary"} onClick={() => addImage("https://cdn.pixabay.com/photo/2024/05/26/00/40/lizard-8787888_1280.jpg", editor, {
+                    backgroundColor: "#1f1",
+                })}>add image</Button>
             </div>
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
