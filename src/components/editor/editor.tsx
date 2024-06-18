@@ -6,18 +6,21 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
-import { addRectangle } from "./logic/events"
+import { addCircle, addRectangle } from "./logic/events"
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
+import Badge from '../ui/badge'
 
 export default function Editor() {
     // The active slide
     const [activeSlide, setActiveSlide] = useState()
 
-    // the fabricjs editor
-    const { editor, onReady, selectedObjects } = useFabricJSEditor()
+    // the fabricjs react editor
+    const { editor, onReady } = useFabricJSEditor()
+
+    // the current targeted element from the store
     const { element, setElement } = useStore()
-    console.log(selectedObjects)
+
     // listen to the selection events and handling the store
     useEffect(() => {
         editor?.canvas.on("selection:created", (e) => {
@@ -33,44 +36,60 @@ export default function Editor() {
         })
     })
 
-    /**Method to add a text to the canvas. You can specify the text with the props. */
-    const addText = ({ color }: { color: string }) => {
-        const text = new fabric.Text("hey", {
-            fontFamily: "Calibri",
-            borderColor: "#272727",
-            hasBorders: true,
-            backgroundColor: color
-        })
-        editor?.canvas.add(text)
-    }
-    const addImage = () => {
-        const img = new fabric.Image("./my_image.jpg")
-        editor?.canvas.add(img)
-    }
-    const onAddCircle = () => {
-        editor?.addCircle()
-        console.log(editor?.canvas.item(0))
-    }
+    // setting settings for the canvas
     if (editor) {
         editor.canvas.selection = false
     }
+
     return (
         <div className="flex flex-col">
             {/* The topbar */}
             <div className='w-[calc(100vw-200px)] h-[50px]'>
-                hey
+                <Button variant={"secondary"} onClick={() => addRectangle(editor, {
+                    backgroundColor: "#282828",
+                    scaleX: 100,
+                    scaleY: 100
+                })}>add rectangle</Button>
+                
+                <Button variant={"secondary"} onClick={() => addCircle(editor, {
+                    backgroundColor: "#282828"
+                })}>add circle</Button>
             </div>
-            <div className='w-[calc(100vw-200px)] h-screen grid grid-cols-6'>
-                <div className="col-span-1 bg-red-500">
-                    <button onClick={() => addRectangle(editor, {
-                        backgroundColor: "#282828",
-                        scaleX: 100,
-                        scaleY: 100
-                    })}>add reactangle</button>
+            <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
+                {/* The slides Preview */}
+                <div className="bg-white border h-screen col-span-1 rounded-md p-2">
                 </div>
-                <FabricJSCanvas onReady={onReady} className='col-span-4 w-full h-[calc((100vh-50px)/16*9)]' />
-                <div className="bg-green-500 col-span-1">
-                    the settings
+                {/* The canvas component */}
+                <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
+
+                {/* The setting menu on the right */}
+                <div className="bg-white border h-screen col-span-1 rounded-md">
+                    <h2 className="text-2xl px-2 pt-2">
+                        Settings
+                    </h2>
+                    <hr />
+                    <div className="px-2">
+                        {element && (
+                            <p>
+                                <p className='text-neutral-500'>Background-Color</p>
+                                {element.backgroundColor}
+                            </p>
+                        )}
+                        {!element && (
+                            <div className='flex flex-col'>
+                                {/* Speaker notes and settings for the slide */}
+                                <p className='text-neutral-500'>Speaker Notes</p>
+                                <p>no notes :/</p>
+                                <hr />
+                                <p className="neutral-500 text-sm">
+                                    status
+                                </p>
+                                <Badge variant={"secondary"}>
+                                    not ready
+                                </Badge>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
