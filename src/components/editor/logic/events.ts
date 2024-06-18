@@ -39,3 +39,16 @@ export const addTextarea = (standart: string, editor: FabricJSEditor | undefined
     // Focus the object in the canvas
     editor?.canvas.setActiveObject(box)
 }
+
+/**Add a text. This is for headlines.
+ * @param {string} standart - the default text
+ * @param editor - the react editor
+ * @param options - options to customize text
+ */
+export const addText = (standart: string, editor: FabricJSEditor | undefined, options?: fabric.ITextOptions) => {
+    const text = new fabric.Text(standart, options)
+        // add the object to the canvas
+        editor?.canvas.add(text)
+        // Focus the object in the canvas
+        editor?.canvas.setActiveObject(text)
+}
