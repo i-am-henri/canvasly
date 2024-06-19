@@ -1,5 +1,5 @@
 import { fabric } from "fabric"
-import { FabricJSEditor } from "fabricjs-react"
+import type { FabricJSEditor } from "fabricjs-react"
 type fabricjs = typeof fabric
 
 
@@ -59,7 +59,7 @@ export const addText = (standart: string, editor: FabricJSEditor | undefined, op
  * @param options - options for the image editor
  */
 export const addImage = (url: string, editor: FabricJSEditor | undefined, options?: fabric.IImageOptions) => {
-    const img = fabric.Image.fromURL(url, function(myImg) {
+    const img = fabric.Image.fromURL(url, (myImg) => {
         //i create an extra var for to change some image properties
         var img1 = myImg.set({ left: 0, top: 0 , width:1920,height:1080});
         editor?.canvas.add(img1); 

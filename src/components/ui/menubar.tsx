@@ -1,5 +1,5 @@
 import * as RadixMenuBar from "@radix-ui/react-menubar"
-import React from "react"
+import type React from "react"
 import { Scope } from "@radix-ui/react-context";
 const MenuBar = ({children}: {children: React.ReactNode, }) => (
     <RadixMenuBar.Root>
