@@ -1,4 +1,5 @@
 "use client"
+
 import React, { useEffect, useState } from 'react'
 import { fabric } from "fabric"
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react'
@@ -13,7 +14,9 @@ import { addCircle, addImage, addRectangle, addText, addTextarea } from "./logic
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
 import Badge from '../ui/badge'
-import {useKeyPress} from "~/hooks/useKey"
+import { useKeyPress } from "~/hooks/useKey"
+import TopBar from '../elements/topbar'
+
 export default function Editor() {
     // The active slide
     const [activeSlide, setActiveSlide] = useState()
@@ -62,26 +65,8 @@ export default function Editor() {
 
     return (
         <div className="flex flex-col">
-            {/* The topbar */}
-            <div className='w-[calc(100vw-200px)] h-[50px]'>
-                <Button variant={"secondary"} onClick={() => addRectangle(editor, {
-                    backgroundColor: "#282828",
-                    scaleX: 100,
-                    scaleY: 100
-                })}>add rectangle</Button>
-                
-                <Button variant={"secondary"} onClick={() => addCircle(editor, {
-                    backgroundColor: "#282828",
-                })}>add circle</Button>
-                <Button variant={"secondary"} onClick={() => addTextarea("new text", editor, {
-                    backgroundColor: "#1f1",
-                    editable: true,
-                })}>add text</Button>
-                
-                <Button variant={"secondary"} onClick={() => addImage("https://cdn.pixabay.com/photo/2024/05/26/00/40/lizard-8787888_1280.jpg", editor, {
-                    backgroundColor: "#1f1",
-                })}>add image</Button>
-            </div>
+            {/* The topbar ("Menubar") */}
+            <TopBar editor={editor} />
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
@@ -99,7 +84,7 @@ export default function Editor() {
                         {element && (
                             <p>
                                 <p className='text-neutral-500'>Background-Color</p>
-                                <p style={{backgroundColor: element.backgroundColor}}>{element.backgroundColor}</p>
+                                <p style={{ backgroundColor: element.backgroundColor }}>{element.backgroundColor}</p>
                             </p>
                         )}
                         {!element && (
