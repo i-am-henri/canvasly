@@ -14,11 +14,15 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                     </MenuBarTrigger>
                     <MenuBarContent onClick={() => {
                         addRectangle(editor, {
+                            backgroundColor: "transparent",
                             rx: 10,
                             ry: 10,
                             width: 50,
                             height: 50,
+                            selectionBackgroundColor: "#1f1fff0c",
                             hoverCursor: "pointer",
+                            // the filled color
+                            fill: "#1f1"
                         })
                     }}>
                         normal
