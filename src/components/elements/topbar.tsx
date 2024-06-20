@@ -25,6 +25,19 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                 </MenuBarMenu>
                 <MenuBarMenu>
                     <MenuBarTrigger>
+                        Text
+                    </MenuBarTrigger>
+                    <MenuBarContent>
+                        <MenuBarItem>
+                            normal
+                        </MenuBarItem>
+                        <MenuBarItem>
+                            smal
+                        </MenuBarItem>
+                    </MenuBarContent>
+                </MenuBarMenu>
+                <MenuBarMenu>
+                    <MenuBarTrigger>
                         Stickers
                     </MenuBarTrigger>
                     <MenuBarContent>
