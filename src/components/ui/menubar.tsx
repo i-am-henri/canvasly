@@ -1,5 +1,5 @@
 import * as RadixMenuBar from "@radix-ui/react-menubar"
-import { ChevronRight, LucideProps } from "lucide-react"
+import { ChevronRight, type LucideProps } from "lucide-react"
 import type React from "react"
 import { cn } from "~/lib/utils"
 
@@ -8,10 +8,10 @@ const MenuBar = ({ children }: { children: React.ReactNode, }) => (
         {children}
     </RadixMenuBar.Root>
 )
-interface MenuBarTrigger extends RadixMenuBar.MenubarTriggerProps {
+interface MenuBarTriggerProps extends RadixMenuBar.MenubarTriggerProps {
     children: React.ReactNode
 }
-const MenuBarTrigger = ({ children, ...props }: MenuBarTrigger) => {
+const MenuBarTrigger = ({ children, ...props }: MenuBarTriggerProps) => {
     return (
         <RadixMenuBar.Trigger {...props} className={cn("px-3 hover:bg-[#f5f5f5] rounded-[8px] transition py-1", props.className)}>
             {children}
