@@ -63,6 +63,7 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                                 // The Backgroundcolor when you select the element
                                 selectionBackgroundColor: "#1f1fff0c",
                                 fontFamily: "Calibri",
+                                textAlign: "center",
                                 fontSize: 24
                             })
                         }}>
