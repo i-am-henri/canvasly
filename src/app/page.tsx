@@ -1,15 +1,4 @@
 "use client"
-import { HoverCardContent } from "@radix-ui/react-hover-card";
-import { FabricJSCanvas } from "fabricjs-react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import Button from "~/components/ui/button";
-import { HoverCard, HoverCardTrigger } from "~/components/ui/hover-card";
-const App = dynamic(() => import("~/components/editor/editor"), { ssr: false })
-import { motion } from "framer-motion"
-import { MenuBar, MenuBarContent, MenuBarTrigger } from "~/components/ui/menubar";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuDivider, ContextMenuSubMenu, ContextMenuSubMenuTrigger, ContextMenuTrigger, ContextMenuSubMenuContent } from "~/components/ui/context-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import Header from "~/components/elements/header";
 import Balancer from "react-wrap-balancer";
 import Image from "next/image";
