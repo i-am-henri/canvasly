@@ -1,6 +1,6 @@
 "use client"
 
-import { FabricJSEditor } from 'fabricjs-react'
+import type {  FabricJSEditor } from 'fabricjs-react'
 import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIcon, MenuBarMenu, MenuBarSubmenu, MenuBarSubmenuContent, MenuBarSubmenuTrigger, MenuBarTrigger } from '../ui/menubar'
 
 export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
