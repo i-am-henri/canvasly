@@ -37,7 +37,7 @@ const ButtonStyles = cva("badge", {
   },
 });
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement>, VariantProps<typeof ButtonStyles> {
+interface ButtonProps extends  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, VariantProps<typeof ButtonStyles> {
   children: React.ReactNode,
 }
 
