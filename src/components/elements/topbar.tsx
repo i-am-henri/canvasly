@@ -2,6 +2,7 @@
 
 import type {  FabricJSEditor } from 'fabricjs-react'
 import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIcon, MenuBarMenu, MenuBarSubmenu, MenuBarSubmenuContent, MenuBarSubmenuTrigger, MenuBarTrigger } from '../ui/menubar'
+import { addRectangle, addText } from '../editor/logic/events'
 
 export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
     return (
@@ -11,7 +12,15 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                     <MenuBarTrigger>
                         Objects
                     </MenuBarTrigger>
-                    <MenuBarContent>
+                    <MenuBarContent onClick={() => {
+                        addRectangle(editor, {
+                            rx: 10,
+                            ry: 10,
+                            width: 50,
+                            height: 50,
+                            hoverCursor: "pointer",
+                        })
+                    }}>
                         normal
                     </MenuBarContent>
                 </MenuBarMenu>

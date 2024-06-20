@@ -60,7 +60,9 @@ export default function Editor() {
 
     // setting settings for the canvas
     if (editor) {
+        // Don't allow selections on the canvas
         editor.canvas.selection = false
+        // TODO: implement a function for not allowing to move elements outside of the canvas
     }
 
     return (

@@ -39,7 +39,7 @@ interface MenuBarItemProps extends RadixMenuBar.MenubarItemProps, React.RefAttri
 }
 const MenuBarItem = ({ children, ...props }: MenuBarItemProps) => {
     return (
-        <RadixMenuBar.Item {...props} className={cn("px-2 cursor-pointer py-1 hover:bg-[#f5f5f5] transition rounded-sm flex justify-between items-center", props.className)} style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+        <RadixMenuBar.Item {...props} className={cn("px-2 cursor-pointer outline-none py-1 hover:bg-[#f5f5f5] transition rounded-sm flex justify-between items-center", props.className)} style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
             {children}
         </RadixMenuBar.Item>
     )
