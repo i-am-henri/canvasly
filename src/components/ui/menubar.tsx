@@ -53,7 +53,7 @@ interface MenuBarKeyboardIconProps extends React.HTMLAttributes<HTMLDivElement>{
 /**Go right Icon for the trigger of a submenu */
 const MenuBarKeyboardIcon = ({ text,...props }: MenuBarKeyboardIconProps) => {
     return (
-        <div {...props} className={cn("", props.className)}>
+        <div {...props} className={cn("bg-[#e1e1e1] rounded-[4px] text-sm border-b border-b-[#d1d1d1] ring-1 ring-[#d1d1d1] px-2", props.className)}>
             {text}
         </div>
     )
