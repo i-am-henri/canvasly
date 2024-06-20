@@ -14,13 +14,16 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                     </MenuBarTrigger>
                     <MenuBarContent onClick={() => {
                         addRectangle(editor, {
+                            // the default background color
                             backgroundColor: "transparent",
+                            //border radius
                             rx: 10,
                             ry: 10,
+                            // size
                             width: 50,
                             height: 50,
+                            // The Backgroundcolor when you select the element
                             selectionBackgroundColor: "#1f1fff0c",
-                            hoverCursor: "pointer",
                             // the filled color
                             fill: "#1f1"
                         })
@@ -41,10 +44,28 @@ export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
                         Text
                     </MenuBarTrigger>
                     <MenuBarContent>
-                        <MenuBarItem>
+                        <MenuBarItem onClick={() => {
+                            addText("new text", editor, {
+                                editable: true,
+                                fill: "#1ff",
+                                // The Backgroundcolor when you select the element
+                                selectionBackgroundColor: "#1f1fff0c",
+                                fontFamily: "Calibri",
+                                fontSize: 32
+                            })
+                        }}>
                             normal
                         </MenuBarItem>
-                        <MenuBarItem>
+                        <MenuBarItem onClick={() => {
+                            addText("new text", editor, {
+                                editable: true,
+                                fill: "#1ff",
+                                // The Backgroundcolor when you select the element
+                                selectionBackgroundColor: "#1f1fff0c",
+                                fontFamily: "Calibri",
+                                fontSize: 24
+                            })
+                        }}>
                             smal
                         </MenuBarItem>
                     </MenuBarContent>
