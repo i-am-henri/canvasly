@@ -1,7 +1,7 @@
 "use server"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import {z} from "zod"
+import { z } from "zod"
 import { lucia } from "~/auth/lucia"
 import { db } from "~/server/db"
 import bcrypt from "bcrypt"
