@@ -36,11 +36,12 @@ export async function login(prevState: unknown, e: FormData): Promise<{
     const user = await db.user.findUnique({
         where: {
             email,
+            username
         },
     })
     if (!user) return {
         message: undefined,
-        error: "User not found."
+        error: "User not found. Please check your email and your username."
     }
     if (!user.emailVerified) {
         return {

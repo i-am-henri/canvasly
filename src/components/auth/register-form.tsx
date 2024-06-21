@@ -28,6 +28,10 @@ export default function RegisterForm() {
                 password: e.get("password"),
                 username: e.get("username")
             })
+            if (e.get("password") as string !== e.get("repassword") as string) {
+                setError("Passwords not matching.")
+                return
+            }
             if (!clientParse.success) {
                 setError("Validation error. Please check your email, your username and your password.")
                 return

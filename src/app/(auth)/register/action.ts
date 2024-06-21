@@ -8,7 +8,8 @@ import verify from "~/emails/verify"
 const formDataSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8).max(24),
-    repassword: z.string().min(8).max(24)
+    repassword: z.string().min(8).max(24),
+    username: z.string().min(3)
 })
 export async function register(prevState: unknown, e: FormData): Promise<{
     message?: string,
@@ -23,7 +24,8 @@ export async function register(prevState: unknown, e: FormData): Promise<{
     const parse = formDataSchema.safeParse({
         email,
         password,
-        repassword
+        repassword,
+        username
     })
 
     if (!parse.success) {
