@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     const parsedToken: string[] = atob(token).split(" ")
 
-    if (parsedToken.length !== 3) redirect("/login?verifyError=Your code was modified and can't be found.")
+    if (parsedToken.length !== 3 || parsedToken === undefined || null) redirect("/login?verifyError=Your code was modified and can't be found.")
 
     // checking if the provided token isn't modified
     const dbToken = await db.verificationToken.findUnique({
@@ -37,8 +37,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
     if (!dbToken) redirect("/login?verifyError=Your code was modified and can't be found.")
 
 
-    const date = parsedToken[0]!
+    const date = parsedToken[0]
 
+    if (!date) {
+        redirect("/login?verifyError=Your code was modified and can't be found.")
+    }
 
     const currentDate = new Date().toISOString()
 
