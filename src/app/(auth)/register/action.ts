@@ -1,7 +1,6 @@
 "use server"
 import { redirect } from "next/navigation"
 import { z } from "zod"
-import { lucia } from "~/auth/lucia"
 import { db } from "~/server/db"
 import bcrypt from "bcrypt"
 import { resend } from "~/lib/resend"
@@ -41,17 +40,24 @@ export async function register(prevState: unknown, e: FormData): Promise<{
         }
     }
 
-    // checks if the user is already with this email registered
+    // checks if the user is already with this email or username registered
     const user = await db.user.findFirst({
         where: {
-            email
-        }
+            OR: [
+                {
+                    email
+                },
+                {
+                    username
+                }
+            ]
+        },
     })
 
     if (user) {
         return {
             message: undefined,
-            error: "User already registered."
+            error: "User already registered with this email or username."
         }
     }
 
