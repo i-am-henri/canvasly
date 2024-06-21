@@ -4,7 +4,6 @@ import Link from "next/link";
 import { lucia } from "~/auth/lucia";
 import RegisterForm from "~/components/auth/register-form";
 import Header from "~/components/elements/header";
-import Button from "~/components/ui/button";
 
 export default async function Register({
     params,
@@ -17,7 +16,6 @@ export default async function Register({
     let session: Session | null = null
     if (sessionCookie) {
         const sessionId = lucia.readSessionCookie(sessionCookie);
-
         const data = await lucia.validateSession(sessionId || "");
         session = data.session
     }
