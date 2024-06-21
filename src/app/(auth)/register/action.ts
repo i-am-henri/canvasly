@@ -98,9 +98,9 @@ export async function register(prevState: unknown, e: FormData): Promise<{
     const token = btoa(`${verification.expires} ${verification.mail} ${verification.token}`)
 
     const { data, error } = await resend.emails.send({
-        from: 'Booster <booster@henri.gg>',
+        from: 'canvasly <canvasly@henri.gg>',
         to: [email],
-        subject: 'Booster | verify your email',
+        subject: 'canvasly | verify your email',
         react: verify({ code: token }),
     });
 
