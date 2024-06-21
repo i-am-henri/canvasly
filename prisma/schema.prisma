@@ -15,14 +15,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   username      String
-  email         String    @unique
+  email         String       @unique
   password      String
   emailVerified DateTime?
   image         String?
   sessions      Session[]
-  createdAt     DateTime  @default(now())
+  teams         TeamMember[]
+  createdAt     DateTime     @default(now())
+  Team          Team[]
 }
 
 model VerificationToken {
@@ -38,4 +40,28 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Team {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  creatorId Int
+  creator   User         @relation(fields: [creatorId], references: [id])
+  members   TeamMember[]
+}
+
+model TeamMember {
+  id     String @id @default(cuid())
+  userId Int
+  teamId Int
+  role   Role   @default(USER)
+  user   User   @relation(fields: [userId], references: [id])
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+enum Role {
+  USER
+  CREATOR
 }
