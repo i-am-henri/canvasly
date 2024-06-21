@@ -24,7 +24,7 @@ model User {
   sessions      Session[]
   teams         TeamMember[]
   createdAt     DateTime     @default(now())
-  Team          Team[]
+  creator       Team[]
 }
 
 model VerificationToken {
@@ -45,15 +45,15 @@ model Session {
 model Team {
   id        String       @id @default(cuid())
   name      String       @unique
-  creatorId Int
+  creatorId String  @unique
   creator   User         @relation(fields: [creatorId], references: [id])
   members   TeamMember[]
 }
 
 model TeamMember {
   id     String @id @default(cuid())
-  userId Int
-  teamId Int
+  userId String  @unique
+  teamId String  @unique
   role   Role   @default(USER)
   user   User   @relation(fields: [userId], references: [id])
   team   Team   @relation(fields: [teamId], references: [id])
