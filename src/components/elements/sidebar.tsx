@@ -30,6 +30,7 @@ export default function Sidebar() {
             </Tooltip>
         )
     }
+
     const SidebarIcon = ({ children }: { children: React.ReactNode }) => {
         return (
             <div className="mr-2">
@@ -37,6 +38,20 @@ export default function Sidebar() {
             </div>
         )
     }
+
+    // Fetching the user
+    const { isPending, error, data } = useQuery({
+        queryKey: ['repoData'],
+        queryFn: () =>
+          fetch('https://api.github.com/repos/TanStack/query').then((res) =>
+            res.json(),
+          ),
+      })
+    
+      if (isPending) return 'Loading...'
+    
+      if (error) return 'An error has occurred: ' + error.message
+    
     return (
         <div id="sidebar" className="lg:w-[200px] border-r h-full fixed bg-white">
             {/* The org switch */}

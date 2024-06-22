@@ -60,8 +60,8 @@ model TeamMember {
 
   @@unique([userId, teamId])
 }
-
+// The team role
 enum Role {
   USER
-  CREATOR
+  ADMIN
 }

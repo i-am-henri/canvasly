@@ -8,8 +8,6 @@ import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
 
-// The events
-import { addCircle, addImage, addRectangle, addText, addTextarea } from "./logic/events"
 
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
