@@ -22,19 +22,18 @@ export default function NewForm() {
         <form action={(e: FormData) => {
             setError(undefined)
             const clientParse = formDataSchema.safeParse({
-                name: e.get("name"),
-                description: e.get("description"),
-                icon: e.get("icon")
+                name: e.get("name") as string,
+                description: e.get("description") as string,
             })
             if (!clientParse.success) {
-                setError("Validation error. Please check your email, your username and your password.")
+                setError("Validation error. Please check the provided inputs.")
                 return
             }
             formAction(e)
         }} className=" flex flex-col justify-center  space-y-2 lg:w-[400px]">
             <h2 className="font-medium text-xl">Create a new team</h2>
             <input className="border-b border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none" minLength={3} placeholder="Teamname" type="text" name="name" />
-            <textarea placeholder="Description" maxLength={350}  className="border-b min-h-[100px] border-b-[#DBDBDB] field-sizing-content  ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none " />
+            <textarea placeholder="Description" name="description" maxLength={350}  className="border-b min-h-[100px] border-b-[#DBDBDB] field-sizing-content  ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none " />
             {state.error && (
                 <p className="text-red-300">
                     {state?.error}
