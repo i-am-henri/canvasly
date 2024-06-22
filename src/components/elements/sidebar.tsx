@@ -9,15 +9,12 @@ import { useQuery } from "@tanstack/react-query"
 import useLocalStorage from "~/hooks/useLocalStorage"
 import { db } from "~/server/db"
 export default function Sidebar() {
-    
+
     // The sidebar:
     // The sidebar has 2 styles: closed (small) and opened (big). The default style if for large devices big, and for small devices small.
     // When you change the style, it will be saved in the localstorage
-    const storage = useLocalStorage()
-    // getting the initial state from the local storage
-    const initialStyle = storage.getStorageValue("sidebar")
 
-    const [styles, setStyle] = useState<"opened" | "closed">(initialStyle[0] as "opened" | "closed" || "opened")
+    const [styles, setStyle] = useState<"opened" | "closed">("opened")
 
     interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
         children: React.ReactNode,
