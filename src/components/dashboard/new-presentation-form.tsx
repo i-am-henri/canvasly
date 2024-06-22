@@ -9,7 +9,7 @@ export const initialState = {
     message: undefined,
     error: undefined
 }
-export default function NewForm() {
+export default function NewPresentationForm({name}: {name: string | string[] | undefined}) {
     const [error, setError] = useState<string | undefined>(undefined)
     const [state, formAction] = useFormState(createTeam, initialState)
     const formDataSchema = z.object({
