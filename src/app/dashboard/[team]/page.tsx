@@ -1,4 +1,6 @@
+import { Plus } from "lucide-react"
 import { cookies } from "next/headers"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { checkRequest } from "~/lib/checkRequest"
 import { db } from "~/server/db"
@@ -14,7 +16,6 @@ export default async function TeamSpace({
         team: string
     }
 }) {
-    console.log("reading...")
     const session = await checkRequest()
 
     const user = await db.user.findUnique({
@@ -37,23 +38,44 @@ export default async function TeamSpace({
             teamId: team?.id
         }
     })
+    // TODO: handle error when no team is defined
+    if (!team) redirect("/dashboard")
+        if (!user) {
+            cookies().delete("")
+            redirect("/login")
+        }
     if (!teamMember) {
-        console.log("no access")
         // user has no access
         redirect("/dashboard")
     }
 
+    const presentations = await db.presentation.findMany({
+        where: {
+            teamId: team.id
+        }
+    })
 
 
-    // TODO: handle error when no team is defined
-    if (!team) redirect("/dashboard")
-    if (!user) {
-        cookies().delete("")
-        redirect("/login")
-    }
+
+    
     return (
         <div>
-            <h2>Welcome back, {user.username}</h2>
+            <h2 className="text-xl font-medium">Welcome back, {user.username} {teamMember.role === "USER"? "to the team": "to your team"} {team.name}.</h2>
+            <div>
+                <div className="flex">
+                    
+                <h2 className="text-lg font-medium">The presentations</h2>
+                <Link href={`/dashboard/${params.team}/new-presentation?team=${team.name}`}>
+                
+                <Plus size={20}/>
+                </Link>
+                </div>
+                {presentations.map((slide) => (
+                    <div key={slide.id}>
+                        {slide.name}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
