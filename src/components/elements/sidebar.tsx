@@ -5,6 +5,8 @@ import { BookTemplate, ChevronsUpDown, Contact, FileText, Files, Home, School } 
 import Link from "next/link"
 import { cn } from "~/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
+import { useQuery } from "@tanstack/react-query"
+import { db } from "~/server/db"
 export default function Sidebar() {
     // The sidebar:
     // The sidebar has 2 styles: closed (small) and opened (big). The default style if for large devices big, and for small devices small.
@@ -38,19 +40,6 @@ export default function Sidebar() {
             </div>
         )
     }
-
-    // Fetching the user
-    const { isPending, error, data } = useQuery({
-        queryKey: ['repoData'],
-        queryFn: () =>
-          fetch('https://api.github.com/repos/TanStack/query').then((res) =>
-            res.json(),
-          ),
-      })
-    
-      if (isPending) return 'Loading...'
-    
-      if (error) return 'An error has occurred: ' + error.message
     
     return (
         <div id="sidebar" className="lg:w-[200px] border-r h-full fixed bg-white">

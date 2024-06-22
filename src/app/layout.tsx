@@ -1,10 +1,10 @@
 import "~/styles/globals.css";
-
 import { GeistSans } from "geist/font/sans";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { Toaster } from "sonner";
 import { Provider as ReactWrapBalancerProvider } from 'react-wrap-balancer'
 import { Inter } from 'next/font/google'
+import QueryClientProviderComponent from "~/components/providers/query-client"
 const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: "canvasly",
@@ -20,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="w-full">
-        <ReactWrapBalancerProvider>
-          <Toaster />
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
-        </ReactWrapBalancerProvider>
+        <QueryClientProviderComponent>
+          <ReactWrapBalancerProvider>
+            <Toaster />
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </ReactWrapBalancerProvider>
+        </QueryClientProviderComponent>
       </body>
     </html>
   );
