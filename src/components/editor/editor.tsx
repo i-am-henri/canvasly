@@ -1,6 +1,6 @@
 "use client"
 
-import React, { act, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { fabric } from "fabric"
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
@@ -16,6 +16,7 @@ import { useKeyPress } from "~/hooks/useKey"
 import TopBar from '../elements/topbar'
 import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
+import type { Object as FabricObject } from 'fabric/fabric-impl'
 
 export default function Editor({
     teamId,
@@ -30,6 +31,14 @@ export default function Editor({
 
     const { setContent, content } = useContent()
 
+    if (content.length === 0) {
+        setContent([
+            {
+                version: "5.3.0",
+                objects: []
+            }
+        ])
+    }
 
 
     // The active slide (0 is the initial state, so the first slide)
@@ -42,14 +51,7 @@ export default function Editor({
     // the current targeted element from the store
     const { element, setElement } = useStore()
 
-    useEffect(() => {
-        console.log(activeSlide)
-        editor?.canvas.clear()
-        // The selected element should be now undefined
-        setElement(undefined)
-        // load the new json
-        editor?.canvas.loadFromJSON(content[activeSlide], editor?.canvas.renderAll.bind(editor?.canvas))
-    }, [activeSlide])
+
     // listen to the selection events and handling the store
     useEffect(() => {
         editor?.canvas.on("selection:created", (e) => {
@@ -85,6 +87,15 @@ export default function Editor({
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
+
+
+
+
+
+
+
+
+
     /**Function to handle the creation of a new slide. */
     function handleNewSlide() {
         // create the new slide
@@ -95,19 +106,97 @@ export default function Editor({
                 objects: []
             }
         ])
-        setActiveSlide(content.length)
-
-
+        setActiveSlide((e) => e + 1)
+        editor?.canvas.clear()
+        // The selected element should be now undefined
+        setElement(undefined)
     }
-    useEffect(() => {
+    function replaceFirst(array: { version: string; objects: FabricObject[]; }[], change: { version: string; objects: FabricObject[]; }, index: number,): { version: string; objects: FabricObject[]; }[] {
+        const copiedArray = array
+        if (index !== -1) {
+            copiedArray[index] = change
+        }
+        return copiedArray;
+    }
+
+    if (editor) {
         editor?.canvas.on("object:added", () => {
-            const localarr = content
-            localarr[activeSlide] = editor?.canvas.toJSON()
-            setContent(localarr)
-            console.log(activeSlide)
-            console.log(localarr)
+            console.log("added object")
+            content[activeSlide] = editor.canvas.toJSON()
         })
-    })
+    }
+
+    function handleSlideClick(index: number) {
+        setActiveSlide(index)
+
+        editor?.canvas.clear()
+        editor?.canvas.clearContext(editor?.canvas.getContext())
+        // The selected element should be now undefined
+        setElement(undefined)
+
+        if (editor) {
+            console.log(activeSlide)
+            editor?.canvas.loadFromJSON(activeSlide === 0 ? {
+                version: "5.3.0",
+                objects: []
+            } : {
+                version: "5.3.0",
+                objects: [
+                    {
+                        "type": "i-text",
+                        "version": "5.3.0",
+                        "originX": "left",
+                        "originY": "top",
+                        "left": 0,
+                        "top": 0,
+                        "width": 84.88,
+                        "height": 27.12,
+                        "fill": "#1ff",
+                        "stroke": null,
+                        "strokeWidth": 1,
+                        "strokeDashArray": null,
+                        "strokeLineCap": "butt",
+                        "strokeDashOffset": 0,
+                        "strokeLineJoin": "miter",
+                        "strokeUniform": false,
+                        "strokeMiterLimit": 4,
+                        "scaleX": 1,
+                        "scaleY": 1,
+                        "angle": 0,
+                        "flipX": false,
+                        "flipY": false,
+                        "opacity": 1,
+                        "shadow": null,
+                        "visible": true,
+                        "backgroundColor": "",
+                        "fillRule": "nonzero",
+                        "paintFirst": "fill",
+                        "globalCompositeOperation": "source-over",
+                        "skewX": 0,
+                        "skewY": 0,
+                        "fontFamily": "Calibri",
+                        "fontWeight": "normal",
+                        "fontSize": 24,
+                        "text": "new text",
+                        "underline": false,
+                        "overline": false,
+                        "linethrough": false,
+                        "textAlign": "center",
+                        "fontStyle": "normal",
+                        "lineHeight": 1.16,
+                        "textBackgroundColor": "",
+                        "charSpacing": 0,
+                        "styles": [],
+                        "direction": "ltr",
+                        "path": null,
+                        "pathStartOffset": 0,
+                        "pathSide": "left",
+                        "pathAlign": "baseline"
+                    }
+                ]
+            }, editor?.canvas.renderAll.bind(editor?.canvas))
+        }
+    }
 
     return (
         <div className="flex flex-col">
@@ -123,7 +212,7 @@ export default function Editor({
                         new slide
                     </Button>
                     {content?.map((s, index) => (
-                        <div className="" onClick={() => setActiveSlide(index)} onKeyUp={() => setActiveSlide(index)} data-index={index} key={index.toString()}>
+                        <div className="" onClick={() => handleSlideClick(index)} onKeyUp={() => handleSlideClick(index)} data-index={index} key={index.toString()}>
                             slide
                         </div>
                     ))}
