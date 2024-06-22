@@ -5,11 +5,12 @@ import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIc
 import { addRectangle, addText } from '../editor/logic/events'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
+import Button from '../ui/button'
 
 export default function TopBar({editor, teamId}: {editor: FabricJSEditor | undefined, teamId: string}) {
     return (
         <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-between'>
-            <Link href={`/dashboard/${teamId}`}>
+            <Link href={`/dashboard/${teamId}`} className='ml-5'>
                 <ChevronLeft size={20} />
             </Link>
             <MenuBar>
@@ -102,6 +103,9 @@ export default function TopBar({editor, teamId}: {editor: FabricJSEditor | undef
                     </MenuBarContent>
                 </MenuBarMenu>
             </MenuBar>
+            <Button className='mr-5'>
+                share
+            </Button>
         </div>
     )
 }

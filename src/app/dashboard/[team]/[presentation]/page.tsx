@@ -51,7 +51,7 @@ export default async function Presentation({
     if (!presentation) redirect(`/dashboard/${team.id}`)
     return (
         <div>
-            <Editor teamId={team.id} />
+            <Editor slides={presentation.slides} teamId={team.id} />
             {presentation?.name}
         </div>
     )

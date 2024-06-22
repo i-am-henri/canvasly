@@ -14,11 +14,16 @@ import { cn } from '~/lib/utils'
 import Badge from '../ui/badge'
 import { useKeyPress } from "~/hooks/useKey"
 import TopBar from '../elements/topbar'
+import type { Prisma } from '@prisma/client'
 
 export default function Editor({
-    teamId
+    teamId,
+    slides
 }: {
     teamId: string,
+    // The presentation as Json
+    // Each slide represent one entry in this array
+    slides: Prisma.JsonValue[]
     
 }) {
     // The active slide
@@ -71,7 +76,7 @@ export default function Editor({
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
-            <TopBar editor={editor} teamId='' />
+            <TopBar editor={editor} teamId={teamId} />
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
