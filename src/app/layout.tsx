@@ -1,5 +1,4 @@
 import "~/styles/globals.css";
-import { GeistSans } from "geist/font/sans";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { Toaster } from "sonner";
 import { Provider as ReactWrapBalancerProvider } from 'react-wrap-balancer'

@@ -2,9 +2,10 @@ import type { Session } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {  NextResponse } from "next/server";
-import { lucia } from "~/auth/lucia";
-
-export default async function Middleware() {
+import { lucia } from "./auth/lucia";
+export const runtime = "nodejs"
+export async function middleware() {
+    console.log("middleware")
     const sessionCookie = cookies().get("Set-Cookie")?.value
     let session: Session | null = null
     if (sessionCookie) {
@@ -19,5 +20,8 @@ export default async function Middleware() {
     return NextResponse.next()
 }
 export const config = {
-    matcher: '/dashboard/:path*',
+    matcher: [
+        '/dashboard/:path*',
+        "/dashboard"
+    ]
 }
