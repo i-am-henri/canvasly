@@ -4,7 +4,7 @@ import type { Session } from "lucia";
 import { cookies } from "next/headers";
 
 /**Validate the request and if there's no user, redirect to the login page. */
-export const validateProtected = async () => {
+export const checkRequest = async () => {
     const sessionCookie = cookies().get("Set-Cookie")?.value
     let session: Session | null = null
     if (sessionCookie) {
