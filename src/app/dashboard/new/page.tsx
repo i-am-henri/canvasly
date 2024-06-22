@@ -1,3 +1,4 @@
+import NewForm from "~/components/dashboard/new-form"
 import Header from "~/components/elements/header"
 import { checkRequest } from "~/lib/checkRequest"
 import { db } from "~/server/db"
@@ -19,8 +20,8 @@ export default async function New() {
         )
     }
     return (
-        <div className="min-h-screen">
-            
+        <div className="min-h-screen flex items-center justify-center w-[calc(100vw-240px)]">
+            <NewForm />
         </div>
     )
 }
