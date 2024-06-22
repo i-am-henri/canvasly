@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { act, useEffect, useState } from 'react'
 import { fabric } from "fabric"
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
@@ -31,16 +31,10 @@ export default function Editor({
     const { setContent, content } = useContent()
 
 
-    
+
     // The active slide (0 is the initial state, so the first slide)
-    const [activeSlide, setActiveSlide] = useState(3)
+    const [activeSlide, setActiveSlide] = useState(0)
     // clearing the canvas when switching from the slides
-    // biome-ignore lint/correctness/useExhaustiveDependencies(activeSlide): don't now yet how to fix it 
-    useEffect(() => {
-        editor?.canvas.clear()
-        // The selected element should be now undefined
-        setElement(undefined)
-    }, [activeSlide])
 
     // the fabricjs react editor
     const { editor, onReady } = useFabricJSEditor()
@@ -48,6 +42,14 @@ export default function Editor({
     // the current targeted element from the store
     const { element, setElement } = useStore()
 
+    useEffect(() => {
+        console.log(activeSlide)
+        editor?.canvas.clear()
+        // The selected element should be now undefined
+        setElement(undefined)
+        // load the new json
+        editor?.canvas.loadFromJSON(content[activeSlide], editor?.canvas.renderAll.bind(editor?.canvas))
+    }, [activeSlide])
     // listen to the selection events and handling the store
     useEffect(() => {
         editor?.canvas.on("selection:created", (e) => {
@@ -97,6 +99,15 @@ export default function Editor({
 
 
     }
+    useEffect(() => {
+        editor?.canvas.on("object:added", () => {
+            const localarr = content
+            localarr[activeSlide] = editor?.canvas.toJSON()
+            setContent(localarr)
+            console.log(activeSlide)
+            console.log(localarr)
+        })
+    })
 
     return (
         <div className="flex flex-col">
@@ -112,7 +123,7 @@ export default function Editor({
                         new slide
                     </Button>
                     {content?.map((s, index) => (
-                        <div className=""  data-index={index} key={index.toString()}>
+                        <div className="" onClick={() => setActiveSlide(index)} onKeyUp={() => setActiveSlide(index)} data-index={index} key={index.toString()}>
                             slide
                         </div>
                     ))}
