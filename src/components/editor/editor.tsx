@@ -34,10 +34,12 @@ export default function Editor({
     
     // The active slide (0 is the initial state, so the first slide)
     const [activeSlide, setActiveSlide] = useState(3)
-
+    // clearing the canvas when switching from the slides
+    // biome-ignore lint/correctness/useExhaustiveDependencies(activeSlide): don't now yet how to fix it 
     useEffect(() => {
         editor?.canvas.clear()
-        
+        // The selected element should be now undefined
+        setElement(undefined)
     }, [activeSlide])
 
     // the fabricjs react editor
@@ -60,16 +62,6 @@ export default function Editor({
             setElement(activeElement)
         })
     })
-    // update the content every 3 seconds
-    // useEffect(() => {
-    //     const timeout = setTimeout(() => {
-    //         setContent(editor?.canvas.toJSON())
-    //     }, 3000)
-    //     return () => {
-    //         clearTimeout(timeout);
-    //     };
-    // })
-    // checks if you press backspace and an element is selected
     useKeyPress({
         keyPressItems: [
             {
