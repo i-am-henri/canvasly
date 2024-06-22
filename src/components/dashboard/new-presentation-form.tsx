@@ -29,11 +29,11 @@ export default function NewPresentationForm({name, teamId}: {name: string | stri
                 return
             }
             formAction(e)
-        }} className=" flex flex-col justify-center  space-y-2 lg:w-[00px]">
+        }} className=" flex flex-col justify-center  space-y-2 lg:w-[500px]">
             <h2 className="font-medium text-xl">Create a new presentation {name && `for the team ${name}`}</h2>
             <input className="border-b border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none" minLength={3} placeholder="Presentation Name" type="text" name="name" />
             <textarea placeholder="Description" name="description" maxLength={350}  className="border-b min-h-[100px] border-b-[#DBDBDB] field-sizing-content  ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none " />
-            <input type="text" name="id" id="" className="hidden" value={teamId} />
+            <input type="text" name="team" id="" className="hidden" value={teamId} />
             {state.error && (
                 <p className="text-red-300">
                     {state?.error}
