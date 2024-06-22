@@ -4,14 +4,14 @@ import Button from "../ui/button"
 import { useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { z } from "zod"
-import { createTeam } from "~/app/dashboard/new/action"
+import { createPresentation } from "~/app/dashboard/[team]/new-presentation/action"
 export const initialState = {
     message: undefined,
     error: undefined
 }
-export default function NewPresentationForm({name}: {name: string | string[] | undefined}) {
+export default function NewPresentationForm({name, teamId}: {name: string | string[] | undefined, teamId: string}) {
     const [error, setError] = useState<string | undefined>(undefined)
-    const [state, formAction] = useFormState(createTeam, initialState)
+    const [state, formAction] = useFormState(createPresentation, initialState)
     const formDataSchema = z.object({
         name: z.string().min(3),
         description: z.string().max(350).optional(),
@@ -29,10 +29,11 @@ export default function NewPresentationForm({name}: {name: string | string[] | u
                 return
             }
             formAction(e)
-        }} className=" flex flex-col justify-center  space-y-2 lg:w-[400px]">
-            <h2 className="font-medium text-xl">Create a new presentation</h2>
-            <input className="border-b border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none" minLength={3} placeholder="Teamname" type="text" name="name" />
+        }} className=" flex flex-col justify-center  space-y-2 lg:w-[00px]">
+            <h2 className="font-medium text-xl">Create a new presentation {name && `for the team ${name}`}</h2>
+            <input className="border-b border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none" minLength={3} placeholder="Presentation Name" type="text" name="name" />
             <textarea placeholder="Description" name="description" maxLength={350}  className="border-b min-h-[100px] border-b-[#DBDBDB] field-sizing-content  ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none " />
+            <input type="text" name="id" id="" className="hidden" value={teamId} />
             {state.error && (
                 <p className="text-red-300">
                     {state?.error}

@@ -11,13 +11,14 @@ const formDataSchema = z.object({
     description: z.string().email(),
 })
 
-export async function login(prevState: unknown, e: FormData): Promise<{
+export async function createPresentation(prevState: unknown, e: FormData): Promise<{
     message?: string,
     error?: string
 }> {
     const name = e.get("name") as string
     const description = e.get("description") as string
-
+    const teamId = e.get("token") as string
+    console.log(teamId)
     const parse = formDataSchema.safeParse({
         name, 
         description
@@ -29,7 +30,14 @@ export async function login(prevState: unknown, e: FormData): Promise<{
             message: undefined
         }
     }
+    // const presentation = await db.presentation.create({
+    //     data: {
+    //         name,
+    //         description,
+    //         teamId
+    //     }
+    // })
 
-    
+    redirect("/dashboard/")
 
 }
