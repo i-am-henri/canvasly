@@ -15,7 +15,6 @@ export default function NewForm() {
     const formDataSchema = z.object({
         name: z.string().min(3),
         description: z.string().max(350).optional(),
-        icon: z.string().optional()
     })
     const { pending, data, method, action } = useFormStatus()
     return (

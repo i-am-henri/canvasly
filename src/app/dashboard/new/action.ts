@@ -10,7 +10,6 @@ import { checkRequest } from "~/lib/checkRequest"
 const formDataSchema = z.object({
     name: z.string().min(3),
     description: z.string().max(350).optional(),
-    icon: z.string().optional()
 })
 
 export async function createTeam(prevState: unknown, e: FormData): Promise<{
@@ -20,13 +19,11 @@ export async function createTeam(prevState: unknown, e: FormData): Promise<{
     
     const name = e.get("name") as string
     const description = e.get("description") as string
-    const icon = e.get("icon") as string
 
     const {userId} =  await checkRequest()
     const parse = formDataSchema.safeParse({
         name, 
-        description,
-        icon
+        description
     })
     if (!parse.success) {
         return {
