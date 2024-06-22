@@ -43,12 +43,13 @@ model Session {
 }
 
 model Team {
-  id        String       @id @default(cuid())
-  name      String       @unique
-  creatorId String       @unique
-  creator   User         @relation(fields: [creatorId], references: [id])
-  members   TeamMember[]
-  documents Document[]
+  id           String        @id @default(cuid())
+  name         String        @unique
+  creatorId    String        @unique
+  creator      User          @relation(fields: [creatorId], references: [id])
+  members      TeamMember[]
+  documents    Document[]
+  Presentation Presentation?
 }
 
 model TeamMember {
@@ -64,13 +65,30 @@ model TeamMember {
   @@unique([userId, teamId])
 }
 
+// A single document
 model Document {
-  id      String       @id @default(cuid())
-  editors TeamMember[]
-  team    Team         @relation(fields: [teamId], references: [id])
-  teamId  String       @unique
-  content String
-  createdAt DateTime @default(now())
+  id        String       @id @default(cuid())
+  editors   TeamMember[]
+  team      Team         @relation(fields: [teamId], references: [id])
+  teamId    String       @unique
+  content   String
+  createdAt DateTime     @default(now())
+}
+
+model Presentation {
+  id     String  @id @default(cuid())
+  team   Team    @relation(fields: [teamId], references: [id])
+  teamId String  @unique
+  slides Slide[]
+}
+
+model Slide {
+  id             String       @id @default(cuid())
+  // The position of the slide (e.g. 0, 1, 2, 3, ...)
+  position        Int @default(0)
+
+  presentation   Presentation @relation(fields: [presentationId], references: [id])
+  presentationId String       @unique
 }
 
 // The team role
