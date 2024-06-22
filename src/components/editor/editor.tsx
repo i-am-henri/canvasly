@@ -55,14 +55,14 @@ export default function Editor({
         })
     })
     // update the content every 3 seconds
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setContent(editor?.canvas.toJSON())
-        }, 3000)
-        return () => {
-            clearTimeout(timeout);
-        };
-    })
+    // useEffect(() => {
+    //     const timeout = setTimeout(() => {
+    //         setContent(editor?.canvas.toJSON())
+    //     }, 3000)
+    //     return () => {
+    //         clearTimeout(timeout);
+    //     };
+    // })
     // checks if you press backspace and an element is selected
     useKeyPress({
         keyPressItems: [
