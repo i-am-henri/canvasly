@@ -27,12 +27,18 @@ export default function Editor({
     slides: Prisma.JsonValue[]
 
 }) {
-    const { setContent } = useContent()
+
+    const { setContent, content } = useContent()
 
 
     
     // The active slide (0 is the initial state, so the first slide)
-    const [activeSlide, setActiveSlide] = useState(0)
+    const [activeSlide, setActiveSlide] = useState(3)
+
+    useEffect(() => {
+        editor?.canvas.clear()
+        
+    }, [activeSlide])
 
     // the fabricjs react editor
     const { editor, onReady } = useFabricJSEditor()
@@ -85,6 +91,20 @@ export default function Editor({
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
+    /**Function to handle the creation of a new slide. */
+    function handleNewSlide() {
+        // create the new slide
+        setContent([
+            ...content,
+            {
+                version: "5.3.0",
+                objects: []
+            }
+        ])
+        setActiveSlide(content.length)
+
+
+    }
 
     return (
         <div className="flex flex-col">
@@ -93,13 +113,17 @@ export default function Editor({
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
-                    {
-                        slides.map((slide, index) => (
-                            <div key={slide?.toString()}>
-                                hey
-                            </div>
-                        ))
-                    }
+                    <Button onClick={() => {
+                        handleNewSlide()
+                        console.log(content)
+                    }}>
+                        new slide
+                    </Button>
+                    {content?.map((s, index) => (
+                        <div className=""  data-index={index} key={index.toString()}>
+                            slide
+                        </div>
+                    ))}
                 </div>
                 {/* The canvas component */}
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />

@@ -2,10 +2,9 @@ import type { Prisma } from "@prisma/client"
 // biome-ignore lint: donÄt work otherwise
 import { Object } from "fabric/fabric-impl";
 import { create } from "zustand"
-import { update } from "./action";
 
 type state = {
-    content: { version: string; objects: Object[]; } | undefined,
+    content: { version: string; objects: Object[]; }[],
 }
 type action = {
     setContent: (state: state["content"]) => void 
@@ -15,9 +14,8 @@ type action = {
 
 /**The content for the slides. */
 export const useContent = create<state & action>((set) => ({
-    content: undefined,
+    content: [],
     setContent: async (content) => {
         set(() => ({ content: content }))
-        await update(content)
     },
 }))
