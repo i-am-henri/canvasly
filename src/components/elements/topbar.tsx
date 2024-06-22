@@ -3,10 +3,15 @@
 import type {  FabricJSEditor } from 'fabricjs-react'
 import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIcon, MenuBarMenu, MenuBarSubmenu, MenuBarSubmenuContent, MenuBarSubmenuTrigger, MenuBarTrigger } from '../ui/menubar'
 import { addRectangle, addText } from '../editor/logic/events'
+import Link from 'next/link'
+import { ChevronLeft } from 'lucide-react'
 
-export default function TopBar({editor}: {editor: FabricJSEditor | undefined}) {
+export default function TopBar({editor, teamId}: {editor: FabricJSEditor | undefined, teamId: string}) {
     return (
-        <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-center'>
+        <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-between'>
+            <Link href={`/dashboard/${teamId}`}>
+                <ChevronLeft size={20} />
+            </Link>
             <MenuBar>
                 <MenuBarMenu>
                     <MenuBarTrigger>

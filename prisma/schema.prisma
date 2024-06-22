@@ -83,22 +83,7 @@ model Presentation {
   image       String?
   team        Team    @relation(fields: [teamId], references: [id])
   teamId      String  @unique
-  slides      Slide[]
-}
-
-model Slide {
-  id          String  @id @default(cuid())
-  title       String
-  // optional description
-  description String?
-  // speaker notes
-  notes       String?
-
-  // The position of the slide (e.g. 0, 1, 2, 3, ...)
-  position Int @default(0)
-
-  presentation   Presentation @relation(fields: [presentationId], references: [id])
-  presentationId String       @unique
+  slides      Json[]
 }
 
 // The team role
