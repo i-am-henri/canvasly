@@ -45,6 +45,7 @@ model Session {
 model Team {
   id           String        @id @default(cuid())
   name         String        @unique
+  description String?
   creatorId    String        @unique
   creator      User          @relation(fields: [creatorId], references: [id])
   members      TeamMember[]

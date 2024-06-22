@@ -14,16 +14,13 @@ export default async function New() {
     if (teams.length >= 3) {
         return (
             <div className="min-h-screen items-center justify-center flex">
-                <div className="absolute top-0">
-                    <Header />
-                </div>
                 <h2 className="text-red-900">You already own three teams. You cannot create more.</h2>
             </div>
         )
     }
     return (
-        <div>
-
+        <div className="min-h-screen">
+            
         </div>
     )
 }
