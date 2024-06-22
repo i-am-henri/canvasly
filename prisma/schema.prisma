@@ -45,21 +45,34 @@ model Session {
 model Team {
   id        String       @id @default(cuid())
   name      String       @unique
-  creatorId String  @unique
+  creatorId String       @unique
   creator   User         @relation(fields: [creatorId], references: [id])
   members   TeamMember[]
+  documents Document[]
 }
 
 model TeamMember {
-  id     String @id @default(cuid())
-  userId String  @unique
-  teamId String  @unique
-  role   Role   @default(USER)
-  user   User   @relation(fields: [userId], references: [id])
-  team   Team   @relation(fields: [teamId], references: [id])
+  id         String    @id @default(cuid())
+  userId     String    @unique
+  teamId     String    @unique
+  role       Role      @default(USER)
+  user       User      @relation(fields: [userId], references: [id])
+  team       Team      @relation(fields: [teamId], references: [id])
+  Document   Document? @relation(fields: [documentId], references: [id])
+  documentId String?
 
   @@unique([userId, teamId])
 }
+
+model Document {
+  id      String       @id @default(cuid())
+  editors TeamMember[]
+  team    Team         @relation(fields: [teamId], references: [id])
+  teamId  String       @unique
+  content String
+  createdAt DateTime @default(now())
+}
+
 // The team role
 enum Role {
   USER

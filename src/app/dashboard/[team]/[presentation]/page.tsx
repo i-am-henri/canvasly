@@ -7,6 +7,8 @@ export default async function Presentation({
         presentation: string
     }
 }) {
+    // fetchs the presentation data
+    
     return (
         <Editor />
     )
