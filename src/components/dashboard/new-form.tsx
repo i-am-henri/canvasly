@@ -32,7 +32,7 @@ export default function NewForm() {
             }
             formAction(e)
         }} className=" flex flex-col justify-center  space-y-2 lg:w-[400px]">
-            <h2 className="font-medium text-xl">Login</h2>
+            <h2 className="font-medium text-xl">Create a new team</h2>
             <input className="border-b border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none" minLength={3} placeholder="Teamname" type="text" name="name" />
             <textarea placeholder="Description" maxLength={350}  className="border-b min-h-[100px] border-b-[#DBDBDB] field-sizing-content  ring-1 ring-[#DBDBDB] px-2 py-1 rounded-sm outline-none " />
             {state.error && (
