@@ -34,13 +34,27 @@ export async function createTeam(prevState: unknown, e: FormData): Promise<{
             error: "Validation error. Check your name and the characters of your description."
         }
     }
+    // creating the new team
     const team = await db.team.create({
         data: {
             name,
             description,
             creatorId: userId,
         }
-
     })
+    // creating the teammember with the admin role
+    const teammember = await db.teamMember.create({
+        data: {
+            userId,
+            role: "ADMIN",
+            teamId: team.id
+        }
+    })
+    if (!team || !teammember) {
+        return {
+            message: undefined,
+            error: "Cannot create the team. We had an intern error."
+        }
+    }
     redirect(`/dashboard/${team.id}`)
 }
