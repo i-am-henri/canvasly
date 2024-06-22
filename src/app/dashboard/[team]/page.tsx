@@ -15,4 +15,10 @@ export default async function TeamSpace({
     })
     // TODO: handle error when no team is defined
     if (!team) redirect("")
+
+    return (
+        <div>
+            {team.name}
+        </div>
+    )
 }
