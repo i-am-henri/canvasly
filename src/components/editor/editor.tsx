@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { fabric } from "fabric"
-import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react'
+import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
@@ -15,6 +15,7 @@ import Badge from '../ui/badge'
 import { useKeyPress } from "~/hooks/useKey"
 import TopBar from '../elements/topbar'
 import type { Prisma } from '@prisma/client'
+import { useContent } from './logic/content-store'
 
 export default function Editor({
     teamId,
@@ -24,8 +25,27 @@ export default function Editor({
     // The presentation as Json
     // Each slide represent one entry in this array
     slides: Prisma.JsonValue[]
-    
+
 }) {
+    const { setContent } = useContent()
+
+
+    /**A function which update the content store. */
+    
+    const change = (editor: FabricJSEditor | undefined) => {
+        if (editor) {
+            const updateStore = setContent(editor.canvas.toJSON())
+            editor.canvas.on("object:added", () => updateStore)
+            editor.canvas.on("object:modified", () => updateStore)
+            editor.canvas.on("object:moving", () => updateStore)
+            editor.canvas.on("object:removed", () => updateStore)
+            editor.canvas.on("object:resizing", () => updateStore)
+            editor.canvas.on("object:rotating", () => updateStore)
+            editor.canvas.on("object:scaling", () => updateStore)
+            editor.canvas.on("object:selected", () => updateStore)
+            editor.canvas.on("object:skewing", () => updateStore)
+        }
+    }
     // The active slide
     const [activeSlide, setActiveSlide] = useState()
 
@@ -71,6 +91,10 @@ export default function Editor({
         // Don't allow selections on the canvas
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
+
+        // when something changes, safe it in the store.
+        // A listener listens to the store, and will evetuelly save it in the db.
+        change(editor)
     }
 
     return (

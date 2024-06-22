@@ -1,13 +1,13 @@
 "use client"
 
-import type {  FabricJSEditor } from 'fabricjs-react'
+import type { FabricJSEditor } from 'fabricjs-react'
 import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIcon, MenuBarMenu, MenuBarSubmenu, MenuBarSubmenuContent, MenuBarSubmenuTrigger, MenuBarTrigger } from '../ui/menubar'
 import { addRectangle, addText } from '../editor/logic/events'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import Button from '../ui/button'
 
-export default function TopBar({editor, teamId}: {editor: FabricJSEditor | undefined, teamId: string}) {
+export default function TopBar({ editor, teamId }: { editor: FabricJSEditor | undefined, teamId: string }) {
     return (
         <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-between'>
             <Link href={`/dashboard/${teamId}`} className='ml-5'>
@@ -103,7 +103,8 @@ export default function TopBar({editor, teamId}: {editor: FabricJSEditor | undef
                     </MenuBarContent>
                 </MenuBarMenu>
             </MenuBar>
-            <Button className='mr-5'>
+            <Button onClick={() =>
+                console.log(editor?.canvas.toJSON())} className='mr-5'>
                 share
             </Button>
         </div>
