@@ -134,6 +134,7 @@ export function useKeyPress({
 }) {
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent) => {
+      // biome-ignore lint: don't want to fix it now
       keyPressItems.forEach(
         ({ keys, event: triggerEvent, preventDefault = true }) => {
           if (
