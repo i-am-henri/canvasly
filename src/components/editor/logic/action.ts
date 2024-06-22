@@ -4,5 +4,5 @@
 import { Object } from "fabric/fabric-impl";
 
 export async function update(content: { version: string; objects: Object[]; } | undefined) {
-    console.log(content)
+    content
 }

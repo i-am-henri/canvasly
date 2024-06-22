@@ -31,8 +31,8 @@ export default function Editor({
 
 
     
-    // The active slide
-    const [activeSlide, setActiveSlide] = useState()
+    // The active slide (0 is the initial state, so the first slide)
+    const [activeSlide, setActiveSlide] = useState(0)
 
     // the fabricjs react editor
     const { editor, onReady } = useFabricJSEditor()
@@ -93,6 +93,13 @@ export default function Editor({
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
+                    {
+                        slides.map((slide, index) => (
+                            <div key={slide?.toString()}>
+                                hey
+                            </div>
+                        ))
+                    }
                 </div>
                 {/* The canvas component */}
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
