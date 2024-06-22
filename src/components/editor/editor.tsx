@@ -30,22 +30,7 @@ export default function Editor({
     const { setContent } = useContent()
 
 
-    /**A function which update the content store. */
     
-    const change = (editor: FabricJSEditor | undefined) => {
-        if (editor) {
-            const updateStore = setContent(editor.canvas.toJSON())
-            editor.canvas.on("object:added", () => updateStore)
-            editor.canvas.on("object:modified", () => updateStore)
-            editor.canvas.on("object:moving", () => updateStore)
-            editor.canvas.on("object:removed", () => updateStore)
-            editor.canvas.on("object:resizing", () => updateStore)
-            editor.canvas.on("object:rotating", () => updateStore)
-            editor.canvas.on("object:scaling", () => updateStore)
-            editor.canvas.on("object:selected", () => updateStore)
-            editor.canvas.on("object:skewing", () => updateStore)
-        }
-    }
     // The active slide
     const [activeSlide, setActiveSlide] = useState()
 
@@ -69,7 +54,15 @@ export default function Editor({
             setElement(activeElement)
         })
     })
-
+    // update the content every 3 seconds
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setContent(editor?.canvas.toJSON())
+        }, 3000)
+        return () => {
+            clearTimeout(timeout);
+        };
+    })
     // checks if you press backspace and an element is selected
     useKeyPress({
         keyPressItems: [
@@ -91,10 +84,6 @@ export default function Editor({
         // Don't allow selections on the canvas
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
-
-        // when something changes, safe it in the store.
-        // A listener listens to the store, and will evetuelly save it in the db.
-        change(editor)
     }
 
     return (
