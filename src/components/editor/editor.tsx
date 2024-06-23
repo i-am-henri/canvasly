@@ -125,6 +125,14 @@ export default function Editor({
             content[activeSlide] = editor.canvas.toJSON()
         })
     }
+    useEffect(() => {
+        const elements = document.querySelectorAll(".slide") as NodeListOf<HTMLDivElement>
+        for (const element of elements) {
+            element.addEventListener("click", (e) => {
+                element.id.
+            })
+        }
+    })
 
     function handleSlideClick(index: number) {
         setActiveSlide(index)
@@ -212,7 +220,9 @@ export default function Editor({
                         new slide
                     </Button>
                     {content?.map((s, index) => (
-                        <div className="" onClick={() => handleSlideClick(index)} onKeyUp={() => handleSlideClick(index)} data-index={index} key={index.toString()}>
+                        <div className="slide" onClick={(e) => {
+                            handleSlideClick(index)
+                        }} onKeyUp={() => handleSlideClick(index)} id={`data-${index}`} data-index={index} key={index.toString()}>
                             slide
                         </div>
                     ))}
