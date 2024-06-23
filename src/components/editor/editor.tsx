@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import { type KeyboardEventHandler, type MouseEventHandler, useEffect, useState } from 'react'
 import { fabric } from "fabric"
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
@@ -87,15 +87,6 @@ export default function Editor({
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
-
-
-
-
-
-
-
-
-
     /**Function to handle the creation of a new slide. */
     function handleNewSlide() {
         // create the new slide
@@ -141,6 +132,13 @@ export default function Editor({
             })
         }
     })
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        
+    }
+    const handleKeyboardClick: KeyboardEventHandler<HTMLDivElement> = (e: React.KeyboardEvent<HTMLDivElement>) => {
+
+    }
+
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
@@ -155,7 +153,7 @@ export default function Editor({
                         new slide
                     </Button>
                     {content?.map((s, index) => (
-                        <div className="slide" id={`data-${index}`} key={index.toString()}>
+                        <div className="slide" onClick={handleClick} id={`data-${index}`} onKeyUp={handleKeyboardClick} key={index.toString()}>
                             slide
                         </div>
                     ))}
