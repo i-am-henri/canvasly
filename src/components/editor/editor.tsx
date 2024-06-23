@@ -110,30 +110,21 @@ export default function Editor({
         return copiedArray;
     }
 
-    if (editor) {
-        editor?.canvas.on("object:added", () => {
-            console.log("added object")
-            content[activeSlide] = editor.canvas.toJSON()
-        })
-    }
-    const handleMouseClick = (event: MouseEvent, element: HTMLDivElement) => {
-        // convert the id into a number and remove the "data-"
-        const id = +element.id.slice(5)
-        editor?.canvas.clear()
-        editor?.canvas.clearContext(editor?.canvas.getContext())
-        // The selected element should be now undefined
-        setElement(undefined)
-    }
     useEffect(() => {
-        const elements = document.querySelectorAll(".slide") as NodeListOf<HTMLDivElement>
-        for (const element of elements) {
-            element.addEventListener("click", (e) => {
-                handleMouseClick(e, element)
+        if (editor) {
+            editor?.canvas.on("object:added", () => {
+                content[activeSlide] = editor.canvas.toJSON()
             })
         }
     })
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        
+        const id = +e.currentTarget.id.slice(5)
+        console.log(id)
+        editor?.canvas.clear()
+        editor?.canvas.clearContext(editor?.canvas.getContext())
+        setElement(undefined)
+        editor?.canvas.loadFromJSON(content[id],  editor?.canvas.renderAll.bind(editor?.canvas))
+
     }
     const handleKeyboardClick: KeyboardEventHandler<HTMLDivElement> = (e: React.KeyboardEvent<HTMLDivElement>) => {
 
