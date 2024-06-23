@@ -125,92 +125,22 @@ export default function Editor({
             content[activeSlide] = editor.canvas.toJSON()
         })
     }
+    const handleMouseClick = (event: MouseEvent, element: HTMLDivElement) => {
+        // convert the id into a number and remove the "data-"
+        const id = +element.id.slice(5)
+        editor?.canvas.clear()
+        editor?.canvas.clearContext(editor?.canvas.getContext())
+        // The selected element should be now undefined
+        setElement(undefined)
+    }
     useEffect(() => {
         const elements = document.querySelectorAll(".slide") as NodeListOf<HTMLDivElement>
         for (const element of elements) {
             element.addEventListener("click", (e) => {
-                // convert the id into a number and remove the "data-"
-                const id = +element.id.slice(5)
-                console.log(id)
-                setActiveSlide(id)
-                editor?.canvas.clear()
-            editor?.canvas.clearContext(editor?.canvas.getContext())
-            // The selected element should be now undefined
-            setElement(undefined)
-            if (editor) {
-                console.log(activeSlide)
-                editor?.canvas.loadFromJSON(id === 0 ? {
-                    version: "5.3.0",
-                    objects: []
-                } : {
-                    version: "5.3.0",
-                    objects: [
-                        {
-                            "type": "i-text",
-                            "version": "5.3.0",
-                            "originX": "left",
-                            "originY": "top",
-                            "left": 0,
-                            "top": 0,
-                            "width": 84.88,
-                            "height": 27.12,
-                            "fill": "#1ff",
-                            "stroke": null,
-                            "strokeWidth": 1,
-                            "strokeDashArray": null,
-                            "strokeLineCap": "butt",
-                            "strokeDashOffset": 0,
-                            "strokeLineJoin": "miter",
-                            "strokeUniform": false,
-                            "strokeMiterLimit": 4,
-                            "scaleX": 1,
-                            "scaleY": 1,
-                            "angle": 0,
-                            "flipX": false,
-                            "flipY": false,
-                            "opacity": 1,
-                            "shadow": null,
-                            "visible": true,
-                            "backgroundColor": "",
-                            "fillRule": "nonzero",
-                            "paintFirst": "fill",
-                            "globalCompositeOperation": "source-over",
-                            "skewX": 0,
-                            "skewY": 0,
-                            "fontFamily": "Calibri",
-                            "fontWeight": "normal",
-                            "fontSize": 24,
-                            "text": "new text",
-                            "underline": false,
-                            "overline": false,
-                            "linethrough": false,
-                            "textAlign": "center",
-                            "fontStyle": "normal",
-                            "lineHeight": 1.16,
-                            "textBackgroundColor": "",
-                            "charSpacing": 0,
-                            "styles": [],
-                            "direction": "ltr",
-                            "path": null,
-                            "pathStartOffset": 0,
-                            "pathSide": "left",
-                            "pathAlign": "baseline"
-                        }
-                    ]
-                }, editor?.canvas.renderAll.bind(editor?.canvas))
-            }
+                handleMouseClick(e, element)
             })
-            
         }
     })
-
-    function handleSlideClick() {
-
-
-
-
-    }
-
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
@@ -225,9 +155,7 @@ export default function Editor({
                         new slide
                     </Button>
                     {content?.map((s, index) => (
-                        <div className="slide" onClick={(e) => {
-                            handleSlideClick()
-                        }} onKeyUp={() => handleSlideClick()} id={`data-${index}`} data-index={index} key={index.toString()}>
+                        <div className="slide" id={`data-${index}`} key={index.toString()}>
                             slide
                         </div>
                     ))}
