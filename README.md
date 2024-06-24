@@ -11,3 +11,6 @@ Canvasly is a open source [power point](https://www.microsoft.com/de-de/microsof
 
 ## Selfhost
 You can selfhost the entire application on your own servers, without restrictions. A guide is not yet ready.
+
+# Contributing
+Every contributer is welcomed, but please keep in mind, we have to verify every commit and pull request, so it could take some time. We also preshade, when you create commits to your code (e.g. why you choosed this  function  instead of an other) for not so good developer. Thanks!
