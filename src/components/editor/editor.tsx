@@ -63,16 +63,7 @@ export default function Editor({
             const activeElement = editor?.canvas.getActiveObject()
             setElement(activeElement)
         })
-        
-    })
-    // a slide was changed, so we now have a new slide on the top
-    editor?.canvas.on("slide:changed", (e) => {
-        console.log("event triggered")
-        const json = editor.canvas.toJSON()
-        const local = content
-        local[slide] = json 
-        setContent(local)
-        editor?.canvas.clear()
+
     })
 
     // when pressing backspace, the current element will be deleted
@@ -101,35 +92,50 @@ export default function Editor({
     /**Function to handle the creation of a new slide. */
     function handleNewSlide() {
         // create the new slide
-        setContent([
-            ...content,
-            {
-                version: "5.3.0",
-                objects: []
-            }
-        ])
+        contentStorage.push({
+            version: "5.3.0",
+            objects: []
+        })
+        console.log(contentStorage.entries())
         editor?.canvas.clear()
         // The selected element should be now undefined
         setElement(undefined)
     }
 
+    type FabricObjectItem = {
+        version: string;
+        objects: fabric.Object[];
+    };
+
+    // Ein Map, das eine Nummer auf ein solches Objekt abbildet
+    const contentStorage: FabricObjectItem[] = []
+    
+
+
+
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const id = +e.currentTarget.id.slice(5)
         setSlide(id)
-        editor?.canvas.fire("slide:changed")
+
+        const editorContent = editor?.canvas.toJSON()
+
+        contentStorage.push(editorContent || {
+            version: "5.3.0",
+            objects: []
+        })
+
+        const newEditorContent = contentStorage[id]
+
         editor?.canvas.clear()
-        editor?.canvas.clearContext(editor?.canvas.getContext())
-        console.log(editor?.canvas.toJSON())
-        setElement(undefined)
-        editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
+        editor?.canvas.loadFromJSON(newEditorContent, editor?.canvas.renderAll.bind(editor?.canvas))
     }
-    
+
     const handleKeyboardClick: KeyboardEventHandler<HTMLDivElement> = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const id = +e.currentTarget.id.slice(5)
         setSlide(id)
         editor?.canvas.clear()
         editor?.canvas.clearContext(editor?.canvas.getContext())
-        
+
         setElement(undefined)
         editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
     }
@@ -147,11 +153,13 @@ export default function Editor({
                         new slide
                     </Button>
                     <div className="flex flex-col space-y-3 mt-3">
-                        {content?.map((s, index) => (
-                            <div className={cn("px-2 border")} onClick={handleClick} id={`data-${index}`} onKeyUp={handleKeyboardClick} key={index.toString()}>
-                                slide
-                            </div>
-                        ))}
+                        {
+                            contentStorage.map((content, index) => (
+                                <div>
+                                    {index}
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
                 {/* The canvas component */}
