@@ -1,5 +1,6 @@
 import { fabric } from "fabric"
 import type { FabricJSEditor } from "fabricjs-react"
+import { useContent } from "./content-store"
 type fabricjs = typeof fabric
 
 
@@ -61,23 +62,42 @@ export const addText = (standart: string, editor: FabricJSEditor | undefined, op
 export const addImage = (url: string, editor: FabricJSEditor | undefined, options?: fabric.IImageOptions) => {
     const img = fabric.Image.fromURL(url, (myImg) => {
         //create an extra var for to change some image properties
-        const img1 = myImg.set({ left: 0, top: 0 , width:1920,height:1080});
-        editor?.canvas.add(img1); 
-       })
-
+        const img1 = myImg.set({ left: 0, top: 0, width: 1920, height: 1080 });
+        editor?.canvas.add(img1);
+    })
 }
 
 /**Function to handle a slide change
  * @param editor - the react editor
  * @param {number} slide - the slide, where you want to go
+ * @param content - the content store
  */
-export const changeSlide = (editor: FabricJSEditor | undefined, slide: number) => {
-    console.log(`changed slide to ${slide}`)
+export const changeSlide = (editor: FabricJSEditor | undefined, slide: number, content: {
+    setContent: (state: {
+        version: string;
+        objects: fabric.Object[];
+    }[]) => void,
+    content: {
+        version: string;
+        objects: fabric.Object[]
+    }[]
+}) => {
+    // save the slide to the array
+
 }
 
-/**Function to create a new slide
+/**Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
  * @param editor - the react editor
  */
-export const createSlide = (editor: FabricJSEditor | undefined) => {
-    console.log("created slide")
+export const createSlide = (editor: FabricJSEditor | undefined, content: {
+    setContent: (state: {
+        version: string;
+        objects: fabric.Object[];
+    }[]) => void,
+    content: {
+        version: string;
+        objects: fabric.Object[]
+    }[]}) => {
+    
+    content.setContent(content.content )
 }

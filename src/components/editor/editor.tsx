@@ -63,20 +63,6 @@ export default function Editor({
             const activeElement = editor?.canvas.getActiveObject()
             setElement(activeElement)
         })
-        editor?.canvas.on("object:added", (e) => {
-            const localArr: {version: string, objects: fabric.Object[]}[] = []
-            for (let i = 0; i < content.length; i++) {
-                if (i === slide) {
-                    localArr.push(editor.canvas.toJSON())
-                } else {
-                    localArr[i] = content[i] || {
-                        version: "5.3.0",
-                        objects: []
-                    }
-                }
-            }
-            setContent(localArr)
-        })
     })
 
     // when pressing backspace, the current element will be deleted
@@ -112,14 +98,22 @@ export default function Editor({
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
                     <Button onClick={() => {
-                        createSlide(editor)
-                        console.log(content)
+                        createSlide(editor, {
+                            content,
+                            setContent
+                        })
                     }}>
                         new slide
                     </Button>
                     <div className="flex flex-col space-y-3 mt-3">
                         {content?.map((s, index) => (
-                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, +e.currentTarget.id.slice(5))} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, +e.currentTarget.id.slice(5))} key={index.toString()}>
+                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, +e.currentTarget.id.slice(5), {
+                                content,
+                                setContent
+                            })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, +e.currentTarget.id.slice(5), {
+                                content,
+                                setContent
+                            })} key={index.toString()}>
                                 slide
                             </div>
                         ))}
