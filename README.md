@@ -15,3 +15,5 @@ You can selfhost the entire application on your own servers, without restriction
 ### Contributing
 Every contributer is welcomed, but please keep in mind, we have to verify every commit and pull request, so it could take some time. We also preshade, when you create commits to your code (e.g. why you choosed this  function  instead of an other) for not so good developer. Thanks!
 
+### Docs
+You can find the docs online, on our website [here](todo) or in the folder /docs  the markdown files for the docs. We highly appreciate when you help us with the docs, improving them or fixing them.
