@@ -1,6 +1,6 @@
 <p align="center">
   <h2 align="center">canvasly</h2>
-  <p align="center">The online power point alternative, made for team</p>
+  <p align="center">The online power point alternative, made for teams</p>
   <p align="center">(and completely open source)</p>
 </p>
 
@@ -9,5 +9,5 @@ Canvasly is a open source [power point](https://www.microsoft.com/de-de/microsof
 ### Api
 [work in progress, not done yet]
 
-## selfhost
+## Selfhost
 You can selfhost the entire application on your own servers, without restrictions. A guide is not yet ready.
