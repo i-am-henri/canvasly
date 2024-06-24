@@ -18,6 +18,9 @@ Every contributer is welcomed, but please keep in mind, we have to verify every 
 ### Docs
 You can find the docs online, on our website [here](todo) or in the folder /docs  the markdown files for the docs. We highly appreciate when you help us with the docs, improving for fixing them. Please keep in mind,  we are consistently working on the docs, but canvasly is  in an early state and we have at the time other problems.
 
+### Issues
+When you find an issue, we highly recommend to post the  issue here, on this github repository at the issues tab, or by contact us, with your email.
+
 ### Contributers
 Every  contributer (who contributes to this project) will be listened here, as a link to his or her GitHub profile and the prefered name (the name, not the username).
 [henri](https://github.com/i-am-henri)
