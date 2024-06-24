@@ -1,7 +1,7 @@
 "use client"
 
 import { type KeyboardEventHandler, type MouseEventHandler, useEffect, useState } from 'react'
-import { fabric } from "fabric"
+import type { fabric } from "fabric"
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
@@ -17,6 +17,7 @@ import TopBar from '../elements/topbar'
 import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
 import type { Object as FabricObject } from 'fabric/fabric-impl'
+import { useSlideStore } from './logic/slide-store'
 
 export default function Editor({
     teamId,
@@ -28,9 +29,13 @@ export default function Editor({
     slides: Prisma.JsonValue[]
 
 }) {
-
+    // the content as a json array
     const { setContent, content } = useContent()
-
+    // the active slide
+    const { slide, setSlide } = useSlideStore()
+    // the current targeted element from the store
+    const { element, setElement } = useStore()
+    // creating the first slide, when no slides existing
     if (content.length === 0) {
         setContent([
             {
@@ -40,16 +45,9 @@ export default function Editor({
         ])
     }
 
-
-    // The active slide (0 is the initial state, so the first slide)
-    const [activeSlide, setActiveSlide] = useState(0)
-    // clearing the canvas when switching from the slides
-
     // the fabricjs react editor
     const { editor, onReady } = useFabricJSEditor()
 
-    // the current targeted element from the store
-    const { element, setElement } = useStore()
 
 
     // listen to the selection events and handling the store
@@ -65,7 +63,19 @@ export default function Editor({
             const activeElement = editor?.canvas.getActiveObject()
             setElement(activeElement)
         })
+        
     })
+    // a slide was changed, so we now have a new slide on the top
+    editor?.canvas.on("slide:changed", (e) => {
+        console.log("event triggered")
+        const json = editor.canvas.toJSON()
+        const local = content
+        local[slide] = json 
+        setContent(local)
+        editor?.canvas.clear()
+    })
+
+    // when pressing backspace, the current element will be deleted
     useKeyPress({
         keyPressItems: [
             {
@@ -87,6 +97,7 @@ export default function Editor({
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
+
     /**Function to handle the creation of a new slide. */
     function handleNewSlide() {
         // create the new slide
@@ -97,37 +108,30 @@ export default function Editor({
                 objects: []
             }
         ])
-        setActiveSlide((e) => e + 1)
         editor?.canvas.clear()
         // The selected element should be now undefined
         setElement(undefined)
     }
-    function replaceFirst(array: { version: string; objects: FabricObject[]; }[], change: { version: string; objects: FabricObject[]; }, index: number,): { version: string; objects: FabricObject[]; }[] {
-        const copiedArray = array
-        if (index !== -1) {
-            copiedArray[index] = change
-        }
-        return copiedArray;
-    }
 
-    useEffect(() => {
-        if (editor) {
-            editor?.canvas.on("object:added", () => {
-                content[activeSlide] = editor.canvas.toJSON()
-            })
-        }
-    })
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const id = +e.currentTarget.id.slice(5)
-        console.log(id)
+        setSlide(id)
+        editor?.canvas.fire("slide:changed")
         editor?.canvas.clear()
         editor?.canvas.clearContext(editor?.canvas.getContext())
+        console.log(editor?.canvas.toJSON())
         setElement(undefined)
-        editor?.canvas.loadFromJSON(content[id],  editor?.canvas.renderAll.bind(editor?.canvas))
-
+        editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
     }
+    
     const handleKeyboardClick: KeyboardEventHandler<HTMLDivElement> = (e: React.KeyboardEvent<HTMLDivElement>) => {
-
+        const id = +e.currentTarget.id.slice(5)
+        setSlide(id)
+        editor?.canvas.clear()
+        editor?.canvas.clearContext(editor?.canvas.getContext())
+        
+        setElement(undefined)
+        editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
     }
 
     return (
@@ -139,15 +143,16 @@ export default function Editor({
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
                     <Button onClick={() => {
                         handleNewSlide()
-                        console.log(content)
                     }}>
                         new slide
                     </Button>
-                    {content?.map((s, index) => (
-                        <div className="slide" onClick={handleClick} id={`data-${index}`} onKeyUp={handleKeyboardClick} key={index.toString()}>
-                            slide
-                        </div>
-                    ))}
+                    <div className="flex flex-col space-y-3 mt-3">
+                        {content?.map((s, index) => (
+                            <div className={cn("px-2 border")} onClick={handleClick} id={`data-${index}`} onKeyUp={handleKeyboardClick} key={index.toString()}>
+                                slide
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 {/* The canvas component */}
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
