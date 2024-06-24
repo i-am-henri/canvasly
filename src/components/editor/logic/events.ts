@@ -86,18 +86,28 @@ export const changeSlide = (editor: FabricJSEditor | undefined, slide: number, c
 
 }
 
-/**Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
+/** Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
  * @param editor - the react editor
  */
-export const createSlide = (editor: FabricJSEditor | undefined, content: {
-    setContent: (state: {
-        version: string;
-        objects: fabric.Object[];
-    }[]) => void,
+export const createSlide = (
+    editor: FabricJSEditor | undefined,
     content: {
-        version: string;
-        objects: fabric.Object[]
-    }[]}) => {
-    
-    content.setContent(content.content )
+        setContent: (state: {
+            version: string;
+            objects: fabric.Object[];
+        }[]) => void,
+        content: {
+            version: string;
+            objects: fabric.Object[]
+        }[]
+    }
+) => {
+    const newSlide = {
+        version: "",
+        objects: []
+    };
+
+    const updatedContent = [...content.content, newSlide];
+
+    content.setContent(updatedContent);
 }
