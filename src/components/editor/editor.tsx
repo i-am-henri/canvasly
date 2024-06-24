@@ -18,7 +18,7 @@ import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
 import type { Object as FabricObject } from 'fabric/fabric-impl'
 import { useSlideStore } from './logic/slide-store'
-
+import {changeSlide, createSlide} from "./logic/events"
 export default function Editor({
     teamId,
     slides
@@ -102,42 +102,7 @@ export default function Editor({
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
 
-    /**Function to handle the creation of a new slide. */
-    function handleNewSlide() {
-        // create the new slide
-        setContent([
-            ...content,
-            {
-                version: "5.3.0",
-                objects: []
-            }
-        ])
-        editor?.canvas.clear()
-        // The selected element should be now undefined
-        setElement(undefined)
-    }
-
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const id = +e.currentTarget.id.slice(5)
-        setSlide(id)
-        console.log(id)
-        editor?.canvas.clear()
-        editor?.canvas.clearContext(editor?.canvas.getContext())
-        console.log(editor?.canvas.toJSON())
-        setElement(undefined)
-        console.log(content[id])
-        editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
-    }
-    const handleKeyboardClick: KeyboardEventHandler<HTMLDivElement> = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const id = +e.currentTarget.id.slice(5)
-        setSlide(id)
-        console.log(id)
-        editor?.canvas.clear()
-        editor?.canvas.clearContext(editor?.canvas.getContext())
-        
-        setElement(undefined)
-        editor?.canvas.loadFromJSON(content[id], editor?.canvas.renderAll.bind(editor?.canvas))
-    }
+    
 
     return (
         <div className="flex flex-col">
@@ -147,14 +112,14 @@ export default function Editor({
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
                     <Button onClick={() => {
-                        handleNewSlide()
+                        createSlide(editor)
                         console.log(content)
                     }}>
                         new slide
                     </Button>
                     <div className="flex flex-col space-y-3 mt-3">
                         {content?.map((s, index) => (
-                            <div className={cn("px-2 border")} onClick={handleClick} id={`data-${index}`} onKeyUp={handleKeyboardClick} key={index.toString()}>
+                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, +e.currentTarget.id.slice(5))} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, +e.currentTarget.id.slice(5))} key={index.toString()}>
                                 slide
                             </div>
                         ))}

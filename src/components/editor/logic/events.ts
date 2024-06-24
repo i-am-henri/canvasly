@@ -60,9 +60,24 @@ export const addText = (standart: string, editor: FabricJSEditor | undefined, op
  */
 export const addImage = (url: string, editor: FabricJSEditor | undefined, options?: fabric.IImageOptions) => {
     const img = fabric.Image.fromURL(url, (myImg) => {
-        //i create an extra var for to change some image properties
+        //create an extra var for to change some image properties
         const img1 = myImg.set({ left: 0, top: 0 , width:1920,height:1080});
         editor?.canvas.add(img1); 
        })
 
+}
+
+/**Function to handle a slide change
+ * @param editor - the react editor
+ * @param {number} slide - the slide, where you want to go
+ */
+export const changeSlide = (editor: FabricJSEditor | undefined, slide: number) => {
+    console.log(`changed slide to ${slide}`)
+}
+
+/**Function to create a new slide
+ * @param editor - the react editor
+ */
+export const createSlide = (editor: FabricJSEditor | undefined) => {
+    console.log("created slide")
 }
