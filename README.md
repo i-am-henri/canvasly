@@ -8,3 +8,6 @@ Canvasly is a open source [power point](https://www.microsoft.com/de-de/microsof
 
 ### Api
 [work in progress, not done yet]
+
+## selfhost
+You can selfhost the entire application on your own servers, without restrictions. A guide is not yet ready.
