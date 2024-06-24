@@ -67,23 +67,50 @@ export const addImage = (url: string, editor: FabricJSEditor | undefined, option
     })
 }
 
-/**Function to handle a slide change
+/** Function to update an existing slide.
  * @param editor - the react editor
- * @param {number} slide - the slide, where you want to go
  * @param content - the content store
+ * @param indexToUpdate - the slide which should be updated
+ * @param newContent - the new content
  */
-export const changeSlide = (editor: FabricJSEditor | undefined, slide: number, content: {
-    setContent: (state: {
-        version: string;
-        objects: fabric.Object[];
-    }[]) => void,
+export const changeSlide = (
+    editor: FabricJSEditor | undefined,
+    // the content store 
     content: {
-        version: string;
-        objects: fabric.Object[]
-    }[]
-}) => {
-    // save the slide to the array
+        setContent: (state: {
+            version: string;
+            objects: fabric.Object[];
+        }[]) => void,
+        content: {
+            version: string;
+            objects: fabric.Object[]
+        }[]
+    },
+    // the slide store
+    slide: {
+        setSlide: (state: number) => void,
+        slide: number
+    },
+    // the new slide
+    newIndex: number
+) => {
+    if (!editor || !editor.canvas) {
+        console.error("Editor or canvas is not defined");
+        return;
+    }
 
+    // 3. Erstelle ein neues Array mit dem aktualisierten Element
+    const updatedContent = content.content.map((prensentation, index) =>
+        index === slide.slide ? editor.canvas.toJSON() : prensentation
+    );
+    console.log(updatedContent)
+    slide.setSlide(newIndex)
+    // 4. Setze den neuen Zustand
+    content.setContent(updatedContent);
+    console.log(content)
+
+    editor?.canvas.clear()
+    editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
 }
 
 /** Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
@@ -103,7 +130,7 @@ export const createSlide = (
     }
 ) => {
     const newSlide = {
-        version: "",
+        version: "5.3.0",
         objects: []
     };
 

@@ -107,13 +107,7 @@ export default function Editor({
                     </Button>
                     <div className="flex flex-col space-y-3 mt-3">
                         {content?.map((s, index) => (
-                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, +e.currentTarget.id.slice(5), {
-                                content,
-                                setContent
-                            })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, +e.currentTarget.id.slice(5), {
-                                content,
-                                setContent
-                            })} key={index.toString()}>
+                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5))} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5))} key={index.toString()}>
                                 slide
                             </div>
                         ))}
