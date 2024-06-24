@@ -1,4 +1,5 @@
-# Power point alternative
-canvasly
-
-On my iPad, power point is trash, so I am making an alternative with NextJS and FabricJS
+<p align="center">
+  <h2 align="center">canvasly</h2>
+  <p align="center">The online power point alternative, made for team</p>
+  <p align="center">(and completely open source)</p>
+</p>
