@@ -24,12 +24,15 @@ export default async function Dashboard() {
         creatorId: string;
     }[]  = []
     // fetch the teams where you in
-    for (const dashboardTeam of teams) {
+    for await (const dashboardTeam of teams) {
         const data = await db.team.findUnique({
             where: {
                 id: dashboardTeam.teamId
             }
         })
+        if (data) {
+            DashboardTeams.push(data)
+        }
     }
 
 
