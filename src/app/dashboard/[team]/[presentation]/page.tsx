@@ -48,6 +48,7 @@ export default async function Presentation({
             teamId: team?.id
         }
     })
+
     if (!presentation) redirect(`/dashboard/${team.id}`)
     return (
         <div>

@@ -1,7 +1,6 @@
 import { fabric } from "fabric"
 import type { FabricJSEditor } from "fabricjs-react"
 import { useContent } from "./content-store"
-type fabricjs = typeof fabric
 
 
 /** Add a rectangle with your properties.
@@ -137,4 +136,27 @@ export const createSlide = (
     const updatedContent = [...content.content, newSlide];
 
     content.setContent(updatedContent);
+}
+
+/**
+ * @param editor - The react editor
+ * @param severFunction - the server action
+ */
+export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (content: {version: string;    objects: fabric.Object[];}[]) => void, content: {
+    setContent: (state: {
+        version: string;
+        objects: fabric.Object[];
+    }[]) => void,
+    content: {
+        version: string;
+        objects: fabric.Object[]
+    }[]
+}) => {
+    console.log("saved")
+    const timeout = setTimeout(async() => {
+         serverFunction(content.content)
+    })
+    return () => {
+        clearTimeout(timeout);
+    }
 }

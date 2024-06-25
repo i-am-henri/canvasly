@@ -18,7 +18,8 @@ import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
 import type { Object as FabricObject } from 'fabric/fabric-impl'
 import { useSlideStore } from './logic/slide-store'
-import {changeSlide, createSlide} from "./logic/events"
+import { saveToDBAction } from './action'
+import {changeSlide, createSlide, saveToDB} from "./logic/events"
 export default function Editor({
     teamId,
     slides
@@ -63,8 +64,20 @@ export default function Editor({
             const activeElement = editor?.canvas.getActiveObject()
             setElement(activeElement)
         })
-    })
+        editor?.canvas.on("object:added", (e) => {
+            saveToDB(editor,
+                saveToDBAction,
+                {
+                    content,
+                    setContent
+                }
+            )
+        
+        })
 
+
+    })
+    
     // when pressing backspace, the current element will be deleted
     useKeyPress({
         keyPressItems: [
