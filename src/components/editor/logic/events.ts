@@ -142,7 +142,7 @@ export const createSlide = (
  * @param editor - The react editor
  * @param severFunction - the server action
  */
-export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (content: {version: string;    objects: fabric.Object[];}[]) => void, content: {
+export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (content: {version: string; objects: fabric.Object[];}[]) => void, content: {
     setContent: (state: {
         version: string;
         objects: fabric.Object[];
