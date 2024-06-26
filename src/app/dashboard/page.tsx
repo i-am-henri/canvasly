@@ -1,11 +1,15 @@
 import type { $Enums } from "@prisma/client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import TeamCard from "~/components/dashboard/team-card";
 import Editor from "~/components/editor/editor";
 import { checkRequest } from "~/lib/checkRequest";
 import { db } from "~/server/db";
 
+
+// Page for the user, where he can select his team
 export default async function Dashboard() {
+    // get the user
     const user = await checkRequest()
     const teams = await db.teamMember.findMany({
         where: {
@@ -38,11 +42,9 @@ export default async function Dashboard() {
 
     return (
         <div>
-            <h2>You teams</h2>
+            <h2 className="mb-2">You teams: </h2>
             {teams? DashboardTeams.map((team) => (
-                <Link className="border p-2 rounded-md bg-[#DBDBDB]" href={`/dashboard/${team.id}`} key={team.id}>
-                    {team.name}
-                </Link>
+                <TeamCard description={team.description} id={team.id} name={team.name} key={team.name} />
             )): <div>
                 Can't find any teams
                 </div>}
