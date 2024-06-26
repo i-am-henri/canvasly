@@ -40,10 +40,21 @@ export default async function Dashboard() {
             DashboardTeams.push(data)
         }
     }
+    const dbUser = await db.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            username: true
+        }
+    })
 
 
     return (
         <div className="w-[calc(100vw-240px)]">
+            <h2 className="mx-2 mt-2 text-2xl font-medium">
+                Welcome back{dbUser?.username? ` , ${dbUser.username}`: ""}!
+            </h2>
             <div className="flex justify-between mt-2 mx-2">
                 <h2 className="mb-2 text-xl font-medium">You teams: </h2>
                 <div>
