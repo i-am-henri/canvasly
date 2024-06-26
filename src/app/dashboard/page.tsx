@@ -1,8 +1,10 @@
 import type { $Enums } from "@prisma/client";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import TeamCard from "~/components/dashboard/team-card";
 import Editor from "~/components/editor/editor";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { checkRequest } from "~/lib/checkRequest";
 import { db } from "~/server/db";
 
@@ -21,12 +23,12 @@ export default async function Dashboard() {
         redirect("/dashboard/new")
     }
     // array for the teams
-    const DashboardTeams:{
+    const DashboardTeams: {
         id: string;
         name: string;
         description: string | null;
         creatorId: string;
-    }[]  = []
+    }[] = []
     // fetch the teams where you in
     for await (const dashboardTeam of teams) {
         const data = await db.team.findUnique({
@@ -41,13 +43,27 @@ export default async function Dashboard() {
 
 
     return (
-        <div>
-            <h2 className="mb-2">You teams: </h2>
-            {teams? DashboardTeams.map((team) => (
+        <div className="w-[calc(100vw-240px)]">
+            <div className="flex justify-between mt-2 mx-2">
+                <h2 className="mb-2 text-xl font-medium">You teams: </h2>
+                <div>
+                    <Tooltip>
+                        <TooltipTrigger> 
+                            <Plus className="p-[2px] rounded-full border-b border-b-[#f9f9f9f9] bg-[#f5f5f5]" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            create a new team
+                        </TooltipContent>
+                    </Tooltip>
+                </div>
+            </div>
+            <div className="flex overflow-x-scroll mt-1 mx-2 py-1 px-1">
+            {teams ? DashboardTeams.map((team) => (
                 <TeamCard description={team.description} id={team.id} name={team.name} key={team.name} />
-            )): <div>
+            )) : <div className="w-full">
                 Can't find any teams
-                </div>}
+            </div>}
+            </div>
         </div>
     )
 }
