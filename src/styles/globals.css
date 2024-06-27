@@ -63,3 +63,18 @@
   width: full;
   height: 500px;
 }
+input[type="color"] {
+	-webkit-appearance: none;
+  appearance: none;
+	border: none;
+	width: 32px;
+	padding: 0px;
+	height: 32px;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0px;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+	padding: 0px;
+}

@@ -20,6 +20,7 @@ import type { Object as FabricObject } from 'fabric/fabric-impl'
 import { useSlideStore } from './logic/slide-store'
 import { saveToDBAction } from './action'
 import {changeSlide, createSlide, saveToDB} from "./logic/events"
+import EditSidebar from '../elements/edit-sidebar'
 export default function Editor({
     teamId,
     slides
@@ -130,34 +131,7 @@ export default function Editor({
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
 
                 {/* The setting menu on the right */}
-                <div className="bg-white border h-screen col-span-1 rounded-md">
-                    <h2 className="text-2xl px-2 pt-2">
-                        Settings
-                    </h2>
-                    <hr />
-                    <div className="px-2">
-                        {element && (
-                            <p>
-                                <p className='text-neutral-500'>Background-Color</p>
-                                <p style={{ backgroundColor: element.backgroundColor }}>{element.backgroundColor}</p>
-                            </p>
-                        )}
-                        {!element && (
-                            <div className='flex flex-col'>
-                                {/* Speaker notes and settings for the slide */}
-                                <p className='text-neutral-500'>Speaker Notes</p>
-                                <p>no notes :/</p>
-                                <hr />
-                                <p className="neutral-500 text-sm">
-                                    status
-                                </p>
-                                <Badge variant={"secondary"}>
-                                    not ready
-                                </Badge>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                <EditSidebar editor={editor}/>
             </div>
         </div>
     )
