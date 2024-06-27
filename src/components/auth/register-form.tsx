@@ -51,6 +51,11 @@ export default function RegisterForm() {
                 <p className="text-red-300">
                     {error}
                 </p>
+                || state.message && (
+                    <p className="text-neutral-700">
+                        {state.message}
+                    </p>
+                )
             )}
             <Button type="submit" className="w-min mt-10">
                 Submit

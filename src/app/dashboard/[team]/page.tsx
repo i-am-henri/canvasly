@@ -2,6 +2,7 @@ import { Plus } from "lucide-react"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import PresentationCard from "~/components/dashboard/presentation-card"
 import { checkRequest } from "~/lib/checkRequest"
 import { db } from "~/server/db"
 
@@ -71,9 +72,7 @@ export default async function TeamSpace({
                 </Link>
                 </div>
                 {presentations.map((slide) => (
-                    <div key={slide.id}>
-                        {slide.name}
-                    </div>
+                    <PresentationCard team={params.team} description={slide.description} name={slide.description || ""} id={slide.id} key={slide.id} />
                 ))}
             </div>
         </div>
