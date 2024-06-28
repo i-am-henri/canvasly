@@ -45,12 +45,13 @@ model Session {
 model Team {
   id           String        @id @default(cuid())
   name         String        @unique
-  description String?
+  description  String?
   creatorId    String        @unique
   creator      User          @relation(fields: [creatorId], references: [id])
   members      TeamMember[]
   documents    Document[]
   Presentation Presentation?
+  TeamInvite   TeamInvite[]
 }
 
 model TeamMember {
@@ -84,6 +85,17 @@ model Presentation {
   team        Team    @relation(fields: [teamId], references: [id])
   teamId      String  @unique
   slides      Json[]
+}
+
+model TeamInvite {
+  mail    String
+  token   String @unique
+  expires String
+  role    Role   @default(USER)
+  team    Team   @relation(fields: [teamId], references: [id])
+  teamId  String
+
+  @@unique([mail, token])
 }
 
 // The team role

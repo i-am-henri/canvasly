@@ -26,6 +26,12 @@ export default async function Join({
      * 1. the email of the user [1]
      * 2. the token [2]
      * 3. the timestamp [3]
+     * 
+     * The user will then added to the team as a member, the owner of the team can choose, if he will be a creator (He can delete presentations,
+     * remove users & can create new presentations) or a user (normal user, can't create or delete presentations, but edit them). But the user
+     * can't be an admin for now.
+     * 
+     * TODO: implement a function to deliver the admin role to a creator or user
      */
 
     // decode the token and split it
@@ -63,8 +69,39 @@ export default async function Join({
     if (!user) {
         redirect("/login?verifyError=This link was for an other user.")
     }
+    // the email is not verified
+    if (!user.emailVerified) {
+        redirect("/login?verifyError=Your account is not yet verified. Please verify your account first, then you can come back.")
+    }
 
-    
+    // get the token from the db
+    const inviteToken = await db.teamInvite.findUnique({
+        where: {
+            mail: tokenSchema.data.email,
+            token: tokenSchema.data.uniqueToken,
+        }
+    })
+    if (!inviteToken) {
+        redirect("/login?verifyError=We can't find you invite code. Please ask for another one.")
+    }
+
+    // get the teammember
+    const teamMember = await db.teamMember.findUnique({
+        where: {
+            userId: user.id
+        }
+    })
+
+    // user is already in this team
+    if (teamMember) {
+        redirect("/dashboard")
+    }
+
+
+
+
+
+
 
     return (
         <div>
