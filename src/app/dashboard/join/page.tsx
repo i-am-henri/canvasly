@@ -9,6 +9,7 @@ export default async function Join({
 }: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+
     /**The unique token */
     const token = searchParams?.token as string
 
@@ -35,6 +36,7 @@ export default async function Join({
     const uniqueToken: string | undefined = decodedString[1]
     const timestamp: string | undefined = decodedString[2]
 
+    // parse the token
     const tokenSchema = await z.object({
         email: z.string().email(),
         // token should be 24 characters long
@@ -46,13 +48,21 @@ export default async function Join({
         timestamp
     })
 
+    // parsing not successfull
     if (!tokenSchema.success) {
         redirect("/login?verifyError=You was invited to a team, but the token was incorrect. Please ask for another token or contact us.")
     }
 
-
-
-
+    // checking if the email is corresponding to the user
+    const user = await db.user.findUnique({
+        where: {
+            email
+        }
+    })
+    // user not found, redirect to the login
+    if (!user) {
+        redirect("/login?verifyError=This link was for an other user.")
+    }
 
     
 
