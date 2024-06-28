@@ -1,8 +1,9 @@
-import { Plus } from "lucide-react"
+import { ChevronLeft, Plus, Settings } from "lucide-react"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import PresentationCard from "~/components/dashboard/presentation-card"
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip"
 import { checkRequest } from "~/lib/checkRequest"
 import { db } from "~/server/db"
 
@@ -25,7 +26,7 @@ export default async function TeamSpace({
         }
     })
 
-    
+
 
     // fetching the team
     const team = await db.team.findUnique({
@@ -41,10 +42,10 @@ export default async function TeamSpace({
     })
     // TODO: handle error when no team is defined
     if (!team) redirect("/dashboard")
-        if (!user) {
-            cookies().delete("")
-            redirect("/login")
-        }
+    if (!user) {
+        cookies().delete("")
+        redirect("/login")
+    }
     if (!teamMember) {
         // user has no access
         redirect("/dashboard")
@@ -56,24 +57,45 @@ export default async function TeamSpace({
         }
     })
 
-
-
-    
     return (
-        <div>
-            <h2 className="text-xl font-medium">Welcome back, {user.username} {teamMember.role === "USER"? "to the team": "to your team"} {team.name}.</h2>
+        <div className="w-[calc(100vw-240px)] mx-5 mt-5">
+            <div className="flex w-full justify-between">
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Link href={"/dashboard"}><ChevronLeft size={17.5} /></Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        go back
+                    </TooltipContent>
+                </Tooltip>
+                <h2 className="text-xl font-medium">{team.name}</h2>
+                <div className="flex">
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Link href={`/dashboard/${params.team}/settings`}><Settings size={17.5} /></Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            settings
+                        </TooltipContent>
+                    </Tooltip>
+                </div>
+            </div>
+
+            <h2 className="text-xl font-medium">Welcome back, {user.username} {teamMember.role === "USER" ? "to the team" : "to your team"} {team.name}.</h2>
+
             <div>
                 <div className="flex">
-                    
-                <h2 className="text-lg font-medium">The presentations</h2>
-                <Link href={`/dashboard/${params.team}/new-presentation?team=${team.name}`}>
-                
-                <Plus size={20}/>
-                </Link>
+
+                    <h2 className="text-lg font-medium">The presentations</h2>
+                    <Link href={`/dashboard/${params.team}/new-presentation?team=${team.name}`}>
+                        <Plus size={17.5} />
+                    </Link>
                 </div>
-                {presentations.map((slide) => (
-                    <PresentationCard team={params.team} description={slide.description} name={slide.description || ""} id={slide.id} key={slide.id} />
-                ))}
+                <div className="flex space-x-3">
+                    {presentations.map((slide) => (
+                        <PresentationCard team={params.team} description={slide.description} name={slide.description || ""} id={slide.id} key={slide.id} />
+                    ))}
+                </div>
             </div>
         </div>
     )

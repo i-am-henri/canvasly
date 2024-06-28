@@ -15,7 +15,7 @@ export default function PresentationCard({
 }) {
     const router  = useRouter()
     return (
-        <div onClick={() => router.push(`/dashboard/${team}/${id}`)} onKeyUp={() => router.push(`/dashboard/${id}`)} className="border-b min-w-[250px] min-h-[150px] border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] cursor-pointer p-2 rounded-md">
+        <div onClick={() => router.push(`/dashboard/${team}/${id}`)} onKeyUp={() => router.push(`/dashboard/${id}`)} className="border-b min-w-[250px] max-w-[350px] min-h-[150px] border-b-[#DBDBDB] ring-1 ring-[#DBDBDB] cursor-pointer p-2 rounded-md">
             <h2 className="text-xl">{name}</h2>
             <p>{description}</p>
         </div>
