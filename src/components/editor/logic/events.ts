@@ -107,11 +107,9 @@ export const changeSlide = (
     const updatedContent = content.content.map((prensentation, index) =>
         index === slide.slide ? editor.canvas.toJSON() : prensentation
     );
-    console.log(updatedContent)
     slide.setSlide(newIndex)
     // 4. Setze den neuen Zustand
     content.setContent(updatedContent);
-    console.log(content)
 
     editor?.canvas.clear()
     editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
@@ -163,7 +161,6 @@ export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (co
         objects: fabric.Object[]
     }[]
 }) => {
-    console.log("saved")
     const timeout = setTimeout(async () => {
         serverFunction(content.content)
     })
@@ -171,3 +168,14 @@ export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (co
         clearTimeout(timeout);
     }
 }
+
+/**
+ * The default svg for the preview.
+ */
+export const defaultSVG: string = `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1009" height="528" viewBox="0 0 1009 528" xml:space="preserve">
+<desc>Created with Fabric.js 5.3.0</desc>
+<defs>
+</defs>
+</svg>`

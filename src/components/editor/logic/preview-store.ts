@@ -10,6 +10,7 @@ type action = {
 export const usePreviewStore = create<state & action>((set) => ({
     preview: [],
     setPreview: (preview) => set(() => {
+        console.log(preview)
         return ({ preview })
     }),
 }))

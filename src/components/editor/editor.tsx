@@ -6,22 +6,21 @@ import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs
 import Link from 'next/link'
 import { ChevronLeft, Divide } from 'lucide-react'
 import Button from '../ui/button'
-import { ScrollArea } from '../ui/scroll-area'
 
 
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
-import Badge from '../ui/badge'
 import { useKeyPress } from "~/hooks/useKey"
 import TopBar from '../elements/topbar'
 import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
 import type { Object as FabricObject } from 'fabric/fabric-impl'
 import { useSlideStore } from './logic/slide-store'
-import { saveToDBAction } from './action'
 import {changeSlide, createSlide, saveToDB} from "./logic/events"
 import EditSidebar from '../elements/edit-sidebar'
 import { usePreviewStore } from './logic/preview-store'
+import { ScrollArea } from '../ui/scroll-area'
+
 export default function Editor({
     teamId,
     slides
@@ -69,18 +68,6 @@ export default function Editor({
             const activeElement = editor?.canvas.getActiveObject()
             setElement(activeElement)
         })
-        editor?.canvas.on("object:added", (e) => {
-            saveToDB(editor,
-                saveToDBAction,
-                {
-                    content,
-                    setContent
-                }
-            )
-        
-        })
-
-
     })
     
     // when pressing backspace, the current element will be deleted
@@ -120,13 +107,13 @@ export default function Editor({
                     }}>
                         new slide
                     </Button>
-                    <div className="flex flex-col space-y-3 mt-3">
+                    <ScrollArea className="flex flex-col space-y-3 mt-3">
                         {content?.map((_, index) => (
                             <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} key={index.toString()}>
-                                 <img src={`data:image/svg+xml;utf8,${encodeURIComponent(preview[index] || "")}`} alt="the preview"/>
+                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(preview[index] || "")}`} alt="the preview"/>
                             </div>
                         ))}
-                    </div>
+                    </ScrollArea>
                 </div>
                 {/* The canvas component */}
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
