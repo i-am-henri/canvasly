@@ -16,10 +16,11 @@ import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
 import type { Object as FabricObject } from 'fabric/fabric-impl'
 import { useSlideStore } from './logic/slide-store'
-import {changeSlide, createSlide, saveToDB} from "./logic/events"
+import { changeSlide, createSlide, saveToDB } from "./logic/events"
 import EditSidebar from '../elements/edit-sidebar'
 import { usePreviewStore } from './logic/preview-store'
 import { ScrollArea } from '../ui/scroll-area'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 
 export default function Editor({
     teamId,
@@ -38,7 +39,7 @@ export default function Editor({
     // the current targeted element from the store
     const { element, setElement } = useStore()
 
-    const {preview, setPreview} = usePreviewStore()
+    const { preview, setPreview } = usePreviewStore()
 
     // creating the first slide, when no slides existing
     if (content.length === 0) {
@@ -67,7 +68,7 @@ export default function Editor({
             setElement(activeElement)
         })
     })
-    
+
     // when pressing backspace, the current element will be deleted
     useKeyPress({
         keyPressItems: [
@@ -90,6 +91,21 @@ export default function Editor({
         editor.canvas.selection = false
     }
 
+    if (content.length === 0) {
+        createSlide(editor, {
+            content,
+            setContent
+        }, {
+            preview,
+            setPreview
+        })
+        changeSlide(editor, 
+        { content, setContent }, 
+        { slide, setSlide }, 
+        0,
+        { preview, setPreview })
+    }
+
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
@@ -97,22 +113,27 @@ export default function Editor({
             <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
                 {/* The slides Preview */}
                 <div className="bg-white border h-screen col-span-1 rounded-md p-2">
-                    <Button onClick={() => {
-                        createSlide(editor, {
-                            content,
-                            setContent
-                        }, {
-                            preview,
-                            setPreview
-                        })
-                    }}>
-                        new slide
-                    </Button>
-                    <ScrollArea className="flex flex-col space-y-3 mt-3">
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button onClick={() => {
+                                createSlide(editor, {
+                                    content,
+                                    setContent
+                                }, {
+                                    preview,
+                                    setPreview
+                                })
+                            }}>
+                                new slide
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            Create new slide.
+                        </TooltipContent>
+                    </Tooltip>
+                    <ScrollArea className="flex flex-col">
                         {preview?.map((p, index) => (
-                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} key={index.toString()}>
-                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide."/>
-                            </div>
+                            <img onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} key={index.toString()} className='rounded-sm px-2 border my-2' src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide." />
                         ))}
                     </ScrollArea>
                 </div>
@@ -120,7 +141,7 @@ export default function Editor({
                 <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
 
                 {/* The setting menu on the right */}
-                <EditSidebar editor={editor}/>
+                <EditSidebar editor={editor} />
             </div>
         </div>
     )
