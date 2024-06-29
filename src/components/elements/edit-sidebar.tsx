@@ -27,6 +27,17 @@ export default function EditSidebar({ editor }: { editor: FabricJSEditor | undef
                                 editor?.canvas.renderAll()
                             }} />
                         </div>
+                        {/* Edit the border radius */}
+                        <div className="flex justify-between">
+                            <p>Border Radius:</p>
+                            <Input type="number" placeholder="5" defaultValue={(element as fabric.Rect).ry} onInput={(e) => {
+                                const activeElement: fabric.Rect = element as fabric.Rect
+                                activeElement.set({
+                                    ry: +e.currentTarget.value
+                                })
+                                editor?.canvas.renderAll()
+                            }} />
+                        </div>
                     </p>
                 )}
 
