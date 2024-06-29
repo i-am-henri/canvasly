@@ -107,18 +107,20 @@ export const changeSlide = (
     const updatedContent = content.content.map((prensentation, index) =>
         index === slide.slide ? editor.canvas.toJSON() : prensentation
     );
-    slide.setSlide(newIndex)
-    // 4. Setze den neuen Zustand
     content.setContent(updatedContent);
 
-    editor?.canvas.clear()
-    editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
-
-    // updating the preview on the index
+    // updating the preview
     const updatedPreview = preview.preview.map((pr, index) =>
         index === slide.slide ? editor.canvas.toSVG() : pr 
     );
+    console.log(updatedPreview)
     preview.setPreview(updatedPreview)
+
+    slide.setSlide(newIndex)
+    
+
+    editor?.canvas.clear()
+    editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
 }
 
 /** Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
@@ -156,6 +158,7 @@ export const createSlide = (
     // updating the preview array
 
     const updatedPreview = [...preview.preview, defaultSVG];
+    console.log("updated preview: ", updatedPreview)
 
     preview.setPreview(updatedPreview)
 }
