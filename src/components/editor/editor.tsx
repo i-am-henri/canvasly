@@ -53,8 +53,6 @@ export default function Editor({
     // the fabricjs react editor
     const { editor, onReady } = useFabricJSEditor()
 
-
-
     // listen to the selection events and handling the store
     useEffect(() => {
         editor?.canvas.on("selection:created", (e) => {
@@ -90,8 +88,8 @@ export default function Editor({
     if (editor) {
         // Don't allow selections on the canvas
         editor.canvas.selection = false
-        // TODO: implement a function for not allowing to move elements outside of the canvas
     }
+
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
@@ -113,7 +111,7 @@ export default function Editor({
                     <ScrollArea className="flex flex-col space-y-3 mt-3">
                         {preview?.map((p, index) => (
                             <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} key={index.toString()}>
-                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="the preview"/>
+                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide."/>
                             </div>
                         ))}
                     </ScrollArea>
