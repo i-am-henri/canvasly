@@ -91,20 +91,7 @@ export default function Editor({
         editor.canvas.selection = false
     }
 
-    if (content.length === 0) {
-        createSlide(editor, {
-            content,
-            setContent
-        }, {
-            preview,
-            setPreview
-        })
-        changeSlide(editor, 
-        { content, setContent }, 
-        { slide, setSlide }, 
-        0,
-        { preview, setPreview })
-    }
+    
 
     return (
         <div className="flex flex-col">
