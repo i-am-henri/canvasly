@@ -12,17 +12,17 @@ export default function EditSidebar({ editor }: { editor: FabricJSEditor | undef
             <h2 className="text-2xl px-2 pt-2">
                 Settings
             </h2>
-            <hr />
-            <div className="px-2">
+            <div className="px-2 mt-2">
 
                 {/* Element defined, you can edit it now */}
                 {element && (
                     <p>
-                        <div className="flex">
-                            <p>Background Color:</p>
-                            <Input className="rounded-md border border-[#DBDBDB]" type="color" defaultValue={element.backgroundColor} onInput={(e) => {
+                        {/* Edit the color */}
+                        <div className="flex justify-between">
+                            <p>Color:</p>
+                            <Input className="rounded-md border border-[#DBDBDB]" type="color" defaultValue={element.fill as string} onInput={(e) => {
                                 element.set({
-                                    backgroundColor: e.currentTarget.value
+                                    fill: e.currentTarget.value
                                 })
                                 editor?.canvas.renderAll()
                             }} />
