@@ -6,8 +6,6 @@ import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs
 import Link from 'next/link'
 import { ChevronLeft, Divide } from 'lucide-react'
 import Button from '../ui/button'
-
-
 import { useStore } from "./logic/element-store"
 import { cn } from '~/lib/utils'
 import { useKeyPress } from "~/hooks/useKey"
@@ -32,13 +30,14 @@ export default function Editor({
     slides: Prisma.JsonValue[]
 
 }) {
+
     // the content as a json array
     const { setContent, content } = useContent()
     // the active slide
     const { slide, setSlide } = useSlideStore()
     // the current targeted element from the store
     const { element, setElement } = useStore()
-
+    // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
 
     // creating the first slide, when no slides existing
@@ -125,7 +124,7 @@ export default function Editor({
                     </ScrollArea>
                 </div>
                 {/* The canvas component */}
-                <FabricJSCanvas onReady={onReady} className='col-span-6 w-full border h-[calc((100vh-50px)/16*9)]' />
+                <FabricJSCanvas onReady={onReady} className='col-span-5 w-full border h-[calc((100vh-50px)/16*9)]' />
 
                 {/* The setting menu on the right */}
                 <EditSidebar editor={editor} />

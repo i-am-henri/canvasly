@@ -63,18 +63,23 @@
   width: full;
   height: 500px;
 }
+
+/* The color input (for example for the background color) */
 input[type="color"] {
-	-webkit-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
-	border: none;
-	width: 32px;
-	padding: 0px;
-	height: 32px;
+  padding: 0px;
+  border: 1px solid #DBDBDB;
+  border-radius: 6px;
+  width: 40px;
+  height: 20px;
 }
 input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0px;
+  border-radius: 5px;
 }
 input[type="color"]::-webkit-color-swatch {
-	border: none;
-	padding: 0px;
+  border: 1px solid #DBDBDB;
+  border-radius: 4px;
+  padding: 0;
 }

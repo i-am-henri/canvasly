@@ -8,7 +8,7 @@ import { Input } from "../ui/input"
 export default function EditSidebar({ editor }: { editor: FabricJSEditor | undefined }) {
     const { element, setElement } = useStore()
     return (
-        <div className="bg-white border h-screen col-span-1 rounded-md">
+        <div className="bg-white border h-screen col-span-2 rounded-md">
             <h2 className="text-2xl px-2 pt-2">
                 Settings
             </h2>
@@ -20,7 +20,7 @@ export default function EditSidebar({ editor }: { editor: FabricJSEditor | undef
                     <p>
                         <div className="flex">
                             <p>Background Color:</p>
-                            <Input type="color" defaultValue={element.backgroundColor} onInput={(e) => {
+                            <Input className="rounded-md border border-[#DBDBDB]" type="color" defaultValue={element.backgroundColor} onInput={(e) => {
                                 element.set({
                                     backgroundColor: e.currentTarget.value
                                 })
