@@ -103,14 +103,17 @@ export default function Editor({
                         createSlide(editor, {
                             content,
                             setContent
+                        }, {
+                            preview,
+                            setPreview
                         })
                     }}>
                         new slide
                     </Button>
                     <ScrollArea className="flex flex-col space-y-3 mt-3">
-                        {content?.map((_, index) => (
+                        {preview?.map((p, index) => (
                             <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} key={index.toString()}>
-                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(preview[index] || "")}`} alt="the preview"/>
+                                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="the preview"/>
                             </div>
                         ))}
                     </ScrollArea>

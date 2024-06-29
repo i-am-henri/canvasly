@@ -103,7 +103,7 @@ export const changeSlide = (
         return;
     }
 
-    // 3. Erstelle ein neues Array mit dem aktualisierten Element
+    // updating the content array
     const updatedContent = content.content.map((prensentation, index) =>
         index === slide.slide ? editor.canvas.toJSON() : prensentation
     );
@@ -114,9 +114,9 @@ export const changeSlide = (
     editor?.canvas.clear()
     editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
 
-    // 3. Erstelle ein neues Array mit dem aktualisierten Element
-    const updatedPreview = content.content.map((prensentation, index) =>
-        index === slide.slide ? editor.canvas.toSVG() : ""
+    // updating the preview on the index
+    const updatedPreview = preview.preview.map((pr, index) =>
+        index === slide.slide ? editor.canvas.toSVG() : pr 
     );
     preview.setPreview(updatedPreview)
 }
@@ -135,8 +135,15 @@ export const createSlide = (
             version: string;
             objects: fabric.Object[]
         }[]
+    },
+    preview: {
+        setPreview: (state: string[]) => void,
+        preview: string[]
     }
 ) => {
+
+    // updating the content array
+
     const newSlide = {
         version: "5.3.0",
         objects: []
@@ -145,6 +152,12 @@ export const createSlide = (
     const updatedContent = [...content.content, newSlide];
 
     content.setContent(updatedContent);
+
+    // updating the preview array
+
+    const updatedPreview = [...preview.preview, defaultSVG];
+
+    preview.setPreview(updatedPreview)
 }
 
 /**
