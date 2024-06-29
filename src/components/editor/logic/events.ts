@@ -91,7 +91,12 @@ export const changeSlide = (
         slide: number
     },
     // the new slide
-    newIndex: number
+    newIndex: number,
+
+    preview: {
+        setPreview: (state: string[]) => void,
+        preview: string[]
+    }
 ) => {
     if (!editor || !editor.canvas) {
         console.error("Editor or canvas is not defined");
@@ -110,6 +115,12 @@ export const changeSlide = (
 
     editor?.canvas.clear()
     editor?.canvas.loadFromJSON(content.content[newIndex], editor.canvas.renderAll.bind(editor.canvas))
+
+    // 3. Erstelle ein neues Array mit dem aktualisierten Element
+    const updatedPreview = content.content.map((prensentation, index) =>
+        index === slide.slide ? editor.canvas.toSVG() : ""
+    );
+    preview.setPreview(updatedPreview)
 }
 
 /** Function to create a new slide. First creating the new slide in the array, then changing the default slide with the changeSlide() method.
@@ -142,7 +153,7 @@ export const createSlide = (
  * @param editor - The react editor
  * @param severFunction - the server action
  */
-export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (content: {version: string; objects: fabric.Object[];}[]) => void, content: {
+export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (content: { version: string; objects: fabric.Object[]; }[]) => void, content: {
     setContent: (state: {
         version: string;
         objects: fabric.Object[];
@@ -153,8 +164,8 @@ export const saveToDB = (editor: FabricJSEditor | undefined, serverFunction: (co
     }[]
 }) => {
     console.log("saved")
-    const timeout = setTimeout(async() => {
-         serverFunction(content.content)
+    const timeout = setTimeout(async () => {
+        serverFunction(content.content)
     })
     return () => {
         clearTimeout(timeout);

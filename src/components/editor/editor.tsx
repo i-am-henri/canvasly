@@ -4,7 +4,7 @@ import { type KeyboardEventHandler, type MouseEventHandler, useEffect, useState 
 import type { fabric } from "fabric"
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
 import Link from 'next/link'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Divide } from 'lucide-react'
 import Button from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
 
@@ -21,6 +21,7 @@ import { useSlideStore } from './logic/slide-store'
 import { saveToDBAction } from './action'
 import {changeSlide, createSlide, saveToDB} from "./logic/events"
 import EditSidebar from '../elements/edit-sidebar'
+import { usePreviewStore } from './logic/preview-store'
 export default function Editor({
     teamId,
     slides
@@ -37,6 +38,9 @@ export default function Editor({
     const { slide, setSlide } = useSlideStore()
     // the current targeted element from the store
     const { element, setElement } = useStore()
+
+    const {preview, setPreview} = usePreviewStore()
+
     // creating the first slide, when no slides existing
     if (content.length === 0) {
         setContent([
@@ -101,9 +105,6 @@ export default function Editor({
         editor.canvas.selection = false
         // TODO: implement a function for not allowing to move elements outside of the canvas
     }
-
-    
-
     return (
         <div className="flex flex-col">
             {/* The topbar ("Menubar") */}
@@ -120,9 +121,9 @@ export default function Editor({
                         new slide
                     </Button>
                     <div className="flex flex-col space-y-3 mt-3">
-                        {content?.map((s, index) => (
-                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5))} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5))} key={index.toString()}>
-                                slide
+                        {content?.map((_, index) => (
+                            <div className={cn("px-2 border")} onClick={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, {content, setContent}, {slide, setSlide}, +e.currentTarget.id.slice(5), {preview, setPreview})} key={index.toString()}>
+                                {preview[index]}
                             </div>
                         ))}
                     </div>

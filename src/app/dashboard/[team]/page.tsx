@@ -65,17 +65,17 @@ export default async function TeamSpace({
                         <Link href={"/dashboard"}><ChevronLeft size={17.5} /></Link>
                     </TooltipTrigger>
                     <TooltipContent>
-                        go back
+                        Go Back
                     </TooltipContent>
                 </Tooltip>
-                <h2 className="text-xl font-medium">{team.name}</h2>
+                <h2 className="text-xl font-medium">{team.name} - Teamspace</h2>
                 <div className="flex">
                     <Tooltip>
                         <TooltipTrigger>
                             <Link href={`/dashboard/${params.team}/settings`}><Settings size={17.5} /></Link>
                         </TooltipTrigger>
                         <TooltipContent>
-                            settings
+                            Settings
                         </TooltipContent>
                     </Tooltip>
                 </div>
