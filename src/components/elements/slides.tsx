@@ -45,7 +45,7 @@ export default function SlidePreview({
     //             </div >
 
 
-    
+
 
     function Droppable({
         id,
@@ -83,7 +83,7 @@ export default function SlidePreview({
         );
     }
 
-    function SortableItem({id, children}: {id: UniqueIdentifier, children: React.ReactNode}) {
+    function SortableItem({ id, children }: { id: UniqueIdentifier, children: React.ReactNode }) {
         const {
             attributes,
             listeners,
@@ -98,11 +98,14 @@ export default function SlidePreview({
         };
 
         return (
-            <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
                 {children}
-            </li>
+            </div>
         );
     }
+    const n = preview.length;  // Deine Zahl
+    const array = Array.from({ length: n + 1 }, (_, i) => i);
+    console.log(array);
     return (
         <div className="bg-white border h-screen col-span-1 rounded-md p-2">
             <Tooltip>
@@ -130,16 +133,16 @@ export default function SlidePreview({
                         console.log("drag was ended", e)
                     }}
                 >
-                    <SortableContext items={preview}>
+                    <SortableContext items={array}>
                         {preview?.map((p, index) => (
-                            <SortableItem key={index.toString()} id={p}>
+                            <SortableItem key={index.toString()} id={index}>
                                 <img
-                                onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-                                id={`data-${index}`}
-                                onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-                                className='rounded-sm px-2 border my-2 bg-white'
-                                src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
-                                alt="Preview of the slide." />
+                                    onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                    id={`data-${index}`}
+                                    onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                    className='rounded-sm px-2 border my-2 bg-white'
+                                    src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
+                                    alt="Preview of the slide." />
                             </SortableItem>
                         ))}
                     </SortableContext>
