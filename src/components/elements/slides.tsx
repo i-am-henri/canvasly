@@ -31,7 +31,7 @@ export default function SlidePreview({
     
 
     return (
-        <ScrollArea className="bg-white border h-screen col-span-1 flex flex-col overflow-auto rounded-md p-2">
+        <ScrollArea className="bg-white border  col-span-1 flex flex-col overflow-auto rounded-md p-2">
 
             <DropdownMenu>
                 <DropdownMenuTrigger className={ButtonStyles({ variant: "primary", size: "small" })}>

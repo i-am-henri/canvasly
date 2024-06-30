@@ -53,7 +53,6 @@ export default async function Presentation({
     return (
         <div>
             <Editor slides={presentation.slides} teamId={team.id} />
-            {presentation?.name}
         </div>
     )
 }

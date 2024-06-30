@@ -90,10 +90,10 @@ export default function Editor({
     
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col" >
             {/* The topbar ("Menubar") */}
             <TopBar editor={editor} teamId={teamId} />
-            <div className='w-[calc(100vw-240px)] mx-5 h-screen grid items-start justify-between grid-cols-8 gap-5'>
+            <div className='w-[calc(100vw-240px)] mx-5  grid items-start justify-between grid-cols-8 gap-5' >
                 {/* The slides Preview */}
                 <SlidePreview editor={editor} />
                 {/* The canvas component */}

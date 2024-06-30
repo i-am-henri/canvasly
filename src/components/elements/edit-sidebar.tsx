@@ -8,7 +8,7 @@ import { Input } from "../ui/input"
 export default function EditSidebar({ editor }: { editor: FabricJSEditor | undefined }) {
     const { element, setElement } = useStore()
     return (
-        <div className="bg-white border h-screen col-span-2 rounded-md">
+        <div className="bg-white border  col-span-2 rounded-md">
             <h2 className="text-2xl px-2 pt-2">
                 Settings
             </h2>
