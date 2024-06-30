@@ -9,8 +9,9 @@ import { useContent } from "../editor/logic/content-store"
 import { useSlideStore } from "../editor/logic/slide-store"
 import { useStore } from "../editor/logic/element-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
-import { Sortable } from "../ui/sortable"
-import type { UniqueIdentifier } from "@dnd-kit/core"
+import { Sortable, SortableDragHandle, SortableItem } from "../ui/sortable"
+import { DndContext, type UniqueIdentifier } from "@dnd-kit/core"
+import { Skeleton } from "../ui/skeleton"
 
 // the slides preview
 export default function SlidePreview({
@@ -25,15 +26,20 @@ export default function SlidePreview({
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
 
-    const idArr: {id: UniqueIdentifier, name: string}[] = []
-    
+    const idArr: { id: UniqueIdentifier, name: string }[] = []
+
     preview.forEach((p, index) => {
         idArr.push({
             id: index,
             name: `item-${index}`
         })
     })
-
+        // <div div className = "grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2" >
+        //                 <Skeleton className="h-8 w-full rounded-sm" />
+        //                 <Skeleton className="h-8 w-full rounded-sm" />
+        //                 <Skeleton className="size-8 shrink-0 rounded-sm" />
+        //                 <Skeleton className="size-8 shrink-0 rounded-sm" />
+        //             </div >
     return (
         <div className="bg-white border h-screen col-span-1 rounded-md p-2">
             <Tooltip>
@@ -55,11 +61,30 @@ export default function SlidePreview({
                 </TooltipContent>
             </Tooltip>
             <ScrollArea className="flex flex-col">
-                <Sortable value={idArr}>
+                <DndContext 
+                    onDragEnd={(e) => {
+                        
+                    }}
+                >
                     {preview?.map((p, index) => (
-                        <img onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} key={index.toString()} className='rounded-sm px-2 border my-2' src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide." />
+                        <SortableItem
+                            asChild
+                            key={index.toString()}
+                            className="bg-white"
+                            value={index}
+                        >
+                            <SortableDragHandle>
+                                <img
+                                    onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                    id={`data-${index}`}
+                                    onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                    className='rounded-sm px-2 border my-2 bg-white'
+                                    src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
+                                    alt="Preview of the slide." />
+                            </SortableDragHandle>
+                        </SortableItem>
                     ))}
-                </Sortable>
+                </DndContext>
             </ScrollArea>
         </div>
     )
