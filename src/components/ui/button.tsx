@@ -2,7 +2,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "~/lib/utils"
 
 
-const ButtonStyles = cva("badge", {
+export const ButtonStyles = cva("badge", {
   variants: {
       variant: {
           primary: [

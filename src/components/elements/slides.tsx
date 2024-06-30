@@ -9,6 +9,9 @@ import { useSlideStore } from "../editor/logic/slide-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
 import { useRef, useState } from "react"
 import { swap } from "~/lib/swap"
+import { cn } from "~/lib/utils"
+import Button, { ButtonStyles } from "../ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 // the slides preview
 export default function SlidePreview({
     editor
@@ -32,22 +35,18 @@ export default function SlidePreview({
 
     return (
         <div className="bg-white border h-screen col-span-1 rounded-md p-2">
-            <Tooltip>
-                <TooltipTrigger onClick={() => {
-                    createSlide(editor, {
-                        content,
-                        setContent
-                    }, {
-                        preview,
-                        setPreview
-                    })
-                }}>
-                    new slide
-                </TooltipTrigger>
-                <TooltipContent>
-                    Create new slide.
-                </TooltipContent>
-            </Tooltip>
+            <DropdownMenu>
+                <DropdownMenuTrigger className={ButtonStyles({variant: "primary", size: "small"})}>
+                    new blank slide
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => {
+                        createSlide(editor, {content, setContent}, {preview, setPreview})
+                    }}>
+                        blank slide
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
             <ScrollArea className="flex flex-col">
                 {preview.map((p, index) => (
                     <img
@@ -70,7 +69,7 @@ export default function SlidePreview({
                         onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
 
                         id={`data-${index}`}
-                        className='rounded-sm px-2 border my-2 bg-white cursor-grab'
+                        className={cn('rounded-sm  px-2 border border-[#DBDBDB] my-2 bg-white cursor-grab hover:border-2 transition', slide === index ? "border-[3px] border-[#DBDBDB] hover:border-[3px]" : "")}
                         src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
                         alt="Preview of the slide." />
 
