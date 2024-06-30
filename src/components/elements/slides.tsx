@@ -12,6 +12,7 @@ import { usePreviewStore } from "../editor/logic/preview-store"
 import { DndContext, useDraggable, useDroppable, type UniqueIdentifier } from "@dnd-kit/core"
 import { ReactSortable } from "react-sortablejs";
 import { useRef, useState } from "react"
+import { swap } from "~/lib/swap"
 // the slides preview
 export default function SlidePreview({
     editor
@@ -28,32 +29,9 @@ export default function SlidePreview({
     const { slide, setSlide } = useSlideStore()
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
-
-    const idArr: { id: UniqueIdentifier, name: string }[] = []
-
-    preview.forEach((p, index) => {
-        idArr.push({
-            id: index,
-            name: `item-${index}`
-        })
-    })
-
-    function swap<T>(arr: T[], index1: number, index2: number): T[] {
-        const array = arr
-        if (index1 >= 0 && index1 < array.length && index2 >= 0 && index2 < array.length) {
-            // biome-ignore lint: because the index is defined
-            const temp = array[index1]!;
-            // biome-ignore lint: because the index is defined
-            array[index1] = array[index2]!;
-            array[index2] = temp;
-        } else {
-            console.error('Einer der angegebenen Indizes ist außerhalb des gültigen Bereichs.');
-        }
-        return array
-    }
+    
 
     function handleSort() {
-        setPreview(swap(preview, dragSlide.current, draggedOverSlide.current))
     }
 
     return (
@@ -76,14 +54,18 @@ export default function SlidePreview({
             </Tooltip>
             <ScrollArea className="flex flex-col">
                 {preview.map((p, index) => (
-                    <div key={index.toString()} className="relative flex space-x-3 border rounded p-2 bg-gray-100"
-                        draggable
-                        onDragStart={() => {dragSlide.current = index}}
-                        onDragEnter={() => {draggedOverSlide.current = index}}
-                        onDragEnd={handleSort}
-                        onDragOver={(e) => e.preventDefault()}
-                    >
                         <img
+                        
+                            // the setings for dragging
+                            draggable
+                            onDragStart={() => { dragSlide.current = index }}
+                            onDragEnter={() => { draggedOverSlide.current = index }}
+                            onDragEnd={(e) => {
+                                setPreview(swap(preview, dragSlide.current, draggedOverSlide.current))
+                            }}
+                            onDragOver={(e) => e.preventDefault()}
+
+                            // generous settings
                             key={index.toString()}
                             onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
                             id={`data-${index}`}
@@ -91,7 +73,6 @@ export default function SlidePreview({
                             className='rounded-sm px-2 border my-2 bg-white'
                             src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
                             alt="Preview of the slide." />
-                    </div>
 
                 ))}
             </ScrollArea>
