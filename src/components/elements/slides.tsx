@@ -10,9 +10,12 @@ import { useSlideStore } from "../editor/logic/slide-store"
 import { useStore } from "../editor/logic/element-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
 import { Sortable, SortableDragHandle, SortableItem } from "../ui/sortable"
-import { DndContext, useDroppable, type UniqueIdentifier } from "@dnd-kit/core"
+import { DndContext, useDraggable, useDroppable, type UniqueIdentifier } from "@dnd-kit/core"
 import { Skeleton } from "../ui/skeleton"
+import { SortableContext } from "@dnd-kit/sortable"
 
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 // the slides preview
 export default function SlidePreview({
     editor
@@ -42,13 +45,7 @@ export default function SlidePreview({
     //             </div >
 
 
-    // <img
-    //                             onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-    //                             id={`data-${index}`}
-    //                             onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-    //                             className='rounded-sm px-2 border my-2 bg-white'
-    //                             src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
-    //                             alt="Preview of the slide." />
+    
 
     function Droppable({
         id,
@@ -65,6 +62,45 @@ export default function SlidePreview({
             <div ref={setNodeRef}>
                 {children}
             </div>
+        );
+    }
+
+    function Draggable({
+        id,
+        children
+    }: {
+        id: string | number,
+        children: React.ReactNode
+    }) {
+        const { attributes, listeners, setNodeRef, transform } = useDraggable({
+            id: 'unique-id',
+        });
+
+        return (
+            <Button ref={setNodeRef} {...listeners} {...attributes}>
+                {children}
+            </Button>
+        );
+    }
+
+    function SortableItem({id, children}: {id: UniqueIdentifier, children: React.ReactNode}) {
+        const {
+            attributes,
+            listeners,
+            setNodeRef,
+            transform,
+            transition,
+        } = useSortable({ id: id });
+
+        const style = {
+            transform: CSS.Transform.toString(transform),
+            transition,
+        };
+
+        return (
+            <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
+                {children}
+            </li>
         );
     }
     return (
@@ -94,11 +130,19 @@ export default function SlidePreview({
                         console.log("drag was ended", e)
                     }}
                 >
-                    {preview?.map((p, index) => (
-                        <Droppable key={index.toString()} id={index}>
-                            Droppable container id: ${index}
-                        </Droppable>
-                    ))}
+                    <SortableContext items={preview}>
+                        {preview?.map((p, index) => (
+                            <SortableItem key={index.toString()} id={p}>
+                                <img
+                                onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                id={`data-${index}`}
+                                onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                                className='rounded-sm px-2 border my-2 bg-white'
+                                src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
+                                alt="Preview of the slide." />
+                            </SortableItem>
+                        ))}
+                    </SortableContext>
                 </DndContext>
             </ScrollArea>
         </div>
