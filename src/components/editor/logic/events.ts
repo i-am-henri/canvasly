@@ -102,6 +102,9 @@ export const changeSlide = (
         console.error("Editor or canvas is not defined");
         return;
     }
+    if (newIndex === slide.slide) {
+        return
+    }
 
     // updating the content array
     const updatedContent = content.content.map((prensentation, index) =>
