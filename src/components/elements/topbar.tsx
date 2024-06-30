@@ -9,7 +9,7 @@ import Button from '../ui/button'
 
 export default function TopBar({ editor, teamId }: { editor: FabricJSEditor | undefined, teamId: string }) {
     return (
-        <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-between'>
+        <div className='w-[calc(100vw-200px)] h-[50px] flex items-center justify-between' id='topbar'>
             <Link href={`/dashboard/${teamId}`} className='ml-5'>
                 <ChevronLeft size={20} />
             </Link>

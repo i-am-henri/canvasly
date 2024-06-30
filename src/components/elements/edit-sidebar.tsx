@@ -7,8 +7,13 @@ import { Input } from "../ui/input"
 // The sidebar to edit an Element
 export default function EditSidebar({ editor }: { editor: FabricJSEditor | undefined }) {
     const { element, setElement } = useStore()
+    const height = (): number => {
+        const windowHeight = window.innerHeight
+        const topBarHeight = document.getElementById("topbar")?.clientHeight || 0
+        return windowHeight - topBarHeight - 16
+    }
     return (
-        <div className="bg-white border  col-span-2 rounded-md">
+        <div className="bg-white border  col-span-2 rounded-md" style={{height: `${height()}px`}}>
             <h2 className="text-2xl px-2 pt-2">
                 Settings
             </h2>

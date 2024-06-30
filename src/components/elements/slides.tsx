@@ -28,14 +28,21 @@ export default function SlidePreview({
     const { slide, setSlide } = useSlideStore()
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
+
+    //calculate the height
+    const height = (): number => {
+        const windowHeight = window.innerHeight
+        const topBarHeight = document.getElementById("topbar")?.clientHeight || 0
+        return windowHeight - topBarHeight - 16
+    }
     
 
     return (
-        <ScrollArea className="bg-white border  col-span-1 flex flex-col overflow-auto rounded-md p-2">
+        <ScrollArea className="bg-white border  col-span-1 flex flex-col overflow-auto rounded-md p-2" style={{height: `${height()}px` }}>
 
             <DropdownMenu>
-                <DropdownMenuTrigger className={ButtonStyles({ variant: "primary", size: "small" })}>
-                    new blank slide
+                <DropdownMenuTrigger className={cn(ButtonStyles({ variant: "primary", size: "small" }), "mt-2 outline-none")}>
+                    new slide
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => {
