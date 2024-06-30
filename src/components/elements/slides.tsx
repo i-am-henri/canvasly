@@ -9,19 +9,19 @@ import { useContent } from "../editor/logic/content-store"
 import { useSlideStore } from "../editor/logic/slide-store"
 import { useStore } from "../editor/logic/element-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
-import { Sortable, SortableDragHandle, SortableItem } from "../ui/sortable"
 import { DndContext, useDraggable, useDroppable, type UniqueIdentifier } from "@dnd-kit/core"
-import { Skeleton } from "../ui/skeleton"
-import { SortableContext } from "@dnd-kit/sortable"
-
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { ReactSortable } from "react-sortablejs";
+import { useRef, useState } from "react"
 // the slides preview
 export default function SlidePreview({
     editor
 }: {
     editor: FabricJSEditor | undefined
 }) {
+    // the slide which has been dragged
+    const dragSlide = useRef<number>(0)
+    // the slide, where the old slide has been dragged
+    const draggedOverSlide = useRef<number>(0)
 
     const { setContent, content } = useContent()
     // the active slide
@@ -37,116 +37,63 @@ export default function SlidePreview({
             name: `item-${index}`
         })
     })
-    // <div div className = "grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2" >
-    //                 <Skeleton className="h-8 w-full rounded-sm" />
-    //                 <Skeleton className="h-8 w-full rounded-sm" />
-    //                 <Skeleton className="size-8 shrink-0 rounded-sm" />
-    //                 <Skeleton className="size-8 shrink-0 rounded-sm" />
-    //             </div >
 
-
-
-
-    function Droppable({
-        id,
-        children
-    }: {
-        id: string | number,
-        children: React.ReactNode
-    }) {
-        const { setNodeRef } = useDroppable({
-            id: id,
-        });
-
-        return (
-            <div ref={setNodeRef}>
-                {children}
-            </div>
-        );
+    function swap<T>(arr: T[], index1: number, index2: number): T[] {
+        const array = arr
+        if (index1 >= 0 && index1 < array.length && index2 >= 0 && index2 < array.length) {
+            // biome-ignore lint: because the index is defined
+            const temp = array[index1]!;
+            // biome-ignore lint: because the index is defined
+            array[index1] = array[index2]!;
+            array[index2] = temp;
+        } else {
+            console.error('Einer der angegebenen Indizes ist außerhalb des gültigen Bereichs.');
+        }
+        return array
     }
 
-    function Draggable({
-        id,
-        children
-    }: {
-        id: string | number,
-        children: React.ReactNode
-    }) {
-        const { attributes, listeners, setNodeRef, transform } = useDraggable({
-            id: 'unique-id',
-        });
-
-        return (
-            <Button ref={setNodeRef} {...listeners} {...attributes}>
-                {children}
-            </Button>
-        );
+    function handleSort() {
+        setPreview(swap(preview, dragSlide.current, draggedOverSlide.current))
     }
 
-    function SortableItem({ id, children }: { id: UniqueIdentifier, children: React.ReactNode }) {
-        const {
-            attributes,
-            listeners,
-            setNodeRef,
-            transform,
-            transition,
-        } = useSortable({ id: id });
-
-        const style = {
-            transform: CSS.Transform.toString(transform),
-            transition,
-        };
-
-        return (
-            <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-                {children}
-            </div>
-        );
-    }
-    const n = preview.length;  // Deine Zahl
-    const array = Array.from({ length: n + 1 }, (_, i) => i);
-    console.log(array);
     return (
         <div className="bg-white border h-screen col-span-1 rounded-md p-2">
             <Tooltip>
-                <TooltipTrigger>
-                    <Button onClick={() => {
-                        createSlide(editor, {
-                            content,
-                            setContent
-                        }, {
-                            preview,
-                            setPreview
-                        })
-                    }}>
-                        new slide
-                    </Button>
+                <TooltipTrigger onClick={() => {
+                    createSlide(editor, {
+                        content,
+                        setContent
+                    }, {
+                        preview,
+                        setPreview
+                    })
+                }}>
+                    new slide
                 </TooltipTrigger>
                 <TooltipContent>
                     Create new slide.
                 </TooltipContent>
             </Tooltip>
             <ScrollArea className="flex flex-col">
-                <DndContext
-                    autoScroll
-                    onDragEnd={(e) => {
-                        console.log("drag was ended", e)
-                    }}
-                >
-                    <SortableContext items={array}>
-                        {preview?.map((p, index) => (
-                            <SortableItem key={index.toString()} id={index}>
-                                <img
-                                    onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-                                    id={`data-${index}`}
-                                    onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-                                    className='rounded-sm px-2 border my-2 bg-white'
-                                    src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
-                                    alt="Preview of the slide." />
-                            </SortableItem>
-                        ))}
-                    </SortableContext>
-                </DndContext>
+                {preview.map((p, index) => (
+                    <div key={index.toString()} className="relative flex space-x-3 border rounded p-2 bg-gray-100"
+                        draggable
+                        onDragStart={() => {dragSlide.current = index}}
+                        onDragEnter={() => {draggedOverSlide.current = index}}
+                        onDragEnd={handleSort}
+                        onDragOver={(e) => e.preventDefault()}
+                    >
+                        <img
+                            key={index.toString()}
+                            onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                            id={`data-${index}`}
+                            onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                            className='rounded-sm px-2 border my-2 bg-white'
+                            src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
+                            alt="Preview of the slide." />
+                    </div>
+
+                ))}
             </ScrollArea>
         </div>
     )

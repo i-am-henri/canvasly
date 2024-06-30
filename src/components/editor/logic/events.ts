@@ -158,7 +158,6 @@ export const createSlide = (
     // updating the preview array
 
     const updatedPreview = [...preview.preview, defaultSVG];
-    console.log("updated preview: ", updatedPreview)
 
     preview.setPreview(updatedPreview)
 }
