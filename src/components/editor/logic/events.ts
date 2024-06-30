@@ -113,7 +113,6 @@ export const changeSlide = (
     const updatedPreview = preview.preview.map((pr, index) =>
         index === slide.slide ? editor.canvas.toSVG() : pr 
     );
-    console.log(updatedPreview)
     preview.setPreview(updatedPreview)
 
     slide.setSlide(newIndex)
