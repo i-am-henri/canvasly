@@ -28,53 +28,49 @@ export default function SlidePreview({
     const { slide, setSlide } = useSlideStore()
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
-
-
-    function handleSort() {
-    }
+    
 
     return (
-        <div className="bg-white border h-screen col-span-1 rounded-md p-2">
+        <ScrollArea className="bg-white border h-screen col-span-1 flex flex-col overflow-auto rounded-md p-2">
+
             <DropdownMenu>
-                <DropdownMenuTrigger className={ButtonStyles({variant: "primary", size: "small"})}>
+                <DropdownMenuTrigger className={ButtonStyles({ variant: "primary", size: "small" })}>
                     new blank slide
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => {
-                        createSlide(editor, {content, setContent}, {preview, setPreview})
+                        createSlide(editor, { content, setContent }, { preview, setPreview })
                     }}>
                         blank slide
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            <ScrollArea className="flex flex-col">
-                {preview.map((p, index) => (
-                    <img
+            {preview.map((p, index) => (
+                <img
 
-                        // the setings for dragging
-                        draggable
-                        onDragStart={() => { dragSlide.current = index }}
-                        onDragEnter={() => { draggedOverSlide.current = index }}
-                        onDragEnd={(e) => {
-                            setPreview(swap(preview, dragSlide.current, draggedOverSlide.current))
-                            setContent(swap(content, dragSlide.current, draggedOverSlide.current))
-                            setSlide(draggedOverSlide.current)
-                        }}
-                        onDragOver={(e) => e.preventDefault()}
+                    // the setings for dragging
+                    draggable
+                    onDragStart={() => { dragSlide.current = index }}
+                    onDragEnter={() => { draggedOverSlide.current = index }}
+                    onDragEnd={(e) => {
+                        setPreview(swap(preview, dragSlide.current, draggedOverSlide.current))
+                        setContent(swap(content, dragSlide.current, draggedOverSlide.current))
+                        setSlide(draggedOverSlide.current)
+                    }}
+                    onDragOver={(e) => e.preventDefault()}
 
-                        // generous settings
-                        key={index.toString()}
+                    // generous settings
+                    key={index.toString()}
 
-                        onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
-                        onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                    onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
+                    onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })}
 
-                        id={`data-${index}`}
-                        className={cn('rounded-sm  px-2 border border-[#DBDBDB] my-2 bg-white cursor-grab hover:border-2 transition', slide === index ? "border-[3px] border-[#DBDBDB] hover:border-[3px]" : "")}
-                        src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
-                        alt="Preview of the slide." />
+                    id={`data-${index}`}
+                    className={cn('rounded-sm  px-2 border border-[#DBDBDB] my-2 bg-white cursor-grab hover:border-2 transition', slide === index ? "border-[3px] border-[#DBDBDB] hover:border-[3px]" : "")}
+                    src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`}
+                    alt="Preview of the slide." />
 
-                ))}
-            </ScrollArea>
-        </div>
+            ))}
+        </ScrollArea>
     )
 }
