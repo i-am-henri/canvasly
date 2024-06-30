@@ -9,6 +9,8 @@ import { useContent } from "../editor/logic/content-store"
 import { useSlideStore } from "../editor/logic/slide-store"
 import { useStore } from "../editor/logic/element-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
+import { Sortable } from "../ui/sortable"
+import type { UniqueIdentifier } from "@dnd-kit/core"
 
 // the slides preview
 export default function SlidePreview({
@@ -20,10 +22,18 @@ export default function SlidePreview({
     const { setContent, content } = useContent()
     // the active slide
     const { slide, setSlide } = useSlideStore()
-    // the current targeted element from the store
-    const { element, setElement } = useStore()
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
+
+    const idArr: {id: UniqueIdentifier, name: string}[] = []
+    
+    preview.forEach((p, index) => {
+        idArr.push({
+            id: index,
+            name: `item-${index}`
+        })
+    })
+
     return (
         <div className="bg-white border h-screen col-span-1 rounded-md p-2">
             <Tooltip>
@@ -45,9 +55,11 @@ export default function SlidePreview({
                 </TooltipContent>
             </Tooltip>
             <ScrollArea className="flex flex-col">
-                {preview?.map((p, index) => (
-                    <img onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} key={index.toString()} className='rounded-sm px-2 border my-2' src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide." />
-                ))}
+                <Sortable value={idArr}>
+                    {preview?.map((p, index) => (
+                        <img onClick={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} id={`data-${index}`} onKeyUp={(e) => changeSlide(editor, { content, setContent }, { slide, setSlide }, +e.currentTarget.id.slice(5), { preview, setPreview })} key={index.toString()} className='rounded-sm px-2 border my-2' src={`data:image/svg+xml;utf8,${encodeURIComponent(p)}`} alt="Preview of the slide." />
+                    ))}
+                </Sortable>
             </ScrollArea>
         </div>
     )
