@@ -4,7 +4,9 @@ import Button from "../ui/button";
 export default function Header() {
     return (
         <div className="bg-transparent lg:w-[900px] xl:w-[1000px] 2xl:w-[1100px] flex justify-between items-center mt-5 mx-[100px]">
-            <h2 className="font-medium">canvasly</h2>
+            <Link href={"/"}>
+                <h2 className="font-medium">canvasly</h2>
+            </Link>
             <nav className="md:flex space-x-3">
                 <Link href="/pricing">
                     Pricing
