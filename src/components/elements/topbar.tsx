@@ -5,7 +5,9 @@ import { MenuBar, MenuBarContent, MenuBarDivider, MenuBarItem, MenuBarKeyboardIc
 import { addRectangle, addText } from '../editor/logic/events'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-import Button from '../ui/button'
+import Button, { ButtonStyles } from '../ui/button'
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, DialogDescription } from '../ui/dialog'
+import { cn } from '~/lib/utils'
 
 export default function TopBar({ editor, teamId }: { editor: FabricJSEditor | undefined, teamId: string }) {
     return (
@@ -18,23 +20,30 @@ export default function TopBar({ editor, teamId }: { editor: FabricJSEditor | un
                     <MenuBarTrigger>
                         Objects
                     </MenuBarTrigger>
-                    <MenuBarContent onClick={() => {
-                        addRectangle(editor, {
-                            // the default background color
-                            backgroundColor: "transparent",
-                            //border radius
-                            rx: 10,
-                            ry: 10,
-                            // size
-                            width: 50,
-                            height: 50,
-                            // The Backgroundcolor when you select the element
-                            selectionBackgroundColor: "#1f1fff0c",
-                            // the filled color
-                            fill: "#1f1"
-                        })
-                    }}>
-                        normal
+                    <MenuBarContent >
+                        <MenuBarItem onClick={() => {
+                            addRectangle(editor, {
+                                // the default background color
+                                backgroundColor: "transparent",
+                                // the standart border radius
+                                ry: 10,
+                                rx: 10,
+                                // size
+                                width: 50,
+                                height: 50,
+                                // The Backgroundcolor when you select the element
+                                selectionBackgroundColor: "#1f1fff0c",
+                                // the filled color
+                                fill: "#000000"
+                            })
+                        }}>
+                            Rectangle
+                        </MenuBarItem>
+                        <MenuBarItem onClick={() => {
+                            editor?.addCircle()
+                        }}>
+                            Circle
+                        </MenuBarItem>
                     </MenuBarContent>
                 </MenuBarMenu>
                 <MenuBarMenu>
@@ -103,10 +112,29 @@ export default function TopBar({ editor, teamId }: { editor: FabricJSEditor | un
                     </MenuBarContent>
                 </MenuBarMenu>
             </MenuBar>
-            <Button onClick={() =>
-                console.log(editor?.canvas.toJSON())} className='mr-5'>
-                share
-            </Button>
+            <div className="flex">
+                <Dialog>
+                    <DialogTrigger className={cn(ButtonStyles(), "mr-5")}>
+                        share
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            Share or export your presentation
+                        </DialogHeader>
+                        <DialogDescription>
+                            You can export this presentation as an power point (pptx) file, pdf, or as images. For the last option, you will get a .zip file, with all of the images.
+                        </DialogDescription>
+                        <DialogFooter>
+                            <DialogClose className="mr-1 hover:bg-[#DBDBDB] px-2 rounded-[8px] duration-300">
+                                Share
+                            </DialogClose>
+                            <DialogClose className="px-2 rounded-[8px] flex border-b border-b-blue-300 ring-1 ring-blue-300 bg-blue-200 text-black">
+                                Export
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
         </div>
     )
 }

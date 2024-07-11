@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Provider as ReactWrapBalancerProvider } from 'react-wrap-balancer'
 import { Inter } from 'next/font/google'
 import QueryClientProviderComponent from "~/components/providers/query-client"
+import { MultiDialogProvider } from "~/components/ui/multi-dialog";
 const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: "canvasly",
@@ -19,14 +20,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="w-full">
-        <QueryClientProviderComponent>
-          <ReactWrapBalancerProvider>
-            <Toaster />
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
-          </ReactWrapBalancerProvider>
-        </QueryClientProviderComponent>
+        <MultiDialogProvider>
+          <QueryClientProviderComponent>
+            <ReactWrapBalancerProvider>
+              <Toaster />
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+            </ReactWrapBalancerProvider>
+          </QueryClientProviderComponent>
+        </MultiDialogProvider>
       </body>
     </html>
   );

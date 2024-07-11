@@ -4,6 +4,9 @@
   <p align="center">(and completely open source)</p>
 </p>
 
+
+![alt text](./public/image.png)
+
 Canvasly is a open source [power point](https://www.microsoft.com/de-de/microsoft-365/powerpoint?market=de) alternative made for the web. We provide features to work with your team and to selfhost everything on your own servers, but you are also able to use our online hosted version for you.
 
 ### Api

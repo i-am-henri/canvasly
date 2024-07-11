@@ -1,25 +1,15 @@
 "use client"
 
-import { type KeyboardEventHandler, type MouseEventHandler, useEffect, useState } from 'react'
-import type { fabric } from "fabric"
+import { useEffect } from 'react'
 import { FabricJSCanvas, type FabricJSEditor, useFabricJSEditor } from 'fabricjs-react'
-import Link from 'next/link'
-import { ChevronLeft, Divide } from 'lucide-react'
-import Button from '../ui/button'
 import { useStore } from "./logic/element-store"
-import { cn } from '~/lib/utils'
 import { useKeyPress } from "~/hooks/useKey"
 import TopBar from '../elements/topbar'
 import type { Prisma } from '@prisma/client'
 import { useContent } from './logic/content-store'
-import type { Object as FabricObject } from 'fabric/fabric-impl'
-import { useSlideStore } from './logic/slide-store'
-import { changeSlide, createSlide, saveToDB } from "./logic/events"
 import EditSidebar from '../elements/edit-sidebar'
-import { usePreviewStore } from './logic/preview-store'
-import { ScrollArea } from '../ui/scroll-area'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import SlidePreview from '../elements/slides'
+import { usePreviewStore } from './logic/preview-store'
 
 export default function Editor({
     teamId,
@@ -37,6 +27,10 @@ export default function Editor({
     // the active slide
     const { element, setElement } = useStore()
 
+    // the preview array, with svg strings as content
+    const { preview, setPreview } = usePreviewStore()
+
+
     // creating the first slide, when no slides existing
     if (content.length === 0) {
         setContent([
@@ -45,6 +39,14 @@ export default function Editor({
                 objects: []
             }
         ])
+        setPreview([`<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="684" height="528" viewBox="0 0 684 528" xml:space="preserve">
+        <desc>Created with Fabric.js 5.3.0</desc>
+        <defs>
+        </defs>
+        </svg>`])
+        
     }
 
     // the fabricjs react editor

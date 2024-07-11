@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { useContent } from "../editor/logic/content-store"
 import { useSlideStore } from "../editor/logic/slide-store"
 import { usePreviewStore } from "../editor/logic/preview-store"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { swap } from "~/lib/swap"
 import { cn } from "~/lib/utils"
 import Button, { ButtonStyles } from "../ui/button"
@@ -29,16 +29,17 @@ export default function SlidePreview({
     // the preview array, with svg strings as content
     const { preview, setPreview } = usePreviewStore()
 
-    //calculate the height
-    const height = (): number => {
+    const [height, setHeight] = useState<number>(0)
+    useEffect(() => {
         const windowHeight = window.innerHeight
         const topBarHeight = document.getElementById("topbar")?.clientHeight || 0
-        return windowHeight - topBarHeight - 16
-    }
+        setHeight(windowHeight - topBarHeight - 16)
+    })
+
     
 
     return (
-        <ScrollArea className="bg-white border  col-span-1 flex flex-col overflow-auto rounded-md p-2" style={{height: `${height()}px` }}>
+        <ScrollArea className="bg-white border  col-span-1 flex flex-col overflow-auto rounded-md p-2" style={{height: `${height}px` }}>
 
             <DropdownMenu>
                 <DropdownMenuTrigger className={cn(ButtonStyles({ variant: "primary", size: "small" }), "mt-2 outline-none")}>
