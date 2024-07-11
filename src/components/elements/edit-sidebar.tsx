@@ -103,8 +103,6 @@ export default function EditSidebar({ editor }: { editor: FabricJSEditor | undef
                         </div>
                     </div>
                 )}
-
-
                 <MultiDialog>
                     <MultiDialogTrigger>
                         hey
