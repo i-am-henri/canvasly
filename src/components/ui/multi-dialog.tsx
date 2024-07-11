@@ -40,8 +40,7 @@ export const useMultiDialogStore = create<state & action>((set) => ({
 }))
 
 
-
-// FIXME: The components
+// The components
 
 /**
  * This is the provider for the multi-dialog.
@@ -69,6 +68,7 @@ function MultiDialogProvider({ children }: { children: React.ReactNode }) {
                             setOpenId(undefined)
                             setOpen(false)
                         }} />
+                        {/*FIXME: This is your modal. You can style it now. */}
                         <div className="absolute z-50">
                             {content}
                         </div>
