@@ -9,7 +9,14 @@ export const initialState = {
     message: undefined,
     error: undefined
 }
-export default function NewForm() {
+/**
+ * This is the form to create a new team. You can specify a name,
+ * and a description for your Team.
+ * 
+ * TODO: add a profile picture for a team
+ * @returns {JSX.Element} - The form with the validation
+ */
+export default function NewForm(): JSX.Element {
     const [error, setError] = useState<string | undefined>(undefined)
     const [state, formAction] = useFormState(createTeam, initialState)
     const formDataSchema = z.object({

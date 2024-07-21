@@ -41,7 +41,8 @@ export default async function Presentation({
         // user has no access
         redirect("/dashboard")
     }
-    // fetchs the presentation data
+
+    // fetch the presentation data
     const presentation = await db.presentation.findUnique({
         where: {
             id: params.presentation,

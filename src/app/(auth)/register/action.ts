@@ -15,12 +15,13 @@ export async function register(prevState: unknown, e: FormData): Promise<{
     message?: string,
     error?: string
 }> {
-
+    // get the credentials from the form
     const email = e.get("email") as string
     const password = e.get("password") as string
     const repassword = e.get("password") as string
     const username = e.get("username") as string
 
+    // parse the credentials and check for errors
     const parse = formDataSchema.safeParse({
         email,
         password,
@@ -35,6 +36,7 @@ export async function register(prevState: unknown, e: FormData): Promise<{
         }
     }
 
+    // passwords not matching
     if (password !== repassword) {
         return {
             message: undefined,

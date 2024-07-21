@@ -5,45 +5,56 @@ import { BookTemplate, ChevronsUpDown, Contact, FileText, Files, Home, School } 
 import Link from "next/link"
 import { cn } from "~/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
+import { useSearchParams, usePathname,  } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
-import useLocalStorage from "~/hooks/useLocalStorage"
-import { db } from "~/server/db"
-export default function Sidebar() {
 
-    // The sidebar:
-    // The sidebar has 2 styles: closed (small) and opened (big). The default style if for large devices big, and for small devices small.
-    // When you change the style, it will be saved in the localstorage
+// The link for the sidebar
+interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+    children: React.ReactNode,
+    popoverName: string
+    href: string,
+    sidebarStyle?: "small" | "big"
+}
+export const SidebarLink = ({ children, href, popoverName, sidebarStyle, ...props }: LinkProps) => {
+    return (
+        <Tooltip>
+            <TooltipTrigger>
+                <Link href={href} {...props} className={cn("flex items-center font-medium hover:bg-neutral-100 px-2 py-1 rounded-sm transition", props.className)}>
+                    {children}
+                </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+                {popoverName}
+            </TooltipContent>
+        </Tooltip>
+    )
+}
 
-    const [styles, setStyle] = useState<"opened" | "closed">("opened")
+export const SidebarIcon = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div className="mr-2">
+            {children}
+        </div>
+    )
+}
 
-    interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
-        children: React.ReactNode,
-        popoverName: string
-        href: string,
-    }
-    const SidebarLink = ({ children, href, popoverName, ...props }: LinkProps) => {
-        return (
-            <Tooltip>
-                <TooltipTrigger>
-                    <Link href={href} {...props} className={cn("flex items-center font-medium hover:bg-neutral-100 px-2 py-1 rounded-sm transition", props.className)}>
-                        {children}
-                    </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                    {popoverName}
-                </TooltipContent>
-            </Tooltip>
-        )
-    }
+/**
+ * The sidebar for the dashboard. On devices which are smaller then 
+ * {md} pixel, the sidebar won't be shows, instead we will use
+ * a header. 
+ * 
+ * The sidebar has 2 (two) styles:
+ * - small: A version with only the icons and tooltips
+ * - big: A version with the names next to the icons
+ * 
+ * Every change of the style of the sidebar will be saved in the localstorage
+ * or in the db.
+ * @returns {JSX.Element}
+ */
+export default function Sidebar(): JSX.Element {
+    // the styles of the sidebar
+    const [styles, setStyle] = useState<"small" | "big">("big")
 
-    const SidebarIcon = ({ children }: { children: React.ReactNode }) => {
-        return (
-            <div className="mr-2">
-                {children}
-            </div>
-        )
-    }
-    
     return (
         <div id="sidebar" className="lg:w-[200px] border-r h-full fixed bg-white">
             {/* The org switch */}

@@ -3,7 +3,7 @@ import Header from "~/components/elements/header"
 import { checkRequest } from "~/lib/checkRequest"
 import { db } from "~/server/db"
 
-// A page to create a new team
+// The page to create a new team
 export default async function New() {
     const user = await checkRequest()
     const teams = await db.teamMember.findMany({
@@ -11,7 +11,8 @@ export default async function New() {
             userId: user.userId
         }
     })
-    // user can create a maximum of three teams
+
+    // user can create a maximum of three teams (with the free plan and by now)
     if (teams.length >= 3) {
         return (
             <div className="min-h-screen items-center justify-center flex">
