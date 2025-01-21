@@ -59,7 +59,7 @@ export default function Home() {
           >
             Start Now
           </Link>
-          <Link href="/auth/register">Sign In</Link>
+          <Link href="/auth/login">Sign In</Link>
         </div>
         <h3 className="text-[24px] leading-7">
           For students and everyone else.
