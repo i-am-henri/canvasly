@@ -1,7 +1,8 @@
-import { SidebarProvider } from '@/components/dashboard/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+import { CommandMenu } from '@/components/command-menu';
+import { SidebarInset, SidebarProvider } from '@/components/dashboard/sidebar';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-
 export const metadata: Metadata = {
   title: 'Dashboard | Canvasly',
   description:
@@ -14,8 +15,10 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <main className="flex">
-      <SidebarProvider>{children}</SidebarProvider>
-    </main>
+    <SidebarProvider>
+      <CommandMenu />
+      <AppSidebar />
+      <SidebarInset>{children}</SidebarInset>
+    </SidebarProvider>
   );
 }
