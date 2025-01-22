@@ -26,7 +26,12 @@ export default function Login() {
           </Link>
           . We are using cookies to store every sensible authentication
           information. We do not using cookies for tracking. You data is safe,
-          and would never be given to third party providers.
+          and would never be given to third party providers. If you don't have
+          an account at the moment, you can{' '}
+          <Link className="underline" href="/auth/register">
+            register
+          </Link>{' '}
+          yourself.
         </h2>
         <LoginForm />
         <Link
