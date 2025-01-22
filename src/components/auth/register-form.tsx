@@ -1,11 +1,11 @@
 'use client';
 
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
 } from '@/components/dashboard/form';
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,7 +29,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false)
 
 
