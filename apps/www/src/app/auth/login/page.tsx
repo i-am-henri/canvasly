@@ -29,7 +29,8 @@ export default function Login() {
           information. We do not using cookies for tracking. You data is safe,
           and would never be given to third party providers.
         </h2>
-        <Input type="email" placeholder="Email" />
+        <Input required type="email" placeholder="Email" />
+        <Input required min={8} type="password" placeholder="Password" />
         <Button className="w-auto flex items-center space-x-3">
           <span>Submit</span>
         </Button>
