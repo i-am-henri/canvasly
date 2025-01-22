@@ -1,175 +1,276 @@
-'use client';
+"use client"
 
+import * as React from "react"
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
+  Blocks,
+  Calendar,
   Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map as MapIcon,
-  PieChart,
+  Home,
+  Inbox,
+  MessageCircleQuestion,
+  Search,
   Settings2,
-  SquareTerminal,
-} from 'lucide-react';
-import type * as React from 'react';
+  Sparkles,
+  Trash2,
+} from "lucide-react"
 
+import { NavFavorites } from "@/components/nav-favorites"
+import { NavMain } from "@/components/nav-main"
+import { NavSecondary } from "@/components/nav-secondary"
+import { NavWorkspaces } from "@/components/nav-workspaces"
+import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from '@/components/dashboard/sidebar';
-import { NavMain } from '@/components/nav-main';
-import { NavProjects } from '@/components/nav-projects';
-import { NavUser } from '@/components/nav-user';
-import { TeamSwitcher } from '@/components/team-switcher';
+} from "@/components/dashboard/sidebar"
 
 // This is sample data.
 const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
   teams: [
     {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
+      name: "Acme Inc",
       logo: Command,
-      plan: 'Free',
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
     },
   ],
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
+      title: "Search",
+      url: "#",
+      icon: Search,
+    },
+    {
+      title: "Ask AI",
+      url: "#",
+      icon: Sparkles,
+    },
+    {
+      title: "Home",
+      url: "#",
+      icon: Home,
       isActive: true,
-      items: [
-        {
-          title: 'History',
-          url: '#',
-        },
-        {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
-        },
-      ],
     },
     {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-      items: [
-        {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
-        },
-      ],
+      title: "Inbox",
+      url: "#",
+      icon: Inbox,
+      badge: "10",
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Calendar",
+      url: "#",
+      icon: Calendar,
     },
     {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
+      title: "Settings",
+      url: "#",
       icon: Settings2,
-      items: [
+    },
+    {
+      title: "Templates",
+      url: "#",
+      icon: Blocks,
+    },
+    {
+      title: "Trash",
+      url: "#",
+      icon: Trash2,
+    },
+    {
+      title: "Help",
+      url: "#",
+      icon: MessageCircleQuestion,
+    },
+  ],
+  favorites: [
+    {
+      name: "Project Management & Task Tracking",
+      url: "#",
+      emoji: "📊",
+    },
+    {
+      name: "Family Recipe Collection & Meal Planning",
+      url: "#",
+      emoji: "🍳",
+    },
+    {
+      name: "Fitness Tracker & Workout Routines",
+      url: "#",
+      emoji: "💪",
+    },
+    {
+      name: "Book Notes & Reading List",
+      url: "#",
+      emoji: "📚",
+    },
+    {
+      name: "Sustainable Gardening Tips & Plant Care",
+      url: "#",
+      emoji: "🌱",
+    },
+    {
+      name: "Language Learning Progress & Resources",
+      url: "#",
+      emoji: "🗣️",
+    },
+    {
+      name: "Home Renovation Ideas & Budget Tracker",
+      url: "#",
+      emoji: "🏠",
+    },
+    {
+      name: "Personal Finance & Investment Portfolio",
+      url: "#",
+      emoji: "💰",
+    },
+    {
+      name: "Movie & TV Show Watchlist with Reviews",
+      url: "#",
+      emoji: "🎬",
+    },
+    {
+      name: "Daily Habit Tracker & Goal Setting",
+      url: "#",
+      emoji: "✅",
+    },
+  ],
+  workspaces: [
+    {
+      name: "Personal Life Management",
+      emoji: "🏠",
+      pages: [
         {
-          title: 'General',
-          url: '#',
+          name: "Daily Journal & Reflection",
+          url: "#",
+          emoji: "📔",
         },
         {
-          title: 'Team',
-          url: '#',
+          name: "Health & Wellness Tracker",
+          url: "#",
+          emoji: "🍏",
         },
         {
-          title: 'Billing',
-          url: '#',
+          name: "Personal Growth & Learning Goals",
+          url: "#",
+          emoji: "🌟",
+        },
+      ],
+    },
+    {
+      name: "Professional Development",
+      emoji: "💼",
+      pages: [
+        {
+          name: "Career Objectives & Milestones",
+          url: "#",
+          emoji: "🎯",
         },
         {
-          title: 'Limits',
-          url: '#',
+          name: "Skill Acquisition & Training Log",
+          url: "#",
+          emoji: "🧠",
+        },
+        {
+          name: "Networking Contacts & Events",
+          url: "#",
+          emoji: "🤝",
+        },
+      ],
+    },
+    {
+      name: "Creative Projects",
+      emoji: "🎨",
+      pages: [
+        {
+          name: "Writing Ideas & Story Outlines",
+          url: "#",
+          emoji: "✍️",
+        },
+        {
+          name: "Art & Design Portfolio",
+          url: "#",
+          emoji: "🖼️",
+        },
+        {
+          name: "Music Composition & Practice Log",
+          url: "#",
+          emoji: "🎵",
+        },
+      ],
+    },
+    {
+      name: "Home Management",
+      emoji: "🏡",
+      pages: [
+        {
+          name: "Household Budget & Expense Tracking",
+          url: "#",
+          emoji: "💰",
+        },
+        {
+          name: "Home Maintenance Schedule & Tasks",
+          url: "#",
+          emoji: "🔧",
+        },
+        {
+          name: "Family Calendar & Event Planning",
+          url: "#",
+          emoji: "📅",
+        },
+      ],
+    },
+    {
+      name: "Travel & Adventure",
+      emoji: "🧳",
+      pages: [
+        {
+          name: "Trip Planning & Itineraries",
+          url: "#",
+          emoji: "🗺️",
+        },
+        {
+          name: "Travel Bucket List & Inspiration",
+          url: "#",
+          emoji: "🌎",
+        },
+        {
+          name: "Travel Journal & Photo Gallery",
+          url: "#",
+          emoji: "📸",
         },
       ],
     },
   ],
-  projects: [
-    {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: MapIcon,
-    },
-  ],
-};
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
+        <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavFavorites favorites={data.favorites} />
+        <NavWorkspaces workspaces={data.workspaces} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }

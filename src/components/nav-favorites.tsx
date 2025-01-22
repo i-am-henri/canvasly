@@ -1,11 +1,11 @@
 "use client"
 
 import {
-  Folder,
-  Forward,
+  ArrowUpRight,
+  Link,
   MoreHorizontal,
+  StarOff,
   Trash2,
-  type LucideIcon,
 } from "lucide-react"
 
 import {
@@ -25,26 +25,26 @@ import {
   useSidebar,
 } from "@/components/dashboard/sidebar"
 
-export function NavProjects({
-  projects,
+export function NavFavorites({
+  favorites,
 }: {
-  projects: {
+  favorites: {
     name: string
     url: string
-    icon: LucideIcon
+    emoji: string
   }[]
 }) {
   const { isMobile } = useSidebar()
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Favorites</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {favorites.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
+              <a href={item.url} title={item.name}>
+                <span>{item.emoji}</span>
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
@@ -56,22 +56,27 @@ export function NavProjects({
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-48 rounded-lg"
+                className="w-56 rounded-lg"
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
+                  <StarOff className="text-muted-foreground" />
+                  <span>Remove from Favorites</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link className="text-muted-foreground" />
+                  <span>Copy Link</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Forward className="text-muted-foreground" />
-                  <span>Share Project</span>
+                  <ArrowUpRight className="text-muted-foreground" />
+                  <span>Open in New Tab</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
+                  <span>Delete</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -79,7 +84,7 @@ export function NavProjects({
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
+            <MoreHorizontal />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
