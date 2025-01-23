@@ -23,7 +23,7 @@ export const fetchSidebarData = authActionClient.action(
     });
 
     // fetch the projecst by the users
-    const projects = db.presentation.findMany({
+    const projects = await db.presentation.findMany({
       where: {
         creator: {
           id: userId,
@@ -52,8 +52,18 @@ export const fetchSidebarData = authActionClient.action(
 
     return {
       projects,
-      sharedProjects,
-      users,
+      sharedProjects: sharedProjects?.presentationsJoined.map(
+        (presentation) => {
+          return {
+            ...presentation,
+          };
+        }
+      ),
+      users: users.map((user) => {
+        return {
+          ...user.user,
+        };
+      }),
     };
   }
 );

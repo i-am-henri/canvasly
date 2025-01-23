@@ -10,7 +10,6 @@ import { NavFavorites } from '@/components/nav-favorites';
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavWorkspaces } from '@/components/nav-workspaces';
-import { TeamSwitcher } from '@/components/team-switcher';
 import { useSidebarData } from '@/hooks/fetch/useSidebarData';
 import {
   AudioWaveform,
@@ -261,32 +260,37 @@ const constantData = {
 
 const fetchSchema = z.object({
   users: z
-    .object({
-      id: z.string(),
-      email: z.string().email(),
-      name: z.string(),
-      image: z.string().optional(),
-    })
-    .array(),
-  projects: z
-    .object({
-      id: z.string(),
-      title: z.string(),
-    })
-    .array(),
-  sharedProjects: z
-    .object({
+    .array(
+      z.object({
+        id: z.string(),
+        email: z.string().email(),
+        name: z.string(),
+        image: z.string().nullable(),
+      })
+    )
+    .nonempty(),
+  projects: z.array(
+    z.object({
       id: z.string(),
       title: z.string(),
     })
-    .array(),
+  ),
+  sharedProjects: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+    })
+  ),
 });
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const { isLoading, error, data } = useSidebarData();
+
   if (isLoading) {
     return <div>Laoading...</div>;
   }
+
+  console.log(JSON.stringify(data?.data));
 
   if (error) {
     throw new Error('Error occured!');
@@ -294,7 +298,6 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const parse = fetchSchema.safeParse(data?.data);
 
   if (!parse.success) {
-    console.log('Error at parsing the data.');
     throw new Error(
       `Could not fetch data! ${parse.error.errors.map((error) => error.message)}`
     );
@@ -302,7 +305,6 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={parse.data.users} />
         <NavMain items={constantData.navMain} />
       </SidebarHeader>
       <SidebarContent>
