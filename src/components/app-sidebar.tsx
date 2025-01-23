@@ -11,7 +11,7 @@ import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavWorkspaces } from '@/components/nav-workspaces';
 import { TeamSwitcher } from '@/components/team-switcher';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSidebarData } from '@/hooks/fetch/useSidebarData';
 import {
   AudioWaveform,
   Blocks,
@@ -26,6 +26,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { z } from 'zod';
 
 // This is sample constantData.
 const constantData = {
@@ -258,66 +259,54 @@ const constantData = {
   ],
 };
 
-// functions to fetch the data
-async function fetchSidebarData() {
-  // fetch the projects
-  const projectsRes = await fetch('/api/sidebar/projects');
-  if (!projectsRes.ok || !projectsRes.status.toString().startsWith('2')) {
-    throw new Error(
-      'Could not fetch the required links for the sidebar projects.'
-    );
-  }
-  const projects = await projectsRes.json();
-
-  // Fetching the user account
-  const accountRes = await fetch('/api/sidebar/users');
-  if (!accountRes.ok || !accountRes.status.toString().startsWith('2')) {
-    throw new Error('Could not fetch your accounts.');
-  }
-  const accounts = await accountRes.json();
-
-  // Fetching the shared projects
-  const sharedRes = await fetch('/api/sidebar/users');
-  if (!sharedRes.ok || !sharedRes.status.toString().startsWith('2')) {
-    throw new Error('Could not fetch your accounts.');
-  }
-  const shared = await sharedRes.json();
-
-  return {
-    sharedProjects: shared,
-    projects,
-    accounts,
-  };
-}
-
-async function updateSidebarData() {}
+const fetchSchema = z.object({
+  users: z
+    .object({
+      id: z.string(),
+      email: z.string().email(),
+      name: z.string(),
+      image: z.string().optional(),
+    })
+    .array(),
+  projects: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+    })
+    .array(),
+  sharedProjects: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+    })
+    .array(),
+});
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
-  const queryClient = useQueryClient();
-  // fetch the sidebar data
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['sidebarData'],
-    queryFn: fetchSidebarData,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  const { isLoading, error, data } = useSidebarData();
+  if (isLoading) {
+    return <div>Laoading...</div>;
+  }
 
-  const mutation = useMutation({
-    mutationFn: updateSidebarData,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['sidebarData'] });
-    },
-  });
-  console.log(data);
+  if (error) {
+    throw new Error('Error occured!');
+  }
+  const parse = fetchSchema.safeParse(data?.data);
 
+  if (!parse.success) {
+    console.log('Error at parsing the data.');
+    throw new Error(
+      `Could not fetch data! ${parse.error.errors.map((error) => error.message)}`
+    );
+  }
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={constantData.users} />
+        <TeamSwitcher teams={parse.data.users} />
         <NavMain items={constantData.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        <NavFavorites favorites={constantData.favorites} />
+        {!isLoading && <NavFavorites favorites={constantData.favorites} />}
         <NavWorkspaces workspaces={constantData.workspaces} />
         <NavSecondary items={constantData.navSecondary} className="mt-auto" />
       </SidebarContent>

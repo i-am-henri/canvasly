@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,15 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id                   String         @id
+  name                 String
+  email                String
+  emailVerified        Boolean
+  image                String?
+  createdAt            DateTime
+  updatedAt            DateTime
+  sessions             Session[]
+  accounts             Account[]
+  presentationsCreated Presentation[] @relation("CreatorRelation")
+  presentationsJoined  Presentation[] @relation("MemberRelation")
 
   @@unique([email])
   @@map("user")
@@ -66,4 +67,16 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+// canvasly logic
+model Presentation {
+  id          String  @id
+  title       String
+  description String?
+
+  creator User   @relation("CreatorRelation", fields: [userId], references: [id])
+  userId  String
+
+  members User[] @relation("MemberRelation")
 }

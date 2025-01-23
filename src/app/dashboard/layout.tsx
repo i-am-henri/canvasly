@@ -1,6 +1,6 @@
-import { AppSidebar } from '@/components/app-sidebar';
 import { CommandMenu } from '@/components/command-menu';
 import { SidebarInset, SidebarProvider } from '@/components/dashboard/sidebar';
+import SidebarWithData from '@/components/sidebar-data';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <CommandMenu />
-      <AppSidebar />
+      <SidebarWithData />
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );

@@ -1,10 +1,27 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { headers } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 // get the users of an account
 export async function GET() {
+  const user = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!user) {
+    return NextResponse.json(
+      {
+        status: 'Unauthorized',
+      },
+      {
+        status: 421,
+      }
+    );
+  }
   // Fetch the users of this account
-  const users = await auth.api.listUserAccounts();
+  const users = await auth.api.listUserAccounts({
+    headers: await headers(),
+  });
 
   // Prepare accounts array
   const accounts: {
@@ -13,7 +30,7 @@ export async function GET() {
     image?: string;
   }[] = [];
 
-  for (const user of users) {
+  for await (const user of users) {
     // Fetch user details from the database
     const dbUser = await db.user.findUnique({
       where: {
