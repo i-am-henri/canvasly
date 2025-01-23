@@ -1,3 +1,4 @@
+import Providers from '@/components/providers';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
@@ -29,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Toaster expand />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
