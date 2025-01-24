@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from '@/action/auth/login';
 import {
   Form,
   FormControl,
@@ -7,9 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/dashboard/form';
-import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -51,29 +50,24 @@ export default function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // sign the user in with better-auth
-    await authClient.signIn.email(
-      {
-        email: values.email,
-        password: values.password,
-      },
-      {
-        onRequest: () => {
-          setIsLoading(true);
-        },
-        onSuccess: () => {
-          setIsLoading(false);
-          redirect('/dashboard');
-        },
-        onError: (ctx) => {
-          setIsLoading(false);
-          toast.error(
-            `${ctx.error.status}: ${ctx.error.message || ctx.error.statusText}`
-          );
-        },
-      }
-    );
+    console.log('Login the user in!');
+    setIsLoading(true);
+
+    const res = await signIn({
+      email: values.email,
+      password: values.password,
+    });
+
+    console.log(JSON.stringify(res));
+
+    setIsLoading(false);
+
+    if (res?.serverError) {
+      toast.error(res.serverError);
+      return;
+    }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -103,10 +97,11 @@ export default function LoginForm() {
         />
         <div className="flex items-center space-x-3">
           <Button
+            type="submit"
             disabled={isLoading}
             className="w-auto flex items-centese-x-3"
           >
-            <span>Submit</span>
+            Submit
           </Button>
           {isLoading && <span>Loading...</span>}
         </div>

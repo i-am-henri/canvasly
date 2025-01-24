@@ -292,6 +292,8 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
     return <div>Loading...</div>;
   }
 
+  console.log(data?.serverError);
+
   if (error || data?.serverError) {
     throw new Error('Error occured!');
   }

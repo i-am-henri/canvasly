@@ -1,16 +1,13 @@
 'use server';
+
 import { db } from '@/lib/db';
-import { createId } from '@paralleldrive/cuid2';
+import { createSession } from '@/lib/session';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { actionClient } from '../action';
 
-export const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters long.' })
-    .trim(),
+const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
   password: z
     .string()
@@ -30,25 +27,30 @@ export const formSchema = z.object({
 
 export const signIn = actionClient
   .schema(formSchema)
-  .action(async ({ parsedInput: { email, name, password } }) => {
+  .action(async ({ parsedInput: { email, password } }) => {
     // Process the sign in request
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await db.user.create({
-      data: {
+    // checking if the user already has a session, if not a new one will be created
+    const user = await db.user.findUnique({
+      where: {
         email,
-        name,
-        id: createId(),
-        password: hashedPassword,
-        emailVerified: false,
       },
     });
 
     if (!user) {
-      throw new Error(
-        'Failed to create user. Please try again later or contact support.'
-      );
+      throw new Error('User not found');
     }
 
-    redirect('/auth/verify');
+    bcrypt.compare(user.password, password, async (err, res) => {
+      if (err) {
+        throw new Error('Error while comparing passwords');
+      }
+      if (res) {
+        // create a session
+        await createSession({ userId: user.id });
+      } else {
+        throw new Error('Invalid password');
+      }
+    });
+
+    redirect('/dashboard');
   });

@@ -1,5 +1,6 @@
 'use client';
 
+import { signUp } from '@/action/auth/register';
 import {
   Form,
   FormControl,
@@ -7,9 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/dashboard/form';
-import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -52,29 +51,23 @@ export default function RegisterForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // sign the user in with better-auth
-    await authClient.signUp.email(
-      {
-        name: values.username,
-        email: values.email,
-        password: values.password,
-      },
-      {
-        onRequest: () => {
-          setIsLoading(true);
-        },
-        onSuccess: () => {
-          setIsLoading(false);
-          redirect('/dashboard');
-        },
-        onError: (ctx) => {
-          setIsLoading(false);
-          toast.error(
-            `${ctx.error.status}: ${ctx.error.message || ctx.error.statusText}`
-          );
-        },
-      }
-    );
+    // register the user
+    console.log('Register the user in!');
+
+    setIsLoading(true);
+
+    const res = await signUp({
+      name: values.username,
+      email: values.email,
+      password: values.password,
+    });
+
+    setIsLoading(false);
+
+    if (res?.serverError) {
+      toast.error(res.serverError);
+      return;
+    }
   }
   return (
     <Form {...form}>

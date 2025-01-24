@@ -1,11 +1,8 @@
-import { auth } from '@/lib/auth';
+import { verifySession } from '@/lib/dal';
 import { createMiddleware, createSafeActionClient } from 'next-safe-action';
-import { headers } from 'next/headers';
 
 export const authMiddleware = createMiddleware().define(async ({ next }) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await verifySession();
 
   if (!session) {
     throw new Error('Unauthorized');
@@ -13,8 +10,7 @@ export const authMiddleware = createMiddleware().define(async ({ next }) => {
 
   return next({
     ctx: {
-      sessionId: session.session.id,
-      userId: session.user.id,
+      userId: session.userId,
     },
   });
 });
