@@ -15,7 +15,6 @@ export const fetchActiveUser = authActionClient.action(
       (await cookies()).set('active-user', userId);
       redirect(`/dashboard/${userId}`);
     }
-
     const user = await db.user.findUnique({
       where: {
         id: userId,

@@ -13,10 +13,11 @@ model User {
   email                String
   emailVerified        Boolean
   image                String?
-  createdAt            DateTime
-  updatedAt            DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
   sessions             Session[]
-  accounts             Account[]
+  password String?
+
   presentationsCreated Presentation[] @relation("CreatorRelation")
   presentationsJoined  Presentation[] @relation("MemberRelation")
 
@@ -39,24 +40,6 @@ model Session {
   @@map("session")
 }
 
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
-
-  @@map("account")
-}
 
 model Verification {
   id         String    @id
