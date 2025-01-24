@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronDown, Plus } from 'lucide-react';
+import { ChevronDown, Plus, User } from 'lucide-react';
 import * as React from 'react';
 
 import {
@@ -17,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/dashboard/sidebar';
+import Image from 'next/image';
 
 export function TeamSwitcher({
   teams,
@@ -31,13 +32,21 @@ export function TeamSwitcher({
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="w-full">
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="w-fit px-1.5">
               <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <activeTeam.logo className="size-3" />
+                {(activeTeam.image && (
+                  <Image
+                    src={activeTeam.image}
+                    alt="Logo of user"
+                    width={12}
+                    height={12}
+                    className="size-3"
+                  />
+                )) || <User className="size-3" />}
               </div>
               <span className="truncate font-semibold">{activeTeam.name}</span>
               <ChevronDown className="opacity-50" />
@@ -59,7 +68,15 @@ export function TeamSwitcher({
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <team.logo className="size-4 shrink-0" />
+                  {(team.image && (
+                    <Image
+                      src={team.image}
+                      alt="Logo of user"
+                      width={12}
+                      height={12}
+                      className="size-3"
+                    />
+                  )) || <User className="size-3" />}
                 </div>
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>

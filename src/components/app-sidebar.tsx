@@ -25,7 +25,9 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
+import { TeamSwitcher } from './team-switcher';
 
 // This is sample constantData.
 const constantData = {
@@ -290,21 +292,35 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
     return <div>Laoading...</div>;
   }
 
-  console.log(JSON.stringify(data?.data));
-
   if (error) {
     throw new Error('Error occured!');
   }
   const parse = fetchSchema.safeParse(data?.data);
 
   if (!parse.success) {
-    throw new Error(
-      `Could not fetch data! ${parse.error.errors.map((error) => error.message)}`
+    toast.error(
+      'Error while loading the data for the sidebar. Schema is not matching... Try to refresh or contact us.'
+    );
+    return (
+      <p className="text-red-500">
+        Error while loading the data for the sidebar. Schema is not matching...
+        Try to refresh or contact us.
+      </p>
     );
   }
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
+        <TeamSwitcher
+          teams={
+            parse.data.users as {
+              name: string;
+              image?: string;
+              email: string;
+              id: string;
+            }[]
+          }
+        />
         <NavMain items={constantData.navMain} />
       </SidebarHeader>
       <SidebarContent>
