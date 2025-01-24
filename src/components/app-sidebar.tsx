@@ -289,12 +289,13 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const { isLoading, error, data } = useSidebarData();
 
   if (isLoading) {
-    return <div>Laoading...</div>;
+    return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (error || data?.serverError) {
     throw new Error('Error occured!');
   }
+
   const parse = fetchSchema.safeParse(data?.data);
 
   if (!parse.success) {

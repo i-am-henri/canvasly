@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronDown, Plus, User } from 'lucide-react';
-import * as React from 'react';
 
 import {
   DropdownMenu,
@@ -17,6 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/dashboard/sidebar';
+import { useActiveUser } from '@/hooks/useActiveUser';
 import Image from 'next/image';
 
 export function TeamSwitcher({
@@ -29,7 +29,16 @@ export function TeamSwitcher({
     id: string;
   }[];
 }) {
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  console.log(teams);
+  const { data, isLoading, error } = useActiveUser();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data || error || data.serverError || !data.data) {
+    throw new Error('Could not fetch user.');
+  }
 
   return (
     <SidebarMenu className="w-full">
@@ -38,9 +47,9 @@ export function TeamSwitcher({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="w-fit px-1.5">
               <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                {(activeTeam.image && (
+                {(data.data?.image && (
                   <Image
-                    src={activeTeam.image}
+                    src={data.data.image}
                     alt="Logo of user"
                     width={12}
                     height={12}
@@ -48,7 +57,7 @@ export function TeamSwitcher({
                   />
                 )) || <User className="size-3" />}
               </div>
-              <span className="truncate font-semibold">{activeTeam.name}</span>
+              <span className="truncate font-semibold">{data.data.name}</span>
               <ChevronDown className="opacity-50" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -64,7 +73,7 @@ export function TeamSwitcher({
             {teams.map((team, index) => (
               <DropdownMenuItem
                 key={team.name}
-                onClick={() => setActiveTeam(team)}
+                onClick={() => null}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">

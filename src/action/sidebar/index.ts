@@ -59,9 +59,9 @@ export const fetchSidebarData = authActionClient.action(
           };
         }
       ),
-      users: users.map((user) => {
+      users: users.map((userArray) => {
         return {
-          ...user.user,
+          ...userArray.user,
         };
       }),
     };
