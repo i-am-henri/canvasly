@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/dashboard/form';
-import { authClient } from "@/lib/auth-client";
+import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
@@ -17,21 +17,30 @@ import { z } from 'zod';
 import Button from '../ui/button';
 import Input from '../ui/input';
 
-const formSchema = z.object({
-    username: z.string().min(4),
-  email: z.string().email({
-    message: "Email must be defined!"
-  }),
-    password: z.string().min(8, {
-      message: "Password must be 8 characters long."
-    }).max(50, {
-      message: "Password must be at most 50 characters long."
-  }),
+export const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: 'Name must be at least 2 characters long.' })
+    .trim(),
+  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters long' })
+    .regex(/[a-zA-Z]/, {
+      message: 'Password must contain at least one letter.',
+    })
+    .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
+    .regex(/[^a-zA-Z0-9]/, {
+      message: 'Password must contain at least one special character.',
+    })
+    .max(50, {
+      message: 'Password is not allowed to be longer than 50 characters.',
+    })
+    .trim(),
 });
 
 export default function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,22 +52,27 @@ export default function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // sign the user in with better-auth
-    await authClient.signIn.email({
-      email: values.email,
-      password: values.password,
-    }, {
-      onRequest: () => {
-        setIsLoading(true)
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
       },
-      onSuccess: () => {
-        setIsLoading(false)
-        redirect("/dashboard")
-      },
-      onError: (ctx) => {
-        setIsLoading(false)
-        toast.error(`${ctx.error.status}: ${ctx.error.message || ctx.error.statusText}`)
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          setIsLoading(false);
+          redirect('/dashboard');
+        },
+        onError: (ctx) => {
+          setIsLoading(false);
+          toast.error(
+            `${ctx.error.status}: ${ctx.error.message || ctx.error.statusText}`
+          );
+        },
       }
-    })
+    );
   }
   return (
     <Form {...form}>
@@ -88,12 +102,13 @@ export default function LoginForm() {
           )}
         />
         <div className="flex items-center space-x-3">
-          <Button disabled={isLoading} className="w-auto flex items-centese-x-3">
+          <Button
+            disabled={isLoading}
+            className="w-auto flex items-centese-x-3"
+          >
             <span>Submit</span>
           </Button>
-          {isLoading && (
-            <span>Loading...</span>
-          )}
+          {isLoading && <span>Loading...</span>}
         </div>
       </form>
     </Form>

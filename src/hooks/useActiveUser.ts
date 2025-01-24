@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useActiveUser = () => {
   return useQuery({
-    queryKey: ['SidebarData'],
+    queryKey: ['ActiveUser'],
     queryFn: () => fetchActiveUser(),
   });
 };

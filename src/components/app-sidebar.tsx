@@ -296,6 +296,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
     throw new Error('Error occured!');
   }
 
+  // parsing the provided data
   const parse = fetchSchema.safeParse(data?.data);
 
   if (!parse.success) {
@@ -309,6 +310,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </p>
     );
   }
+
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>

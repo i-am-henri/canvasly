@@ -17,6 +17,7 @@ import {
   SidebarMenuItem,
 } from '@/components/dashboard/sidebar';
 import { useActiveUser } from '@/hooks/useActiveUser';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 export function TeamSwitcher({
@@ -29,7 +30,6 @@ export function TeamSwitcher({
     id: string;
   }[];
 }) {
-  console.log(teams);
   const { data, isLoading, error } = useActiveUser();
 
   if (isLoading) {
@@ -74,7 +74,10 @@ export function TeamSwitcher({
               <DropdownMenuItem
                 key={team.name}
                 onClick={() => null}
-                className="gap-2 p-2"
+                className={cn(
+                  'gap-2 p-2',
+                  data?.data?.id === team.id && 'bg-neutral-50'
+                )}
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
                   {(team.image && (
