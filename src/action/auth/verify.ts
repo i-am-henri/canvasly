@@ -47,5 +47,5 @@ export const verifyToken = actionClient
       throw new Error('Could not update the verification token');
     }
 
-    redirect('/dashboard');
+    redirect('/auth/login');
   });

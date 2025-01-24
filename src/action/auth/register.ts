@@ -1,10 +1,14 @@
 'use server';
 import { db } from '@/lib/db';
-import { createId } from '@paralleldrive/cuid2';
+import { createId, init } from '@paralleldrive/cuid2';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { actionClient } from '../action';
+
+const generateCode = init({
+  length: 6,
+});
 
 const formSchema = z.object({
   name: z
@@ -49,6 +53,17 @@ export const signUp = actionClient
         'Failed to create user. Please try again later or contact support.'
       );
     }
+
+    // create the verification token
+    const verification = await db.verification.create({
+      data: {
+        value: generateCode(),
+        id: createId(),
+        expiresAt: new Date(Date.now() + 60 * 20 * 1000),
+      },
+    });
+
+    // sending the email verification code
 
     redirect('/auth/verify');
   });

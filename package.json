@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:email": "email dev",
+    "build:email": "email build",
+    "export:email": "email export"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -22,6 +25,7 @@
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.7",
+    "@react-email/components": "^0.0.32",
     "@tanstack/react-query": "^5.64.2",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
@@ -35,6 +39,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "resend": "^4.1.1",
     "sonner": "^1.7.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
@@ -48,6 +53,7 @@
     "@types/react-dom": "^19.0.3",
     "postcss": "^8.5.1",
     "prisma": "^6.2.1",
+    "react-email": "^3.0.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "ultracite": "^4.1.16"
