@@ -2,8 +2,7 @@
 
 import { db } from '@/lib/db';
 import { createSession } from '@/lib/session';
-import bcrypt from 'bcrypt';
-import { redirect } from 'next/navigation';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { actionClient } from '../action';
 
@@ -28,6 +27,7 @@ const formSchema = z.object({
 export const signIn = actionClient
   .schema(formSchema)
   .action(async ({ parsedInput: { email, password } }) => {
+    console.log('Sign in...');
     // Process the sign in request
     // checking if the user already has a session, if not a new one will be created
     const user = await db.user.findUnique({
@@ -40,17 +40,18 @@ export const signIn = actionClient
       throw new Error('User not found');
     }
 
-    bcrypt.compare(user.password, password, async (err, res) => {
-      if (err) {
-        throw new Error('Error while comparing passwords');
-      }
-      if (res) {
-        // create a session
-        await createSession({ userId: user.id });
-      } else {
-        throw new Error('Invalid password');
-      }
-    });
+    console.log('User found:', JSON.stringify(user));
+    console.log('Email:', email);
+    console.log('Password:', user.password);
 
-    redirect('/dashboard');
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Invalid password');
+    }
+
+    // create a session
+    await createSession({ userId: user.id });
+
+    console.log('checks done');
   });

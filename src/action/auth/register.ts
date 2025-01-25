@@ -1,7 +1,7 @@
 'use server';
 import { db } from '@/lib/db';
 import { createId, init } from '@paralleldrive/cuid2';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { actionClient } from '../action';

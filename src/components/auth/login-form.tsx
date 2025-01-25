@@ -1,5 +1,4 @@
 'use client';
-
 import { signIn } from '@/action/auth/login';
 import {
   Form,
@@ -9,6 +8,7 @@ import {
   FormMessage,
 } from '@/components/dashboard/form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { redirect, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -17,10 +17,6 @@ import Button from '../ui/button';
 import Input from '../ui/input';
 
 export const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters long.' })
-    .trim(),
   email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
   password: z
     .string()
@@ -40,6 +36,7 @@ export const formSchema = z.object({
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,22 +47,18 @@ export default function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('Login the user in!');
     setIsLoading(true);
-
     const res = await signIn({
       email: values.email,
       password: values.password,
     });
-
     console.log(JSON.stringify(res));
-
     setIsLoading(false);
-
     if (res?.serverError) {
       toast.error(res.serverError);
       return;
     }
+    redirect('/dashboard');
   }
 
   return (
