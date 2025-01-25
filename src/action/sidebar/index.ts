@@ -5,23 +5,6 @@ import { authActionClient } from '../auth-action';
 
 export const fetchSidebarData = authActionClient.action(
   async ({ ctx: { userId } }) => {
-    // fetch the accounts from the user
-    const users = await db.account.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        user: {
-          select: {
-            email: true,
-            id: true,
-            image: true,
-            name: true,
-          },
-        },
-      },
-    });
-
     // fetch the projecst by the users
     const projects = await db.presentation.findMany({
       where: {
@@ -59,11 +42,6 @@ export const fetchSidebarData = authActionClient.action(
           };
         }
       ),
-      users: users.map((userArray) => {
-        return {
-          ...userArray.user,
-        };
-      }),
     };
   }
 );

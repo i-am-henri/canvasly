@@ -27,7 +27,6 @@ const formSchema = z.object({
 export const signIn = actionClient
   .schema(formSchema)
   .action(async ({ parsedInput: { email, password } }) => {
-    console.log('Sign in...');
     // Process the sign in request
     // checking if the user already has a session, if not a new one will be created
     const user = await db.user.findUnique({
@@ -40,10 +39,6 @@ export const signIn = actionClient
       throw new Error('User not found');
     }
 
-    console.log('User found:', JSON.stringify(user));
-    console.log('Email:', email);
-    console.log('Password:', user.password);
-
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -52,6 +47,4 @@ export const signIn = actionClient
 
     // create a session
     await createSession({ userId: user.id });
-
-    console.log('checks done');
   });

@@ -33,7 +33,6 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function createSession({ userId }: { userId: string }) {
-  console.log('Create session...');
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   // create a session
@@ -49,8 +48,6 @@ export async function createSession({ userId }: { userId: string }) {
 
   const session = await encrypt({ sessionId, expiresAt, userId });
 
-  console.log('Session created:', session);
-
   const cookieStore = await cookies();
 
   cookieStore.set('session', session, {
@@ -60,6 +57,4 @@ export async function createSession({ userId }: { userId: string }) {
     sameSite: 'lax',
     path: '/',
   });
-
-  console.log('Session cookie set:', cookieStore.get('session'));
 }

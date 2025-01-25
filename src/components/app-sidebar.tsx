@@ -12,10 +12,8 @@ import { NavSecondary } from '@/components/nav-secondary';
 import { NavWorkspaces } from '@/components/nav-workspaces';
 import { useSidebarData } from '@/hooks/fetch/useSidebarData';
 import {
-  AudioWaveform,
   Blocks,
   Calendar,
-  Command,
   Home,
   Inbox,
   MessageCircleQuestion,
@@ -27,31 +25,16 @@ import {
 import type { ComponentProps } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { TeamSwitcher } from './team-switcher';
+import { UserMenu } from './user-menu';
 
 // This is sample constantData.
 const constantData = {
-  users: [
-    {
-      name: 'henri',
-      logo: Command,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
   navMain: [
     {
       title: 'Search',
-      url: '',
+      onClick({ setState }: { setState: (state: boolean) => void }) {
+        setState(true);
+      },
       icon: Search,
     },
     {
@@ -261,16 +244,6 @@ const constantData = {
 };
 
 const fetchSchema = z.object({
-  users: z
-    .array(
-      z.object({
-        id: z.string(),
-        email: z.string().email(),
-        name: z.string(),
-        image: z.string().nullable(),
-      })
-    )
-    .nonempty(),
   projects: z.array(
     z.object({
       id: z.string(),
@@ -291,9 +264,6 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  console.log(data?.serverError);
-
   if (error || data?.serverError) {
     throw new Error('Error occured!');
   }
@@ -316,16 +286,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
-        <TeamSwitcher
-          teams={
-            parse.data.users as {
-              name: string;
-              image?: string;
-              email: string;
-              id: string;
-            }[]
-          }
-        />
+        <UserMenu />
         <NavMain items={constantData.navMain} />
       </SidebarHeader>
       <SidebarContent>
