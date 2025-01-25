@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   ArrowUpRight,
@@ -6,7 +6,7 @@ import {
   MoreHorizontal,
   StarOff,
   Trash2,
-} from "lucide-react"
+} from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/dashboard/dropdown-menu"
+} from '@/components/dashboard/dropdown-menu';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -23,29 +23,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/dashboard/sidebar"
+} from '@/components/dashboard/sidebar';
 
-export function NavFavorites({
-  favorites,
+export function NavProjects({
+  projects,
 }: {
-  favorites: {
-    name: string
-    url: string
-    emoji: string
-  }[]
+  projects: {
+    title: string;
+    id: string;
+    emoji?: string;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Favorites</SidebarGroupLabel>
+      <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
-        {favorites.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {projects.map((item) => (
+          <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
-              <a href={item.url} title={item.name}>
+              <a href={item.id} title={item.title}>
                 <span>{item.emoji}</span>
-                <span>{item.name}</span>
+                <span>{item.title}</span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>
@@ -57,8 +57,8 @@ export function NavFavorites({
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className="w-56 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
+                side={isMobile ? 'bottom' : 'right'}
+                align={isMobile ? 'end' : 'start'}
               >
                 <DropdownMenuItem>
                   <StarOff className="text-muted-foreground" />
@@ -90,5 +90,5 @@ export function NavFavorites({
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

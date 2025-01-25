@@ -7,5 +7,6 @@ export const useSidebarData = () => {
   return useQuery({
     queryKey: ['SidebarData'],
     queryFn: () => fetchSidebarData(),
+    staleTime: 1000 * 3,
   });
 };

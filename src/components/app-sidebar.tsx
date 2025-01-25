@@ -6,10 +6,10 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/dashboard/sidebar';
-import { NavFavorites } from '@/components/nav-favorites';
 import { NavMain } from '@/components/nav-main';
+import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
-import { NavWorkspaces } from '@/components/nav-workspaces';
+import { NavSharedProjects } from '@/components/nav-shared-projects';
 import { useSidebarData } from '@/hooks/fetch/useSidebarData';
 import {
   Blocks,
@@ -25,6 +25,7 @@ import {
 import type { ComponentProps } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { Skeleton } from './dashboard/skeleton';
 import { UserMenu } from './user-menu';
 
 // This is sample constantData.
@@ -260,12 +261,26 @@ const fetchSchema = z.object({
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const { isLoading, error, data } = useSidebarData();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   if (error || data?.serverError) {
     throw new Error('Error occured!');
+  }
+
+  if (isLoading) {
+    return (
+      <Sidebar className="border-r-0" {...props}>
+        <SidebarHeader>
+          <UserMenu />
+          <NavMain items={constantData.navMain} />
+        </SidebarHeader>
+        <SidebarContent>
+          {[1, 2, 3, 4].map((entry) => (
+            <Skeleton key={entry} className="w-56 h-[20px] rounded-md mx-3" />
+          ))}
+          <NavSecondary items={constantData.navSecondary} className="mt-auto" />
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+    );
   }
 
   // parsing the provided data
@@ -290,8 +305,8 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
         <NavMain items={constantData.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        {!isLoading && <NavFavorites favorites={constantData.favorites} />}
-        <NavWorkspaces workspaces={constantData.workspaces} />
+        <NavProjects projects={parse.data.projects} />
+        <NavSharedProjects sharedProjects={parse.data.sharedProjects} />
         <NavSecondary items={constantData.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarRail />
