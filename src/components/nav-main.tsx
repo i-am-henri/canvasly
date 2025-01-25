@@ -1,6 +1,6 @@
 'use client';
 
-import type { LucideIcon } from 'lucide-react';
+import { Home, Inbox, type LucideIcon, Search, Sparkles } from 'lucide-react';
 
 import {
   SidebarMenu,
@@ -9,17 +9,39 @@ import {
 } from '@/components/dashboard/sidebar';
 import { useCommandStore } from './command-menu';
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url?: string;
-    onClick?: ({ setState }: { setState: (state: boolean) => void }) => void;
-    icon: LucideIcon;
-    isActive?: boolean;
-  }[];
-}) {
+const items: {
+  title: string;
+  url?: string;
+  onClick?: ({ setState }: { setState: (state: boolean) => void }) => void;
+  icon: LucideIcon;
+  isActive?: boolean;
+}[] = [
+  {
+    title: 'Search',
+    onClick({ setState }: { setState: (state: boolean) => void }) {
+      setState(true);
+    },
+    icon: Search,
+  },
+  {
+    title: 'Ask AI',
+    url: '#',
+    icon: Sparkles,
+  },
+  {
+    title: 'Home',
+    url: '#',
+    icon: Home,
+    isActive: true,
+  },
+  {
+    title: 'Inbox',
+    url: '#',
+    icon: Inbox,
+  },
+];
+
+export function NavMain() {
   const { setState } = useCommandStore();
   return (
     <SidebarMenu>

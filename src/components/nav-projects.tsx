@@ -43,7 +43,7 @@ export function NavProjects({
         {projects.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
-              <a href={item.id} title={item.title}>
+              <a href={`/dashboard/${item.id}`} title={item.title}>
                 <span>{item.emoji}</span>
                 <span>{item.title}</span>
               </a>

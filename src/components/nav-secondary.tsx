@@ -1,5 +1,12 @@
-import React from "react"
-import { type LucideIcon } from "lucide-react"
+'use client';
+import {
+  Blocks,
+  Calendar,
+  type LucideIcon,
+  MessageCircleQuestion,
+  Settings2,
+  Trash2,
+} from 'lucide-react';
 
 import {
   SidebarGroup,
@@ -8,19 +15,45 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/dashboard/sidebar"
+} from '@/components/dashboard/sidebar';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+const items: {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+  badge?: ReactNode;
+}[] = [
+  {
+    title: 'Calendar',
+    url: '#',
+    icon: Calendar,
+  },
+  {
+    title: 'Settings',
+    url: '#',
+    icon: Settings2,
+  },
+  {
+    title: 'Templates',
+    url: '#',
+    icon: Blocks,
+  },
+  {
+    title: 'Trash',
+    url: '#',
+    icon: Trash2,
+  },
+  {
+    title: 'Help',
+    url: '#',
+    icon: MessageCircleQuestion,
+  },
+];
 
 export function NavSecondary({
-  items,
   ...props
-}: {
-  items: {
-    title: string
-    url: string
-    icon: LucideIcon
-    badge?: React.ReactNode
-  }[]
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -39,5 +72,5 @@ export function NavSecondary({
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
+  );
 }
