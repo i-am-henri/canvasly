@@ -1,4 +1,5 @@
 'use client';
+import { createPresentation } from '@/action/platform/create-presentation';
 import {
   Form,
   FormControl,
@@ -38,6 +39,12 @@ export default function CreateForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // handle submit of the form
+    setIsLoading(true);
+    const res = await createPresentation({
+      emoji,
+      title: values.title,
+    });
+    setIsLoading(false);
   }
 
   return (

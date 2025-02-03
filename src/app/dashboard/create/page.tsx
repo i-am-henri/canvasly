@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,10 +7,8 @@ import {
 import { Separator } from '@/components/dashboard/separator';
 import { SidebarTrigger } from '@/components/dashboard/sidebar';
 import CreateForm from '@/components/forms/create-form';
-import { useState } from 'react';
 
 export default function Page() {
-  const [emojiPicker, setEmojiPicker] = useState(false);
   return (
     <>
       <header className="flex h-14 shrink-0 items-center gap-2">
