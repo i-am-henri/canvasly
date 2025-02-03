@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   Link,
   MoreHorizontal,
+  Plus,
   StarOff,
   Trash2,
 } from 'lucide-react';
@@ -84,8 +85,8 @@ export function NavSharedProjects({
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal />
-            <span>More</span>
+            <Plus className="text-muted-foreground" />
+            <span>Join presentation</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
