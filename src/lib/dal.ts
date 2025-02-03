@@ -8,7 +8,7 @@ import { db } from './db';
 
 export const verifySession = cache(async () => {
   const cookie = (await cookies()).get('session')?.value;
-  const session = await decrypt(cookie);
+  const session = await decrypt(cookie) as { userId?: string };
 
   if (!session?.userId) {
     redirect('/auth/login');

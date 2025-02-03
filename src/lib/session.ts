@@ -22,14 +22,13 @@ export function encrypt(payload: {
 }
 
 export async function decrypt(session: string | undefined = '', request?: Request) {
-  console.log("encoded key:", encodedKey);
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
     });
     return payload;
   } catch (err) {
-    console.error('Error decrypting session:', JSON.stringify(err));
+    console.error("⚠️ We got an error while decrypting the session. It's likely that the session has expired or never existed.");
     if (request) {
     return NextResponse.redirect(new URL('/auth/login', request.url));
     }
