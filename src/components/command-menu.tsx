@@ -27,7 +27,7 @@ import { useEffect } from 'react';
 export function CommandMenu() {
   const { state, setState } = useCommandStore();
 
-  // open command menu on strg + k
+  // open command menu on strg + k / command + k
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {

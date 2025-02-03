@@ -4,6 +4,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { db } from './db';
+import { NextResponse } from 'next/server';
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -20,15 +21,19 @@ export function encrypt(payload: {
     .sign(encodedKey);
 }
 
-export async function decrypt(session: string | undefined = '') {
+export async function decrypt(session: string | undefined = '', request?: Request) {
+  console.log("encoded key:", encodedKey);
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
     });
     return payload;
   } catch (err) {
-    console.error('Error decrypting session:', err);
-    redirect('/auth/login');
+    console.error('Error decrypting session:', JSON.stringify(err));
+    if (request) {
+    return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
+    return redirect("/auth/login");
   }
 }
 
