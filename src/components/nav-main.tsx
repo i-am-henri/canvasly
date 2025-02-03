@@ -1,12 +1,13 @@
 'use client';
 
-import { Home, Inbox, type LucideIcon, Search, Sparkles } from 'lucide-react';
+import { Home, type LucideIcon, Search } from 'lucide-react';
 
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/dashboard/sidebar';
+import { usePathname } from 'next/navigation';
 import { useCommandStore } from './command-menu';
 
 const items: {
@@ -24,30 +25,23 @@ const items: {
     icon: Search,
   },
   {
-    title: 'Ask AI',
-    url: '#',
-    icon: Sparkles,
-  },
-  {
     title: 'Home',
-    url: '#',
+    url: '/dashboard',
     icon: Home,
-    isActive: true,
-  },
-  {
-    title: 'Inbox',
-    url: '#',
-    icon: Inbox,
   },
 ];
 
 export function NavMain() {
   const { setState } = useCommandStore();
+  const pathname = usePathname();
   return (
     <SidebarMenu>
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={item.isActive}>
+          <SidebarMenuButton
+            asChild
+            isActive={item.url ? item.url === pathname : false}
+          >
             {(item.onClick && (
               <button
                 type="button"

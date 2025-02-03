@@ -6,8 +6,6 @@ import {
 } from '@/components/dashboard/breadcrumb';
 import { Separator } from '@/components/dashboard/separator';
 import { SidebarTrigger } from '@/components/dashboard/sidebar';
-import { NavActions } from '@/components/nav-actions';
-import { SettingsDialog } from '@/components/settings-dialog';
 
 export default function Page() {
   return (
@@ -20,20 +18,15 @@ export default function Page() {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbPage className="line-clamp-1">
-                  Project Management & Task Tracking
+                  Presentations you've created or joined
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        <div className="ml-auto px-3">
-          <NavActions />
-        </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 px-4 py-10">
-        <div className="mx-auto h-24 w-full max-w-3xl rounded-xl bg-muted/50" />
-        <div className="mx-auto h-full w-full max-w-3xl rounded-xl bg-muted/50" />
-        <SettingsDialog />
+        <h2>Your created presentations</h2>
       </div>
     </>
   );

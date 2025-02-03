@@ -8,6 +8,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/dashboard/command';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { create } from 'zustand';
 
 type State = {
@@ -23,7 +24,9 @@ export const useCommandStore = create<State & Actions>((set) => ({
   setState: (state) => set(() => ({ state: state })),
 }));
 
+import { DialogTitle } from '@radix-ui/react-dialog';
 import { useEffect } from 'react';
+
 export function CommandMenu() {
   const { state, setState } = useCommandStore();
 
@@ -40,16 +43,19 @@ export function CommandMenu() {
   }, [state, setState]);
 
   return (
-    <CommandDialog open={state} onOpenChange={setState}>
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          <CommandItem>Calendar</CommandItem>
-          <CommandItem>Search Emoji</CommandItem>
-          <CommandItem>Calculator</CommandItem>
-        </CommandGroup>
-      </CommandList>
-    </CommandDialog>
+    <VisuallyHidden>
+      <CommandDialog open={state} onOpenChange={setState}>
+        <DialogTitle className="hidden">Command Menu</DialogTitle>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            <CommandItem>Create a new presentation</CommandItem>
+            <CommandItem>Search Emoji</CommandItem>
+            <CommandItem>Calculator</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </VisuallyHidden>
   );
 }
