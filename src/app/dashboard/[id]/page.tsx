@@ -6,10 +6,28 @@ import {
 } from '@/components/dashboard/breadcrumb';
 import { Separator } from '@/components/dashboard/separator';
 import { SidebarTrigger } from '@/components/dashboard/sidebar';
-import { NavActions } from '@/components/nav-actions';
-import { SettingsDialog } from '@/components/settings-dialog';
+import { PresentationEditor } from '@/components/presentation';
+import { verifySession } from '@/lib/dal';
+import { db } from '@/lib/db';
+import { notFound } from 'next/navigation';
 
-export default function Page() {
+export default async function Page({
+  params,
+}: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
+  const user = await verifySession();
+  // fetch the presentation with the project id
+  const presentation = await db.presentation.findUnique({
+    where: {
+      id: id,
+      userId: user?.userId,
+    },
+  });
+
+  if (!presentation) {
+    notFound();
+  }
   return (
     <>
       <header className="flex h-14 shrink-0 items-center gap-2">
@@ -20,20 +38,18 @@ export default function Page() {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbPage className="line-clamp-1">
-                  Project Management & Task Tracking
+                  {presentation.title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        <div className="ml-auto px-3">
-          <NavActions />
-        </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 px-4 py-10">
-        <div className="mx-auto h-24 w-full max-w-3xl rounded-xl bg-muted/50" />
-        <div className="mx-auto h-full w-full max-w-3xl rounded-xl bg-muted/50" />
-        <SettingsDialog />
+      <div className="flex flex-1 flex-row gap-4 px-4 py-10">
+        <div className="flex flex-col border-r lg:w-[200px] border-r-foreground-muted">
+          <h2>Slides</h2>
+        </div>
+        <PresentationEditor />
       </div>
     </>
   );
