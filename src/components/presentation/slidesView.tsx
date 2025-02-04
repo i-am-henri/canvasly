@@ -5,12 +5,27 @@ import { Button } from '../dashboard/button';
 import { addSlide, useSlidesStore } from './slides';
 
 export default function SlidesView() {
-  const { slide } = useSlidesStore();
+  const { preview, setCurrentSlide } = useSlidesStore();
   return (
-    <div>
-      <Button onClick={() => addSlide('{}')}>Add Slide</Button>
-      {slide.map((slide, index) => (
-        <div key={index}>{slide}</div>
+    <div className="flex flex-col gap-2 mr-2">
+      <Button
+        size={'sm'}
+        variant={'outline'}
+        onClick={() => addSlide('{"version":"6.5.4","objects":[]}')}
+      >
+        Add Slide
+      </Button>
+      {preview.map((preview, index) => (
+        <button
+          type="button"
+          className="w-full cursor-pointer p-2 border border-border rounded-md"
+          key={index}
+          tabIndex={0}
+          onClick={() => setCurrentSlide(index)}
+          onKeyDown={() => setCurrentSlide(index)}
+        >
+          {preview}
+        </button>
       ))}
     </div>
   );

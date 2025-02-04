@@ -26,10 +26,12 @@ import {
   addTriangle,
   useCanvasStore,
 } from './elements';
+import { useSlidesStore } from './slides';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
+  const { currentSlide, slide } = useSlidesStore();
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -114,6 +116,7 @@ export default function PresentationEditor() {
         </Menubar>
       </div>
       <canvas ref={canvasRef} className="w-full" />
+      <p>{JSON.stringify(canvas?.toDatalessJSON())}</p>
     </div>
   );
 }
