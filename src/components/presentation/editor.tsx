@@ -26,13 +26,10 @@ import {
   addTriangle,
   useCanvasStore,
 } from './elements';
-import { useSlidesStore } from './slides';
-import { slideChange } from './utils';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
-  const { currentSlide, slide, preview } = useSlidesStore();
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -51,34 +48,15 @@ export default function PresentationEditor() {
     };
   }, [setCanvas]);
 
-  useEffect(() => {
-    if (!canvas) {
-      return;
-    }
-
-    // register the events for the preview and live editor
-
-    return () => {
-      canvas.off('mouse:down');
-    };
-  }, [canvas]);
-
   // clear the canvas if the canvas ref changes
   useEffect(() => {
     if (!canvas) {
       return;
     }
 
-    canvas?.on('object:added', () => slideChange());
-    canvas?.on('object:modified', () => slideChange());
-    canvas?.on('object:removed', () => slideChange());
-    canvas?.on('object:moving', () => slideChange());
-    canvas?.on('object:resizing', () => slideChange());
-    canvas?.on('object:rotating', () => slideChange());
-    canvas?.on('object:scaling', () => slideChange());
-
     canvas.renderAll();
   }, [canvas]);
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex gap-4 flex-row">
@@ -123,9 +101,6 @@ export default function PresentationEditor() {
         </Menubar>
       </div>
       <canvas ref={canvasRef} className="w-full" />
-      <p>{JSON.stringify(canvas?.toSVG())}</p>
-      <p>{JSON.stringify(slide)}</p>
-      <p>{JSON.stringify(preview)}</p>
     </div>
   );
 }
