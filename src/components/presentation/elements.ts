@@ -65,13 +65,16 @@ export const addTriangle = () => {
 };
 
 // add a basic circle
+// TODO: fix the circle
 export const addCircle = () => {
   const circle = new Circle({
     left: 100,
     top: 100,
     width: 100,
     height: 100,
-    fill: 'black',
+    fill: '',
+    stroke: 'green',
+    strokeWidth: 2,
   });
 
   const canvas = getCanvas();
@@ -89,7 +92,65 @@ export const addText = () => {
   const text = new IText('Hello World', {
     left: 100,
     top: 100,
+    fontFamily: 'Arial',
     fill: 'black',
+  });
+
+  const canvas = getCanvas();
+  canvas?.add(text);
+  canvas?.renderAll();
+
+  useCanvasStore.setState({
+    canvas,
+  });
+};
+
+export const addHeading = () => {
+  const text = new IText('Hello World', {
+    left: 100,
+    top: 100,
+    fill: 'black',
+    fontFamily: 'Arial',
+    fontSize: 50,
+    fontWeight: 'bold',
+  });
+
+  const canvas = getCanvas();
+  canvas?.add(text);
+  canvas?.renderAll();
+
+  useCanvasStore.setState({
+    canvas,
+  });
+};
+
+// TODO: fix the bullet list
+export const addBulletList = () => {
+  const text = new IText('- ', {
+    left: 100,
+    top: 100,
+    fill: 'black',
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
+  });
+
+  const canvas = getCanvas();
+  canvas?.add(text);
+  canvas?.renderAll();
+
+  useCanvasStore.setState({
+    canvas,
+  });
+};
+
+// TODO: fix the list
+export const addList = () => {
+  const text = new IText('- ', {
+    left: 100,
+    top: 100,
+    fill: 'black',
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
   });
 
   const canvas = getCanvas();

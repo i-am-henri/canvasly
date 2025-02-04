@@ -26,6 +26,7 @@ import {
   addTriangle,
   useCanvasStore,
 } from './elements';
+import { handleSelection } from './select';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,6 +54,8 @@ export default function PresentationEditor() {
     if (!canvas) {
       return;
     }
+
+    handleSelection();
 
     canvas.renderAll();
   }, [canvas]);
