@@ -16,16 +16,13 @@ export default function SlidesView() {
         Add Slide
       </Button>
       {preview.map((preview, index) => (
-        <button
-          type="button"
+        <div
           className="w-full cursor-pointer p-2 border border-border rounded-md"
           key={index}
-          tabIndex={0}
           onClick={() => setCurrentSlide(index)}
           onKeyDown={() => setCurrentSlide(index)}
-        >
-          {preview}
-        </button>
+          dangerouslySetInnerHTML={{ __html: preview }}
+        />
       ))}
     </div>
   );

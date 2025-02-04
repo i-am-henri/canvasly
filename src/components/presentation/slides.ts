@@ -91,6 +91,7 @@ export const updateSlide = ({
       if (index === from) {
         return content;
       }
+
       return slide;
     }),
   });

@@ -32,7 +32,7 @@ import { slideChange } from './utils';
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
-  const { currentSlide, slide } = useSlidesStore();
+  const { currentSlide, slide, preview } = useSlidesStore();
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -57,13 +57,7 @@ export default function PresentationEditor() {
     }
 
     // register the events for the preview and live editor
-    canvas.on('object:added', () => slideChange());
-    canvas.on('object:modified', () => slideChange());
-    canvas.on('object:removed', () => slideChange());
-    canvas.on('object:moving', () => slideChange());
-    canvas.on('object:resizing', () => slideChange());
-    canvas.on('object:rotating', () => slideChange());
-    canvas.on('object:scaling', () => slideChange());
+
     return () => {
       canvas.off('mouse:down');
     };
@@ -74,11 +68,17 @@ export default function PresentationEditor() {
     if (!canvas) {
       return;
     }
-    canvas.clear();
+
+    canvas?.on('object:added', () => slideChange());
+    canvas?.on('object:modified', () => slideChange());
+    canvas?.on('object:removed', () => slideChange());
+    canvas?.on('object:moving', () => slideChange());
+    canvas?.on('object:resizing', () => slideChange());
+    canvas?.on('object:rotating', () => slideChange());
+    canvas?.on('object:scaling', () => slideChange());
 
     canvas.renderAll();
   }, [canvas]);
-
   return (
     <div className="flex flex-col w-full">
       <div className="flex gap-4 flex-row">
@@ -123,7 +123,9 @@ export default function PresentationEditor() {
         </Menubar>
       </div>
       <canvas ref={canvasRef} className="w-full" />
-      <p>{JSON.stringify(canvas?.toDatalessJSON())}</p>
+      <p>{JSON.stringify(canvas?.toSVG())}</p>
+      <p>{JSON.stringify(slide)}</p>
+      <p>{JSON.stringify(preview)}</p>
     </div>
   );
 }
