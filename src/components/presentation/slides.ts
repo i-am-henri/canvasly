@@ -24,8 +24,10 @@ export const useSlidesStore = create<State & Action>((set) => ({
   currentSlide: 0,
   setCurrentSlide: (currentSlide) => {
     console.info(`Current slide changed! New slide: ${currentSlide}`);
-    // set the canvas to the current slide
     const canvas = getCanvas();
+    canvas?.clear();
+
+    // set the canvas to the current slide
     canvas?.loadFromJSON(useSlidesStore.getState().slide[currentSlide]);
     // set the new current slide
     return set(() => ({ currentSlide: currentSlide }));
@@ -76,5 +78,35 @@ export const reorderSlide = (from: number, to: number) => {
 
   useSlidesStore.setState({
     slide,
+  });
+};
+
+// function to update slide
+export const updateSlide = ({
+  from,
+  content,
+}: { from: number; content: string }) => {
+  useSlidesStore.setState({
+    slide: useSlidesStore.getState().slide.map((slide, index) => {
+      if (index === from) {
+        return content;
+      }
+      return slide;
+    }),
+  });
+};
+
+// update the preview
+export const updatePreview = ({
+  from,
+  content,
+}: { from: number; content: string }) => {
+  useSlidesStore.setState({
+    preview: useSlidesStore.getState().preview.map((slide, index) => {
+      if (index === from) {
+        return content;
+      }
+      return slide;
+    }),
   });
 };

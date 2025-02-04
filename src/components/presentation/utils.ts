@@ -1,5 +1,5 @@
 import { getCanvas } from './elements';
-import { useSlidesStore } from './slides';
+import { updatePreview, updateSlide, useSlidesStore } from './slides';
 
 const changeCanvasContent = () => {
   const canvas = getCanvas();
@@ -34,5 +34,24 @@ const saveCanvasContent = () => {
       preview,
       ...slides.slice(currentSLide),
     ],
+  });
+};
+
+export const slideChange = () => {
+  const canvas = getCanvas();
+  const data = canvas?.toDatalessJSON();
+  const currentSlide = useSlidesStore.getState().currentSlide;
+
+  console.info(
+    `Slide changed! We are saving the new slide to the store. You are currently on slide ${currentSlide}`
+  );
+
+  updateSlide({
+    content: data,
+    from: currentSlide,
+  });
+  updatePreview({
+    content: data,
+    from: currentSlide,
   });
 };

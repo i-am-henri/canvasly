@@ -27,6 +27,7 @@ import {
   useCanvasStore,
 } from './elements';
 import { useSlidesStore } from './slides';
+import { slideChange } from './utils';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,7 +57,13 @@ export default function PresentationEditor() {
     }
 
     // register the events for the preview and live editor
-
+    canvas.on('object:added', () => slideChange());
+    canvas.on('object:modified', () => slideChange());
+    canvas.on('object:removed', () => slideChange());
+    canvas.on('object:moving', () => slideChange());
+    canvas.on('object:resizing', () => slideChange());
+    canvas.on('object:rotating', () => slideChange());
+    canvas.on('object:scaling', () => slideChange());
     return () => {
       canvas.off('mouse:down');
     };
