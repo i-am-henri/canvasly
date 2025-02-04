@@ -18,7 +18,7 @@ export const useCanvasStore = create<State & Action>((set) => ({
 }));
 
 // get the canvas from the store
-const getCanvas = () => {
+export const getCanvas = () => {
   const canvas = useCanvasStore.getState().canvas;
   if (!canvas) {
     return null;

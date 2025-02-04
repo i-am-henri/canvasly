@@ -7,6 +7,7 @@ import {
 import { Separator } from '@/components/dashboard/separator';
 import { SidebarTrigger } from '@/components/dashboard/sidebar';
 import { PresentationEditor } from '@/components/presentation';
+import SlidesView from '@/components/presentation/slidesView';
 import { verifySession } from '@/lib/dal';
 import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
@@ -48,6 +49,7 @@ export default async function Page({
       <div className="flex flex-1 flex-row gap-4 px-4 py-0">
         <div className="flex flex-col border-r lg:w-[200px] border-r-foreground-muted">
           <h2>Slides</h2>
+          <SlidesView />
         </div>
         <PresentationEditor />
       </div>
