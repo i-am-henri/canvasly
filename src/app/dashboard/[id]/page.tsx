@@ -45,7 +45,7 @@ export default async function Page({
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-1 flex-row gap-4 px-4 py-10">
+      <div className="flex flex-1 flex-row gap-4 px-4 py-0">
         <div className="flex flex-col border-r lg:w-[200px] border-r-foreground-muted">
           <h2>Slides</h2>
         </div>
