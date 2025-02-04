@@ -11,18 +11,22 @@ import { getCanvas } from './elements';
 
 type State = {
   selection: 'none' | 'single' | 'multiple';
-  objects: FabricObject[] | null | FabricObject;
+  objects: FabricObject[] | null;
+  singleObject: FabricObject | null;
 };
 
 type Action = {
   setSelection: (select: State['selection']) => void;
   setObjects: (objects: State['objects']) => void;
+  setSingleObject: (singleObject: State['singleObject']) => void;
 };
 
 // store the canvas
-export const useCanvasStore = create<State & Action>((set) => ({
+export const useSelectionStore = create<State & Action>((set) => ({
   selection: 'none',
   objects: null,
+  singleObject: null,
+  setSingleObject: (object) => set(() => ({ singleObject: object })),
   setObjects: (objects) => set(() => ({ objects: objects })),
   setSelection: (select) => set(() => ({ selection: select })),
 }));
@@ -34,7 +38,6 @@ export const handleSelection = () => {
     return;
   }
 
-  const selectedObjects = canvas.getActiveObjects();
   canvas.on('selection:created', (e) => {
     if (e.selected.length === 1) {
       handleSingleSelection(e.selected[0]);
@@ -63,11 +66,11 @@ const handleSingleSelection = (e: FabricObject) => {
     return;
   }
 
-  const setSelection = useCanvasStore.getState().setSelection;
-  const setObjects = useCanvasStore.getState().setObjects;
+  const setSelection = useSelectionStore.getState().setSelection;
+  const setSingleObject = useSelectionStore.getState().setSingleObject;
 
-  setSelection('multiple');
-  setObjects(e);
+  setSelection('single');
+  setSingleObject(e);
   console.log('Handle the selection of a single object.');
 };
 
@@ -78,8 +81,8 @@ const handleMultipleSelection = (e: FabricObject[]) => {
     return;
   }
 
-  const setSelection = useCanvasStore.getState().setSelection;
-  const setObjects = useCanvasStore.getState().setObjects;
+  const setSelection = useSelectionStore.getState().setSelection;
+  const setObjects = useSelectionStore.getState().setObjects;
 
   setSelection('multiple');
   setObjects(e);
@@ -92,9 +95,11 @@ const handleClearSelection = () => {
   if (!canvas) {
     return;
   }
-  const setSelection = useCanvasStore.getState().setSelection;
-  const setObjects = useCanvasStore.getState().setObjects;
+  const setSelection = useSelectionStore.getState().setSelection;
+  const setObjects = useSelectionStore.getState().setObjects;
+  const setSingleObject = useSelectionStore.getState().setSingleObject;
 
   setObjects(null);
   setSelection('none');
+  setSingleObject(null);
 };

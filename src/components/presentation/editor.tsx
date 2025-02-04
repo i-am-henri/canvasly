@@ -19,6 +19,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { Button } from '../dashboard/button';
 import {
   addCircle,
   addRectangle,
@@ -26,11 +27,12 @@ import {
   addTriangle,
   useCanvasStore,
 } from './elements';
-import { handleSelection } from './select';
+import { handleSelection, useSelectionStore } from './select';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
+  const { objects, singleObject, selection } = useSelectionStore();
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -104,6 +106,21 @@ export default function PresentationEditor() {
         </Menubar>
       </div>
       <canvas ref={canvasRef} className="w-full" />
+      {(selection === 'single' && singleObject && (
+        <div>{JSON.stringify(singleObject)}</div>
+      )) ||
+        (selection === 'multiple' && objects && (
+          <div>
+            <Button
+              variant={'destructive'}
+              onClick={() => {
+                console.log(JSON.stringify(objects));
+              }}
+            >
+              Delete All
+            </Button>
+          </div>
+        ))}
     </div>
   );
 }
