@@ -26,6 +26,7 @@ import {
   addTriangle,
   useCanvasStore,
 } from './elements';
+import Image from './image';
 import { handleSelection, useSelectionStore } from './select';
 import { MultipleSelection, NoSelection, SingleSelection } from './selection';
 
@@ -81,6 +82,7 @@ export default function PresentationEditor() {
               <MenubarItem className="flex gap-2">
                 <Star className="h-4 w-4" /> <span>Star</span>
               </MenubarItem>
+              <Image />
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
