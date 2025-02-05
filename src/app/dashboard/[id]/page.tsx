@@ -6,7 +6,7 @@ import {
 } from '@/components/dashboard/breadcrumb';
 import { Separator } from '@/components/dashboard/separator';
 import { SidebarTrigger } from '@/components/dashboard/sidebar';
-import { PresentationEditor } from '@/components/presentation';
+import PresentationEditor from '@/components/presentation/editor';
 import SlidesView from '@/components/presentation/slidesView';
 import { verifySession } from '@/lib/dal';
 import { db } from '@/lib/db';

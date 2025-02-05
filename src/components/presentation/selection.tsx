@@ -14,6 +14,7 @@ export function SingleSelection() {
     return null;
   }
 
+  // settings for a single object
   return (
     <div>
       <h1>Single Selection</h1>

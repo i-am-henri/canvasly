@@ -19,6 +19,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { useCurrentSlideStore } from './current-slide';
 import {
   addCircle,
   addRectangle,
@@ -27,6 +28,7 @@ import {
   useCanvasStore,
 } from './elements';
 import Image from './image';
+import { handleSave } from './save';
 import { handleSelection, useSelectionStore } from './select';
 import { MultipleSelection, NoSelection, SingleSelection } from './selection';
 
@@ -34,6 +36,7 @@ export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
   const { objects, singleObject, selection } = useSelectionStore();
+  const { currentSlide } = useCurrentSlideStore();
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -59,6 +62,14 @@ export default function PresentationEditor() {
     }
 
     handleSelection();
+
+    canvas.on('object:added', () => handleSave());
+    canvas.on('object:modified', () => handleSave());
+    canvas.on('object:moving', () => handleSave());
+    canvas.on('object:removed', () => handleSave());
+    canvas.on('object:resizing', () => handleSave());
+    canvas.on('object:scaling', () => handleSave());
+    canvas.on('object:rotating', () => handleSave());
 
     canvas.renderAll();
   }, [canvas]);
@@ -107,7 +118,9 @@ export default function PresentationEditor() {
           </MenubarMenu>
         </Menubar>
       </div>
+      <p>You are on the {currentSlide} slide.</p>
       <canvas ref={canvasRef} className="w-full" />
+      {JSON.stringify(canvas?.toDatalessJSON())}
       {(selection === 'single' && singleObject && <SingleSelection />) ||
         (selection === 'multiple' && objects && <MultipleSelection />) ||
         (selection === 'none' && !objects && !singleObject && <NoSelection />)}
