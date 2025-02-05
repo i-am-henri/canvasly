@@ -8,6 +8,7 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from '@/components/dashboard/menubar';
+import useCalculatedWidth from '@/hooks/use-calculated-width';
 import { Canvas } from 'fabric';
 import {
   Circle,
@@ -38,14 +39,16 @@ export default function PresentationEditor() {
   const { objects, singleObject, selection } = useSelectionStore();
   const { currentSlide } = useCurrentSlideStore();
 
+  const width = useCalculatedWidth();
+
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
 
     const fabricCanvas = new Canvas(canvasRef.current, {
-      width: 960,
       height: 540,
+      width: width,
     });
 
     setCanvas(fabricCanvas);
@@ -53,7 +56,7 @@ export default function PresentationEditor() {
     return () => {
       fabricCanvas.dispose();
     };
-  }, [setCanvas]);
+  }, [setCanvas, width]);
 
   // clear the canvas if the canvas ref changes
   useEffect(() => {
@@ -119,8 +122,7 @@ export default function PresentationEditor() {
         </Menubar>
       </div>
       <p>You are on the {currentSlide} slide.</p>
-      <canvas ref={canvasRef} className="w-full" />
-      {JSON.stringify(canvas?.toDatalessJSON())}
+      <canvas ref={canvasRef} className="border border-border rounded-md" />
       {(selection === 'single' && singleObject && <SingleSelection />) ||
         (selection === 'multiple' && objects && <MultipleSelection />) ||
         (selection === 'none' && !objects && !singleObject && <NoSelection />)}
