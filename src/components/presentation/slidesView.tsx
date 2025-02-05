@@ -8,7 +8,7 @@ import { useSlidesStore } from './slides';
 export default function SlidesView() {
   const { slides } = useSlidesStore();
   return (
-    <div className="flex flex-col gap-2 mr-2">
+    <div className="flex flex-col gap-2 lg:mr-2">
       <Button size={'sm'} onClick={() => createSlide()} variant={'outline'}>
         Add Slide
       </Button>

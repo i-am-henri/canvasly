@@ -32,6 +32,7 @@ import Image from './image';
 import { handleSave } from './save';
 import { handleSelection, useSelectionStore } from './select';
 import { MultipleSelection, NoSelection, SingleSelection } from './selection';
+import SlidesView from './slidesView';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,6 +80,9 @@ export default function PresentationEditor() {
 
   return (
     <div className="flex flex-col w-full">
+      <div className="w-full block lg:hidden">
+        <SlidesView />
+      </div>
       <div className="flex gap-4 flex-row">
         <Menubar>
           <MenubarMenu>

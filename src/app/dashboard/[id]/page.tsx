@@ -47,7 +47,7 @@ export default async function Page({
         </div>
       </header>
       <div className="flex flex-1 flex-row gap-4 px-4 py-0">
-        <div className="flex flex-col border-r lg:w-[200px] border-r-foreground-muted">
+        <div className="hidden lg:flex flex-col border-r lg:w-[200px] border-r-foreground-muted">
           <SlidesView />
         </div>
         <PresentationEditor />
