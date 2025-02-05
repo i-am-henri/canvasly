@@ -48,7 +48,7 @@ export default function PresentationEditor() {
     }
 
     const fabricCanvas = new Canvas(canvasRef.current, {
-      height: 540,
+      height: width / 2,
       width: width,
     });
 

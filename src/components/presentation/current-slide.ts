@@ -3,6 +3,7 @@
 import { toast } from 'sonner';
 import { create } from 'zustand';
 import { useCanvasStore } from './elements';
+import { initialSVG, usePreviewStore } from './preview';
 import { useSlidesStore } from './slides';
 
 type State = {
@@ -49,6 +50,8 @@ export const changeSlide = (slide: number) => {
 export const createSlide = () => {
   const slides = useSlidesStore.getState().slides;
   const setSlides = useSlidesStore.getState().setSlides;
+  const previews = usePreviewStore.getState().previews;
+  const setPreviews = usePreviewStore.getState().setPreviews;
 
   setSlides([
     ...slides,
@@ -57,6 +60,12 @@ export const createSlide = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       object: [],
+    },
+  ]);
+  setPreviews([
+    ...previews,
+    {
+      svg: initialSVG,
     },
   ]);
 
