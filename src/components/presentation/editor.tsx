@@ -12,6 +12,8 @@ import useCalculatedWidth from '@/hooks/use-calculated-width';
 import { Canvas } from 'fabric';
 import {
   Circle,
+  CircleDot,
+  CircleDotDashed,
   LayoutList,
   List,
   RectangleEllipsis,
@@ -32,13 +34,16 @@ import Image from './image';
 import { handleSave } from './save';
 import { handleSelection, useSelectionStore } from './select';
 import { MultipleSelection, NoSelection, SingleSelection } from './selection';
+import { useSlidesStore } from './slides';
 import SlidesView from './slidesView';
 
 export default function PresentationEditor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { canvas, setCanvas } = useCanvasStore();
   const { objects, singleObject, selection } = useSelectionStore();
+  const { slides } = useSlidesStore();
   const { currentSlide } = useCurrentSlideStore();
+  const slide = slides[currentSlide];
 
   const width = useCalculatedWidth();
 
@@ -121,6 +126,25 @@ export default function PresentationEditor() {
               </MenubarItem>
               <MenubarSeparator />
               <MenubarItem>Print</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>{slide.progress}</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem className="flex items-center gap-2 text-muted-foreground hover:text-muted-foreground">
+                <CircleDotDashed className="h-4 w-4" />
+                Not Started
+              </MenubarItem>
+              <MenubarItem className="flex items-center gap-2 text-blue-500 hover:text-blue-500">
+                <CircleDot className="h-4 w-4" />
+                In Progress
+              </MenubarItem>
+              <MenubarItem className="flex items-center gap-2 text-green-500 hover:text-green-500">
+                <Circle className="h-4 w-4" />
+                Finished
+              </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
