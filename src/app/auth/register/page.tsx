@@ -6,12 +6,12 @@ export default function Register() {
   return (
     <div className="grid xl:grid-cols-[525px_1fr_525px]">
       {/* Top Columns */}
-      <div className="lg:h-32 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-32 border-b  border-b-[#d4d4d4]" />
-      <div className="lg:h-32 border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b  border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
 
       {/* Content and middle columns */}
-      <div className="lg:h-64 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
 
       <div className="lg:h-[768px] border-b row-span-3 p-5 space-y-5 relative  border-b-[#d4d4d4]">
         <Image alt="Logo" width={40} height={40} src="/logo.svg" />
@@ -43,16 +43,16 @@ export default function Register() {
       </div>
 
       {/* Bars on the side. These are the bigger ones. */}
-      <div className="lg:h-64 border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-64 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-64 border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-64 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-64 border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-64 hidden xl:block  border-b border-l border-l-[#d4d4d4] border-b-[#d4d4d4]" />
 
       {/* Bottom Columns */}
-      <div className="lg:h-32 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-32 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
-      <div className="lg:h-32 border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
+      <div className="lg:h-32 hidden xl:block  border-b border-r border-r-[#d4d4d4] border-b-[#d4d4d4]" />
     </div>
   );
 }
