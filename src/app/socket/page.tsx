@@ -39,6 +39,9 @@ export default function Home() {
     <div>
       <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
       <p>Transport: {transport}</p>
+      <button type="button" onClick={() => socket.emit('hello', 'world')}>
+        send a message
+      </button>
     </div>
   );
 }
