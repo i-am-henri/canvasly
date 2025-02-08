@@ -1,9 +1,10 @@
 import { createServer } from 'node:http';
 import chalk from 'chalk';
-import consola from 'consola';
 import next from 'next';
 import { Server } from 'socket.io';
+import handleSlides from './socket/slides';
 
+// standard nextjs serttings
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 3000;
@@ -18,22 +19,28 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on('connection', (socket) => {
-    console.log('New connection...');
+    if (dev) {
+      // biome-ignore lint: we want to show the connection only in development
+      console.log('New connection...');
+    }
     socket.on('disconnect', () => {
-      consola.log('Socket disconnected');
+      // biome-ignore lint: we want to show the disconnection only in development
+      console.log('Socket disconnected');
     });
-    socket.on('hello', (data) => {
-      consola.log('Received hello message:', data);
-      socket.emit('hello', 'world');
-    });
+
+    // handle the socket events
+    handleSlides(socket, io);
   });
 
   httpServer
     .once('error', (err) => {
+      // biome-ignore lint: we want to show the error only in development
       console.log(chalk.red(err));
       process.exit(1);
     })
     .listen(port, () => {
+      // green message for the development, with a link to the server
+      // biome-ignore lint: we want to show the link only in development
       console.log(chalk.greenBright(`🌐 Ready on http://${hostname}:${port}`));
     });
 });

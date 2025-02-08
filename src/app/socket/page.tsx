@@ -28,6 +28,9 @@ export default function Home() {
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
+    socket.on('update', (data) => {
+      console.log('update', data);
+    });
 
     return () => {
       socket.off('connect', onConnect);
@@ -39,7 +42,10 @@ export default function Home() {
     <div>
       <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
       <p>Transport: {transport}</p>
-      <button type="button" onClick={() => socket.emit('hello', 'world')}>
+      <button
+        type="button"
+        onClick={() => socket.emit('presentation:connect', { id: '123' })}
+      >
         send a message
       </button>
     </div>
