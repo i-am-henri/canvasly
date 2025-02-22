@@ -9,6 +9,7 @@ import {
   MenubarTrigger,
 } from '@/components/dashboard/menubar';
 import useCalculatedWidth from '@/hooks/use-calculated-width';
+import { socket } from '@/lib/socket';
 import { Canvas } from 'fabric';
 import {
   Circle,
@@ -82,6 +83,31 @@ export default function PresentationEditor() {
 
     canvas.renderAll();
   }, [canvas]);
+
+  useEffect(() => {
+    // Event-Listener für die Folienaktualisierung
+    socket.on('slide:update', (data) => {
+      // Hier aktualisierst du die Folien im Zustand
+      console.log('Slide updated:', data);
+      // Aktualisiere den Zustand oder die UI entsprechend
+    });
+
+    return () => {
+      socket.off('slide:update'); // Bereinige den Listener
+    };
+  }, []);
+
+  const handleSlideChange = (newSlideData) => {
+    // Sende die Aktualisierung an den Server
+    socket.emit('slide:update', newSlideData);
+  };
+
+  const handleSave = () => {
+    const newSlideData = {
+      /* ... deine Folien-Daten ... */
+    };
+    handleSlideChange(newSlideData);
+  };
 
   return (
     <div className="flex flex-col w-full">
